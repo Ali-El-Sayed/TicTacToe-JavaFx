@@ -34,16 +34,16 @@
          <left>
             <FlowPane alignment="BOTTOM_LEFT" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" rowValignment="BOTTOM" BorderPane.alignment="BOTTOM_LEFT">
                <children>
-                  <Button minHeight="20.0" minWidth="20.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="58.0">
+                  <Button fx:id="back_btn" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="58.0">
                      <graphic>
-                        <ImageView fitHeight="100.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="100.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../assets/back.png" />
                            </image>
                         </ImageView>
                      </graphic>
                      <FlowPane.margin>
-                        <Insets bottom="10.0" left="15.0" />
+                        <Insets bottom="-2.0" left="90.0" />
                      </FlowPane.margin>
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -53,9 +53,9 @@
             </FlowPane>
          </left>
          <bottom>
-            <Button minHeight="50.0" minWidth="150.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="93.0" BorderPane.alignment="CENTER">
+            <Button fx:id="login_btn" minHeight="50.0" minWidth="150.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="93.0" BorderPane.alignment="CENTER">
                <graphic>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="120.0" fitWidth="300.0" pickOnBounds="true">
                      <image>
                         <Image url="@../../assets/login.png" />
                      </image>
@@ -65,7 +65,7 @@
                   </ImageView>
                </graphic>
                <BorderPane.margin>
-                  <Insets bottom="20.0" top="-70.0" />
+                  <Insets bottom="55.0" top="-50.0" />
                </BorderPane.margin>
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -81,7 +81,7 @@
             <Insets top="-15.0" />
          </StackPane.margin>
       </Label>
-      <TextField maxWidth="453.0" minHeight="40.0" minWidth="0.0" prefHeight="49.0" prefWidth="0.0" StackPane.alignment="CENTER">
+      <TextField fx:id="email_tf" maxWidth="453.0" minHeight="40.0" minWidth="0.0" prefHeight="49.0" prefWidth="0.0" StackPane.alignment="CENTER">
          <StackPane.margin>
             <Insets right="10.0" top="-85.0" />
          </StackPane.margin>
@@ -92,7 +92,7 @@
             <Font name="Berlin Sans FB Demi Bold" size="20.0" />
          </font>
       </TextField>
-      <PasswordField maxWidth="453.0" minHeight="40.0" minWidth="0.0" prefHeight="49.0" prefWidth="0.0">
+      <PasswordField fx:id="password_tf" maxWidth="453.0" minHeight="40.0" minWidth="0.0" prefHeight="49.0" prefWidth="0.0">
          <StackPane.margin>
             <Insets top="130.0" />
          </StackPane.margin>
