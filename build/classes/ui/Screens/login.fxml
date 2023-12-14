@@ -17,7 +17,9 @@
    <children>
       <ImageView fitHeight="867.0" fitWidth="1492.0" pickOnBounds="true" StackPane.alignment="CENTER">
          <image>
+
             <Image url="@../../assets/background.png" />
+
          </image>
       </ImageView>
       <BorderPane>
