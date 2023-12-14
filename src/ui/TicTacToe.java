@@ -15,7 +15,7 @@ public class TicTacToe extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/ui/Screens/Signup.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/ui/Screens/SplashScreen.fxml"));
         
         Scene scene = new Scene(root,1343,858);
         stage.setResizable(false);
