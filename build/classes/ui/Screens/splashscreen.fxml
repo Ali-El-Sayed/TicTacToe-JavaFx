@@ -15,7 +15,9 @@
    <children>
       <ImageView fitHeight="858.0" fitWidth="1343.0" pickOnBounds="true" StackPane.alignment="CENTER">
          <image>
+
             <Image url="@../../assets/background.png" />
+
          </image>
       </ImageView>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="858.0" prefWidth="1343.0">
@@ -32,11 +34,17 @@
          <bottom>
             <FlowPane alignment="BOTTOM_CENTER" minHeight="500.0" orientation="VERTICAL" prefHeight="1000.0" prefWidth="500.0" vgap="130.0" BorderPane.alignment="CENTER">
                <children>
+<<<<<<< HEAD
                   <Button fx:id="play_btn" alignment="CENTER" minHeight="38.0" minWidth="100.0" prefHeight="41.0" prefWidth="0.0">
+=======
+                  <Button fx:id="play_btn" alignment="CENTER" minHeight="38.0" minWidth="100.0" onAction="#handleButtonAction" prefHeight="41.0" prefWidth="0.0">
+>>>>>>> f70ee9d1c431782feb0e281cdce0b64801d18972
                      <graphic>
                         <ImageView fitHeight="120.0" fitWidth="300.0" nodeOrientation="INHERIT">
                            <image>
+
                               <Image url="@../../assets/play.png" />
+
                            </image>
                            <cursor>
                               <Cursor fx:constant="HAND" />
@@ -47,7 +55,11 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
+<<<<<<< HEAD
                   <Button fx:id="about_btn" maxHeight="50.0" maxWidth="138.0" minHeight="21.0" minWidth="100.0" prefHeight="32.0" prefWidth="0.0">
+=======
+                  <Button fx:id="about_btn" maxHeight="50.0" maxWidth="138.0" minHeight="21.0" minWidth="100.0" onAction="#handleButtonAction" prefHeight="32.0" prefWidth="0.0">
+>>>>>>> f70ee9d1c431782feb0e281cdce0b64801d18972
                      <graphic>
                         <ImageView fitHeight="120.0" fitWidth="300.0" nodeOrientation="INHERIT">
                            <image>
@@ -62,7 +74,11 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
+<<<<<<< HEAD
                   <Button fx:id="exit_btn" maxHeight="71.0" maxWidth="148.0" minHeight="21.0" minWidth="100.0" prefHeight="39.0" prefWidth="0.0">
+=======
+                  <Button fx:id="exit_btn" maxHeight="71.0" maxWidth="148.0" minHeight="21.0" minWidth="100.0" onAction="#handleButtonAction" prefHeight="39.0" prefWidth="0.0">
+>>>>>>> f70ee9d1c431782feb0e281cdce0b64801d18972
                      <graphic>
                         <ImageView fitHeight="120.0" fitWidth="300.0" pickOnBounds="true">
                            <image>
