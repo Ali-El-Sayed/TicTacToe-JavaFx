@@ -11,18 +11,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/**
- *
- * @author dell
- */
 public class TicTacToe extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/ui/Screens/signup.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/ui/Screens/Signup.fxml"));
         
-        Scene scene = new Scene(root);
-        
+        Scene scene = new Scene(root,1343,858);
+        stage.setResizable(false);
+        //stage.setWidth(143);
+        //stage.setHeight(858);
         stage.setScene(scene);
         stage.show();
     }
