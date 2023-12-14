@@ -22,7 +22,7 @@
          <center>
             <FlowPane alignment="CENTER" minHeight="500.0" minWidth="500.0" orientation="VERTICAL" prefHeight="500.0" prefWidth="500.0" vgap="130.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button minHeight="10.0" minWidth="10.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="138.0">
+                  <Button fx:id="signin_btn" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="138.0">
                      <graphic>
                         <ImageView fitHeight="120.0" fitWidth="300.0" pickOnBounds="true">
                            <image>
@@ -34,7 +34,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button minHeight="10.0" minWidth="10.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="144.0">
+                  <Button fx:id="signup_btn" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="144.0">
                      <graphic>
                         <ImageView fitHeight="120.0" fitWidth="300.0" pickOnBounds="true">
                            <image>
@@ -62,7 +62,7 @@
          <left>
             <FlowPane alignment="BOTTOM_LEFT" orientation="VERTICAL" prefHeight="278.0" prefWidth="130.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button minHeight="20.0" minWidth="20.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="58.0">
+                  <Button fx:id="back_btn" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="58.0">
                      <graphic>
                         <ImageView fitHeight="100.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                            <image>
