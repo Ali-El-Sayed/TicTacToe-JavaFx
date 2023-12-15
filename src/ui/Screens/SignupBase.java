@@ -221,9 +221,9 @@ public class SignupBase extends StackPane {
         StackPane.setMargin(passreveal_btn, new Insets(0.0, -350.0, -550.0, 0.0));
 
         imageView0.setFitHeight(35.0);
-        imageView0.setFitWidth(40.0);
+        imageView0.setFitWidth(50.0);
         imageView0.setPickOnBounds(true);
-        imageView0.setImage(new Image(getClass().getResource("/assets/eye.png").toExternalForm()));
+        imageView0.setImage(new Image(getClass().getResource("/assets/closed.png").toExternalForm()));
         passreveal_btn.setGraphic(imageView0);
         passreveal_btn.setCursor(Cursor.HAND);
 
@@ -250,11 +250,15 @@ public class SignupBase extends StackPane {
                     togglePass=true;
                     passwordrevealed_tf.setVisible(true);
                     password_tf.setVisible(false);
+                    imageView0.setImage(new Image(getClass().getResource("/assets/open.png").toExternalForm()));
+                    
                 }
                 else{
                     togglePass=false;
                     passwordrevealed_tf.setVisible(false);
                     password_tf.setVisible(true);
+                    imageView0.setImage(new Image(getClass().getResource("/assets/closed.png").toExternalForm()));
+                     
                 }
             }
         });

@@ -21,7 +21,7 @@ public class TicTacToe extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         //Parent root = FXMLLoader.load(getClass().getResource("/ui/Screens/Login.fxml"));
-        Parent root = new SplashScreenBase();
+        Parent root = new SignupBase();
         Scene scene = new Scene(root,1343,858);
         stage.setResizable(false);
         //stage.setWidth(143);
