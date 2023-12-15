@@ -1,4 +1,4 @@
-package javafxtest;
+package ui.components;
 
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;

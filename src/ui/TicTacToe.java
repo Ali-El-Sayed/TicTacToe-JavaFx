@@ -6,19 +6,19 @@
 package ui;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ui.Screens.SelectModeBase;
 
 public class TicTacToe extends Application {
-    
+
     @Override
     public void start(Stage stage) throws Exception {
 
-        Parent root = FXMLLoader.load(getClass().getResource("/ui/Screens/selectMode.fxml"));
+        Parent root = new SelectModeBase();
 
-        Scene scene = new Scene(root,1343,858);
+        Scene scene = new Scene(root, 1343, 858);
         stage.setResizable(false);
         //stage.setWidth(143);
         //stage.setHeight(858);
@@ -32,5 +32,5 @@ public class TicTacToe extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }
