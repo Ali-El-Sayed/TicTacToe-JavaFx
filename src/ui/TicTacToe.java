@@ -5,19 +5,23 @@
  */
 package ui;
 
+import java.awt.SplashScreen;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ui.Screens.LoginBase;
+import ui.Screens.LoginsignupBase;
+import ui.Screens.SignupBase;
+import ui.Screens.SplashScreenBase;
 
 public class TicTacToe extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-
-        Parent root = FXMLLoader.load(getClass().getResource("/ui/Screens/selectMode.fxml"));
-
+        //Parent root = FXMLLoader.load(getClass().getResource("/ui/Screens/Login.fxml"));
+        Parent root = new SignupBase();
         Scene scene = new Scene(root,1343,858);
         stage.setResizable(false);
         //stage.setWidth(143);
