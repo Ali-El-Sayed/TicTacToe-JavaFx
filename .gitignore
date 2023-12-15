@@ -1,5 +1,7 @@
 *.class
 *.text
+build.xml
+manifest.mf
 /build
 /dist
 /test
