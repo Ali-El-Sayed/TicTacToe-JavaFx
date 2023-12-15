@@ -255,6 +255,7 @@ public class SignupBase extends StackPane {
                 }
                 else{
                     togglePass=false;
+                    password_tf.setText(passwordrevealed_tf.getText());
                     passwordrevealed_tf.setVisible(false);
                     password_tf.setVisible(true);
                     imageView0.setImage(new Image(getClass().getResource("/assets/closed.png").toExternalForm()));
