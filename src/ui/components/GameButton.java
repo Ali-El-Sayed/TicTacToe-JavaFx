@@ -29,12 +29,13 @@ public class GameButton extends Button {
 
         if (mode != Mode.BACK) {
             currBtn = new ImageView(new Image(getClass().getResourceAsStream(NORMAL)));
+            currBtn.setFitHeight(120);
+            currBtn.setFitWidth(300);
         } else {
             currBtn = new ImageView(new Image(getClass().getResourceAsStream(BACK)));
+            currBtn.setFitHeight(70);
+            currBtn.setFitWidth(140);
         }
-
-        currBtn.setFitHeight(70);
-        currBtn.setFitWidth(140);
 
         StackPane stackPane = new StackPane();
         stackPane.getChildren().addAll(currBtn, this.label);

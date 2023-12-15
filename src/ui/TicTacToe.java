@@ -5,11 +5,19 @@
  */
 package ui;
 
+import java.awt.SplashScreen;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 import ui.Screens.SelectModeBase;
+
+import ui.Screens.LoginBase;
+import ui.Screens.LoginsignupBase;
+import ui.Screens.SignupBase;
+import ui.Screens.SplashScreenBase;
+
 
 public class TicTacToe extends Application {
 
