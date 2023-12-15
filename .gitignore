@@ -1,2 +1,6 @@
 *.class
 *.text
+/build
+/dist
+/test
+/nbproject
