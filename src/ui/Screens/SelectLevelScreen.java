@@ -1,5 +1,10 @@
 package ui.Screens;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -13,6 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafxtest.GameButton;
+import ui.SceneController;
 
 public class SelectLevelScreen extends VBox {
 
@@ -30,18 +36,17 @@ public class SelectLevelScreen extends VBox {
         hBox = new HBox();
         headerL = new Label();
         hBox0 = new HBox();
-        btnEasy = new GameButton("Easy", GameButton.Mode.NORMAL, () -> {
+        btnEasy = new GameButton("EASY", GameButton.Mode.NORMAL, () -> {
             System.out.println("Easy Clicked");
         });
-        btnIntermediate = new GameButton("Intermediate", GameButton.Mode.NORMAL, () -> {
+        btnIntermediate = new GameButton("MEDIUM", GameButton.Mode.NORMAL, () -> {
             System.out.println("Intermdeiate Clicked");
         });
-        btnHard = new GameButton("Hard", GameButton.Mode.NORMAL, () -> {
+        btnHard = new GameButton("HARD", GameButton.Mode.NORMAL, () -> {
             System.out.println("Hard Clicked");
         });
         hBox1 = new HBox();
         btnBack = new GameButton(GameButton.Mode.BACK, () -> {
-            System.out.println("Back Clicked");
         });
 
         Image img = new Image(getClass().getResourceAsStream("/assets/background.png"));
@@ -101,6 +106,17 @@ public class SelectLevelScreen extends VBox {
         getChildren().add(hBox0);
         hBox1.getChildren().add(btnBack);
         getChildren().add(hBox1);
-
+        
+        btnBack.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                SceneController sceneController = new SceneController();
+                try {
+                    sceneController.switchToOfflineMode(event);
+                } catch (IOException ex) {
+                    Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
     }
 }

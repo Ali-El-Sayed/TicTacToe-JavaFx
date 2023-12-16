@@ -22,17 +22,7 @@
          <center>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="signup_btn" minHeight="50.0" minWidth="110.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="90.0">
-                     <graphic>
-                        <ImageView fitHeight="120.0" fitWidth="300.0" pickOnBounds="true">
-                           <image>
-                              <Image url="@../../assets/Offline%20Button.png" />
-                           </image>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </ImageView>
-                     </graphic>
+                  <Button fx:id="offline_btn" minHeight="50.0" minWidth="110.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="90.0">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -43,17 +33,7 @@
                         <Insets right="250.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="signup_btn1" minHeight="50.0" minWidth="150.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="93.0">
-                     <graphic>
-                        <ImageView fitHeight="120.0" fitWidth="300.0" pickOnBounds="true">
-                           <image>
-                              <Image url="@../../assets/Online%20Button.png" />
-                           </image>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </ImageView>
-                     </graphic>
+                  <Button fx:id="online_btn" minHeight="50.0" minWidth="150.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="93.0">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -74,23 +54,13 @@
          <bottom>
             <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="signup_btn2" minHeight="50.0" minWidth="110.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="90.0">
+                  <Button fx:id="back_btn" minHeight="50.0" minWidth="110.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="90.0">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
                      <padding>
                         <Insets right="150.0" />
                      </padding>
-                     <graphic>
-                        <ImageView fitHeight="120.0" fitWidth="300.0" pickOnBounds="true">
-                           <image>
-                              <Image url="@../../assets/back.png" />
-                           </image>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </ImageView>
-                     </graphic>
                      <HBox.margin>
                         <Insets left="200.0" />
                      </HBox.margin>
