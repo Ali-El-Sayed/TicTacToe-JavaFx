@@ -17,8 +17,9 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafxtest.GameButton;
+import  ui.components.GameButton;
 import ui.SceneController;
+import ui.components.GameButton;
 
 public class OfflineModeScreen extends VBox {
 

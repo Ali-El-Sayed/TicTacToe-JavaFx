@@ -19,10 +19,11 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafxtest.GameButton;
+import  ui.components.GameButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import ui.SceneController;
+import ui.components.GameButton;
 
 public class SplashScreenBase extends StackPane {
 

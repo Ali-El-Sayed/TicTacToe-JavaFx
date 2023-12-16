@@ -18,8 +18,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
-import javafxtest.GameButton;
+import  ui.components.GameButton;
 import ui.SceneController;
+import ui.components.GameButton;
 
 public class SignupBase extends StackPane {
 

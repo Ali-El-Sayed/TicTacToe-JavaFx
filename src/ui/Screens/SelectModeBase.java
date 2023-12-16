@@ -18,8 +18,8 @@ import javafx.scene.layout.HBox;
 import static javafx.scene.layout.Region.USE_PREF_SIZE;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafxtest.GameButton;
 import ui.SceneController;
+import ui.components.GameButton;
 
 public class SelectModeBase extends VBox {
 
