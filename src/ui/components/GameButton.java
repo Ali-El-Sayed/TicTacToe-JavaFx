@@ -24,7 +24,7 @@ public class GameButton extends Button {
         this.mode = m;
         this.label = new Label(label);
         this.label.setCenterShape(true);
-        this.label.setStyle("-fx-font-weight: bold; -fx-font-size: 20px; -fx-text-fill: white;");
+        this.label.setStyle("-fx-font-weight: bold; -fx-font-family:Algerian; -fx-font-size: 35px; -fx-text-fill: white;");
         this.label.setPadding(new Insets(0, 0, 15, 0));
 
         if (mode != Mode.BACK) {

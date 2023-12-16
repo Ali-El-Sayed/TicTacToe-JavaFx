@@ -17,22 +17,14 @@ import ui.Screens.SignupBase;
 import ui.Screens.SplashScreenBase;
 
 public class TicTacToe extends Application {
-    
     @Override
     public void start(Stage stage) throws Exception {
-        //Parent root = FXMLLoader.load(getClass().getResource("/ui/Screens/Login.fxml"));
-        Parent root = new SignupBase();
+        Parent root = new SplashScreenBase(stage);
         Scene scene = new Scene(root,1343,858);
-        stage.setResizable(false);
-        //stage.setWidth(143);
-        //stage.setHeight(858);
         stage.setScene(scene);
         stage.show();
+        stage.setResizable(false);
     }
-
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         launch(args);
     }

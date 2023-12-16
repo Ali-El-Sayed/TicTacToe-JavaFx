@@ -1,5 +1,8 @@
 package ui.Screens;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -15,6 +18,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
+import  ui.components.GameButton;
+import ui.SceneController;
 import ui.components.GameButton;
 
 public class SignupBase extends StackPane {
@@ -40,7 +45,6 @@ public class SignupBase extends StackPane {
     protected final ImageView imageView0;
     protected boolean togglePass;
     public SignupBase() {
-
         togglePass=false;
         imageView = new ImageView();
         borderPane = new BorderPane();
@@ -53,6 +57,8 @@ public class SignupBase extends StackPane {
         label2 = new Label();
         email_tf = new TextField();
         label3 = new Label();
+        //Label label = new Label(s);
+        //getChildren().add(label);
         password_tf = new PasswordField();
         passwordrevealed_tf = new TextField();
         flowPane0 = new FlowPane();
@@ -100,8 +106,8 @@ public class SignupBase extends StackPane {
         flowPane.setMinHeight(700.0);
         flowPane.setMinWidth(400.0);
         flowPane.setOrientation(javafx.geometry.Orientation.VERTICAL);
-        flowPane.setPrefHeight(200.0);
-        flowPane.setPrefWidth(200.0);
+        flowPane.setPrefHeight(700.0);
+        flowPane.setPrefWidth(400.0);
         flowPane.setVgap(30.0);
 
         label0.setAlignment(javafx.geometry.Pos.TOP_LEFT);
@@ -161,17 +167,17 @@ public class SignupBase extends StackPane {
         password_tf.setMinWidth(0.0);
         password_tf.setPrefHeight(30.0);
         password_tf.setPrefWidth(509.0);
-        FlowPane.setMargin(password_tf, new Insets(-30.0, 0.0, 0.0, 0.0));
+        FlowPane.setMargin(password_tf, new Insets(-90.0, 0.0, 0.0,0.0));
+        FlowPane.setMargin(passwordrevealed_tf, new Insets(-30.0, 0.0,0.0, 0.0));
         password_tf.setFont(new Font("Berlin Sans FB Bold", 24.0));
         passwordrevealed_tf.setMaxWidth(650.0);
         passwordrevealed_tf.setMinHeight(60.0);
         passwordrevealed_tf.setMinWidth(0.0);
         passwordrevealed_tf.setPrefHeight(30.0);
         passwordrevealed_tf.setPrefWidth(509.0);
-        passwordrevealed_tf.setVisible(false);
-        FlowPane.setMargin(passwordrevealed_tf, new Insets(0.0, 0.0, -60.0, 0.0));
-        passwordrevealed_tf.toBack();
-        password_tf.toFront();
+        passwordrevealed_tf.setVisible(true);
+        
+        
         passwordrevealed_tf.setFont(new Font("Berlin Sans FB Bold", 24.0));
         BorderPane.setMargin(flowPane, new Insets(-70.0, 0.0, 0.0, 250.0));
         borderPane.setCenter(flowPane);
@@ -189,7 +195,7 @@ public class SignupBase extends StackPane {
         back_btn.setMnemonicParsing(false);
         back_btn.setPrefHeight(21.0);
         back_btn.setPrefWidth(58.0);
-        FlowPane.setMargin(back_btn, new Insets(0.0, -33.0, -30.0, 0.0));
+        FlowPane.setMargin(back_btn, new Insets(0.0, -1.0, -25.0, 0.0));
         back_btn.setCursor(Cursor.HAND);
         BorderPane.setMargin(flowPane0, new Insets(0.0));
         borderPane.setLeft(flowPane0);
@@ -218,7 +224,7 @@ public class SignupBase extends StackPane {
         passreveal_btn.setPrefHeight(1.0);
         passreveal_btn.setPrefWidth(1.0);
         passreveal_btn.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-        StackPane.setMargin(passreveal_btn, new Insets(0.0, -350.0, -550.0, 0.0));
+        StackPane.setMargin(passreveal_btn, new Insets(0.0, -350.0, -510.0, 0.0));
 
         imageView0.setFitHeight(35.0);
         imageView0.setFitWidth(50.0);
@@ -260,6 +266,28 @@ public class SignupBase extends StackPane {
                     password_tf.setVisible(true);
                     imageView0.setImage(new Image(getClass().getResource("/assets/closed.png").toExternalForm()));
                      
+                }
+            }
+        });
+        back_btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                SceneController sceneController = new SceneController();
+                try {
+                    sceneController.switchToLogInSignUp(event);
+                } catch (IOException ex) {
+                    Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        signup_btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                SceneController sceneController = new SceneController();
+                try {
+                    sceneController.switchToLogIn(event);
+                } catch (IOException ex) {
+                    Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });

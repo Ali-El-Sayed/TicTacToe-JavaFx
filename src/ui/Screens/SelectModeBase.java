@@ -18,30 +18,29 @@ import javafx.scene.layout.HBox;
 import static javafx.scene.layout.Region.USE_PREF_SIZE;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import  ui.components.GameButton;
 import ui.SceneController;
 import ui.components.GameButton;
 
-public class LoginsignupBase extends VBox {
+public class SelectModeBase extends VBox {
 
     protected final HBox hBox;
     protected final Label headerL;
     protected final HBox hBox0;
-    protected final Button signin_btn;
-    protected final Button signup_btn;
+    protected final Button offline_btn;
+    protected final Button online_btn;
     protected final HBox hBox1;
-    protected final Button btnBack;
+    protected final Button back_btn;
 
-    public LoginsignupBase() {
+    public SelectModeBase() {
 
         hBox = new HBox();
         headerL = new Label();
         hBox0 = new HBox();
-        signin_btn = new GameButton("SIGN IN", GameButton.Mode.NORMAL, () -> {
+        offline_btn = new GameButton("OFFLINE", GameButton.Mode.NORMAL, () -> {
         });
-        signup_btn = new GameButton("SIGN UP", GameButton.Mode.NORMAL, () -> {
+        online_btn = new GameButton("ONLINE", GameButton.Mode.NORMAL, () -> {
         });
-        btnBack = new GameButton(GameButton.Mode.BACK, () -> {
+        back_btn = new GameButton(GameButton.Mode.BACK, () -> {
         });
         hBox1 = new HBox();
         setAlignment(javafx.geometry.Pos.CENTER);
@@ -69,7 +68,7 @@ public class LoginsignupBase extends VBox {
         hBox.setPrefWidth(1345.0);
 
         headerL.setAlignment(javafx.geometry.Pos.CENTER);
-        headerL.setText("Offline Mode");
+        headerL.setText("Select Mode");
         headerL.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         headerL.setFont(new Font("Berlin Sans FB Bold", 150.0));
 
@@ -79,8 +78,8 @@ public class LoginsignupBase extends VBox {
         hBox0.setPrefWidth(1345.0);
         hBox0.setSpacing(100.0);
 
-        signin_btn.setLayoutX(66.0);
-        signin_btn.setLayoutY(10.0);
+        offline_btn.setLayoutX(66.0);
+        online_btn.setLayoutY(10.0);
 
         VBox.setVgrow(hBox1, javafx.scene.layout.Priority.ALWAYS);
         hBox1.setAlignment(javafx.geometry.Pos.BOTTOM_LEFT);
@@ -92,51 +91,40 @@ public class LoginsignupBase extends VBox {
 
         hBox.getChildren().add(headerL);
         getChildren().add(hBox);
-        hBox0.getChildren().add(signin_btn);
-        hBox0.getChildren().add(signup_btn);
+        hBox0.getChildren().add(offline_btn);
+        hBox0.getChildren().add(online_btn);
         getChildren().add(hBox0);
-        hBox1.getChildren().add(btnBack);
+        hBox1.getChildren().add(back_btn);
         getChildren().add(hBox1);
-         
-        signin_btn.setOnAction(new EventHandler<ActionEvent>() {
+        
+        offline_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 SceneController sceneController = new SceneController();
                 try {
-                    sceneController.switchToSelectLevelScreen(event);
+                    sceneController.switchToOfflineMode(event);
                 } catch (IOException ex) {
                     Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-        signup_btn.setOnAction(new EventHandler<ActionEvent>() {
+        online_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 SceneController sceneController = new SceneController();
                 try {
-                    sceneController.switchToSignUp(event);
+                    sceneController.switchToLogInSignUp(event);
                 } catch (IOException ex) {
                     Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-        signin_btn.setOnAction(new EventHandler<ActionEvent>() {
+        back_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 SceneController sceneController = new SceneController();
                 try {
-                    sceneController.switchToLogIn(event);
-                } catch (IOException ex) {
-                    Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        btnBack.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                SceneController sceneController = new SceneController();
-                try {
-                    sceneController.switchToSelectMode(event);
+                    sceneController.switchToSplashScreen(event);
                 } catch (IOException ex) {
                     Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
                 }
