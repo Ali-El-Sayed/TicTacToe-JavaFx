@@ -1,4 +1,4 @@
-package javafxtest;
+package ui.components;
 
 public interface OnClick {
 
