@@ -5,16 +5,13 @@
  */
 package ui;
 
-import java.awt.SplashScreen;
+
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import ui.Screens.LoginBase;
-import ui.Screens.LoginsignupBase;
-import ui.Screens.SignupBase;
-import ui.Screens.SplashScreenBase;
+import ui.Screens.*;
+import ui.Screens.GameBoardBase;
 
 public class TicTacToe extends Application {
     @Override
@@ -22,11 +19,12 @@ public class TicTacToe extends Application {
         Parent root = new SplashScreenBase(stage);
         Scene scene = new Scene(root,1343,858);
         stage.setScene(scene);
+        stage.setTitle("Tic Tac Toe Game");
         stage.show();
         stage.setResizable(false);
     }
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }

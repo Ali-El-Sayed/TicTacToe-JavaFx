@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="858.0" prefWidth="1343.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="858.0" fitWidth="1343.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../TicTacToe-JavaFx/src/assets/background.png" />
+         </image>
+      </ImageView>
+      <BorderPane prefHeight="200.0" prefWidth="200.0">
+         <bottom>
+            <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="back_btn" minHeight="50.0" minWidth="110.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="90.0">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <padding>
+                        <Insets right="150.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets left="200.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </bottom>
+         <center>
+            <VBox prefHeight="679.0" prefWidth="1343.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label prefHeight="78.0" prefWidth="1343.0" />
+                  <Label alignment="CENTER" prefHeight="115.0" prefWidth="1343.0" text="Welcome to our Tic Tac Toe Game" textFill="#234d20">
+                     <font>
+                        <Font name="Berlin Sans FB Bold" size="80.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="134.0" prefWidth="1343.0" text="V1.0 DEVELOPED BY: " textFill="#396f35">
+                     <font>
+                        <Font name="Berlin Sans FB" size="60.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="40.0" />
+                     </padding>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="78.0" prefWidth="1343.0" text="Ali El Sayed" textFill="#234d20">
+                     <font>
+                        <Font name="Berlin Sans FB Bold" size="55.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="115.0" prefWidth="1343.0" text="Mina Thabet " textFill="#234d20">
+                     <font>
+                        <Font name="Berlin Sans FB Bold" size="55.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="115.0" prefWidth="1343.0" text="Mohamed Hussein" textFill="#234d20">
+                     <font>
+                        <Font name="Berlin Sans FB Bold" size="55.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="115.0" prefWidth="1343.0" text="Israa Assem" textFill="#234d20">
+                     <font>
+                        <Font name="Berlin Sans FB Bold" size="55.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="80.0" prefWidth="1343.0" text="Salma Maher" textFill="#234d20">
+                     <font>
+                        <Font name="Berlin Sans FB Bold" size="55.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+         </center>
+      </BorderPane>
+   </children>
+</StackPane>

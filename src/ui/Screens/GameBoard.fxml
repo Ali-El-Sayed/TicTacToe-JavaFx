@@ -16,7 +16,7 @@
    <children>
       <ImageView fx:id="backGroundImage" fitHeight="858.0" fitWidth="1343.0" pickOnBounds="true">
          <image>
-            <Image url="@grid.png" />
+            <Image url="@../../assets/grid.png" />
          </image>
       </ImageView>
       <GridPane fx:id="gridPane">

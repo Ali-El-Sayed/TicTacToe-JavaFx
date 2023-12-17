@@ -6,98 +6,117 @@ import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import static javafx.scene.layout.Region.USE_PREF_SIZE;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import ui.SceneController;
 import ui.components.GameButton;
 
-public class SelectModeBase extends VBox {
+public class SelectModeBase extends StackPane {
 
+    protected final ImageView imageView;
+    protected final BorderPane borderPane;
     protected final HBox hBox;
-    protected final Label headerL;
+    protected final Button btnOfflineMode;
+    protected final Button btnOnlineMode;
+    protected final Text text;
     protected final HBox hBox0;
-    protected final Button offline_btn;
-    protected final Button online_btn;
-    protected final HBox hBox1;
-    protected final Button back_btn;
+    protected final Button btnBack;
 
     public SelectModeBase() {
 
+        imageView = new ImageView();
+        borderPane = new BorderPane();
         hBox = new HBox();
-        headerL = new Label();
+        btnOfflineMode = new GameButton("Offline", GameButton.Mode.NORMAL, () -> {
+
+            System.out.println("test btn");
+
+        }
+        );
+        btnOnlineMode = new GameButton("Online", GameButton.Mode.NORMAL,() -> {
+            System.out.println("Online");
+        });
+        text = new Text();
         hBox0 = new HBox();
-        offline_btn = new GameButton("OFFLINE", GameButton.Mode.NORMAL, () -> {
+        btnBack = new GameButton(GameButton.Mode.BACK, () -> {
+            System.out.println("Back");
         });
-        online_btn = new GameButton("ONLINE", GameButton.Mode.NORMAL, () -> {
-        });
-        back_btn = new GameButton(GameButton.Mode.BACK, () -> {
-        });
-        hBox1 = new HBox();
-        setAlignment(javafx.geometry.Pos.CENTER);
-        setFillWidth(false);
-        setMaxHeight(858);
-        setMaxWidth(1343);
+
+        setMaxHeight(USE_PREF_SIZE);
+        setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);
         setMinWidth(USE_PREF_SIZE);
-        setPrefHeight(858);
-        setPrefWidth(1343);
+        setPrefHeight(858.0);
+        setPrefWidth(1343.0);
 
-        Image img = new Image(getClass().getResourceAsStream("/assets/background.png"));
-        BackgroundImage backgroundImg = new BackgroundImage(img,
-                BackgroundRepeat.REPEAT,
-                BackgroundRepeat.REPEAT,
-                BackgroundPosition.CENTER,
-                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
-        Background bg = new Background(backgroundImg);
-        setBackground(bg);
+        imageView.setFitHeight(858.0);
+        imageView.setFitWidth(1343.0);
+        imageView.setPickOnBounds(true);
+        imageView.setPreserveRatio(true);
+        imageView.setImage(new Image(getClass().getResource("/assets/background.png").toExternalForm()));
 
-        VBox.setVgrow(hBox, javafx.scene.layout.Priority.ALWAYS);
-        hBox.setAccessibleRole(javafx.scene.AccessibleRole.BUTTON);
+        borderPane.setPrefHeight(200.0);
+        borderPane.setPrefWidth(200.0);
+
+        BorderPane.setAlignment(hBox, javafx.geometry.Pos.CENTER);
         hBox.setAlignment(javafx.geometry.Pos.CENTER);
         hBox.setPrefHeight(100.0);
-        hBox.setPrefWidth(1345.0);
+        hBox.setPrefWidth(200.0);
 
-        headerL.setAlignment(javafx.geometry.Pos.CENTER);
-        headerL.setText("Select Mode");
-        headerL.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-        headerL.setFont(new Font("Berlin Sans FB Bold", 150.0));
+        btnOfflineMode.setMinHeight(50.0);
+        btnOfflineMode.setMinWidth(110.0);
+        btnOfflineMode.setMnemonicParsing(false);
+        btnOfflineMode.setPrefHeight(31.0);
+        btnOfflineMode.setPrefWidth(90.0);
+        btnOfflineMode.setCursor(Cursor.HAND);
+        btnOfflineMode.setPadding(new Insets(0.0, 150.0, 0.0, 0.0));
+        HBox.setMargin(btnOfflineMode, new Insets(0.0, 250.0, 0.0, 0.0));
 
-        VBox.setVgrow(hBox0, javafx.scene.layout.Priority.SOMETIMES);
-        hBox0.setAlignment(javafx.geometry.Pos.CENTER);
+        btnOnlineMode.setMinHeight(50.0);
+        btnOnlineMode.setMinWidth(150.0);
+        btnOnlineMode.setMnemonicParsing(false);
+        btnOnlineMode.setPrefHeight(31.0);
+        btnOnlineMode.setPrefWidth(93.0);
+        btnOnlineMode.setCursor(Cursor.HAND);
+        borderPane.setCenter(hBox);
+
+        BorderPane.setAlignment(text, javafx.geometry.Pos.CENTER);
+        text.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
+        text.setStrokeWidth(0.0);
+        text.setText("Select Mode ");
+        text.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+        text.setWrappingWidth(1270.65576171875);
+        text.setFont(new Font("Berlin Sans FB Bold", 75.0));
+        BorderPane.setMargin(text, new Insets(50.0, 0.0, 0.0, 0.0));
+        borderPane.setTop(text);
+
+        BorderPane.setAlignment(hBox0, javafx.geometry.Pos.CENTER);
         hBox0.setPrefHeight(100.0);
-        hBox0.setPrefWidth(1345.0);
-        hBox0.setSpacing(100.0);
+        hBox0.setPrefWidth(200.0);
 
-        offline_btn.setLayoutX(66.0);
-        online_btn.setLayoutY(10.0);
+        btnBack.setMinHeight(50.0);
+        btnBack.setMinWidth(110.0);
+        btnBack.setMnemonicParsing(false);
+        btnBack.setPrefHeight(31.0);
+        btnBack.setPrefWidth(90.0);
+        btnBack.setCursor(Cursor.HAND);
+        btnBack.setPadding(new Insets(0.0, 150.0, 0.0, 0.0));
+        HBox.setMargin(btnBack, new Insets(0.0, 0.0, 0.0, 200.0));
+        borderPane.setBottom(hBox0);
 
-        VBox.setVgrow(hBox1, javafx.scene.layout.Priority.ALWAYS);
-        hBox1.setAlignment(javafx.geometry.Pos.BOTTOM_LEFT);
-        hBox1.setFillHeight(false);
-        hBox1.setPrefHeight(100.0);
-        hBox1.setPrefWidth(1300.0);
-
-        hBox1.setPadding(new Insets(0.0, 0.0, 20.0, 0.0));
-
-        hBox.getChildren().add(headerL);
-        getChildren().add(hBox);
-        hBox0.getChildren().add(offline_btn);
-        hBox0.getChildren().add(online_btn);
-        getChildren().add(hBox0);
-        hBox1.getChildren().add(back_btn);
-        getChildren().add(hBox1);
-        
-        offline_btn.setOnAction(new EventHandler<ActionEvent>() {
+        getChildren().add(imageView);
+        hBox.getChildren().add(btnOfflineMode);
+        hBox.getChildren().add(btnOnlineMode);
+        hBox0.getChildren().add(btnBack);
+        getChildren().add(borderPane);
+        btnOfflineMode.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 SceneController sceneController = new SceneController();
@@ -108,7 +127,7 @@ public class SelectModeBase extends VBox {
                 }
             }
         });
-        online_btn.setOnAction(new EventHandler<ActionEvent>() {
+        btnOnlineMode.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 SceneController sceneController = new SceneController();
@@ -119,7 +138,7 @@ public class SelectModeBase extends VBox {
                 }
             }
         });
-        back_btn.setOnAction(new EventHandler<ActionEvent>() {
+        btnBack.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 SceneController sceneController = new SceneController();
@@ -130,7 +149,6 @@ public class SelectModeBase extends VBox {
                 }
             }
         });
-        
-        
+
     }
 }
