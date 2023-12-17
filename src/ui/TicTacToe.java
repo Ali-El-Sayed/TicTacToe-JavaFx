@@ -14,10 +14,11 @@ import javafx.stage.Stage;
 import ui.Screens.GameBoardFXML;
 import ui.Screens.*;
 
+
 public class TicTacToe extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = new SignupBase();
+        Parent root = new SplashScreenBase(stage);
         Scene scene = new Scene(root,1343,858);
         stage.setScene(scene);
         stage.setTitle("Welcome to our Tic Tac Toe Game");
