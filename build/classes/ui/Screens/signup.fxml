@@ -127,13 +127,6 @@
          <StackPane.margin>
             <Insets bottom="178.0" right="-370.0" />
          </StackPane.margin>
-         <graphic>
-            <ImageView fitHeight="35.0" fitWidth="40.0" pickOnBounds="true">
-               <image>
-                  <Image url="@../../assets/eye.png" />
-               </image>
-            </ImageView>
-         </graphic>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>      

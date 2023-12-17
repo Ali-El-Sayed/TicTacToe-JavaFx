@@ -20,23 +20,14 @@ import ui.Screens.SplashScreenBase;
 
 
 public class TicTacToe extends Application {
-
     @Override
     public void start(Stage stage) throws Exception {
-
-        Parent root = new SelectModeBase();
-
-        Scene scene = new Scene(root, 1343, 858);
-        stage.setResizable(false);
-        //stage.setWidth(143);
-        //stage.setHeight(858);
+        Parent root = new SplashScreenBase(stage);
+        Scene scene = new Scene(root,1343,858);
         stage.setScene(scene);
         stage.show();
+        stage.setResizable(false);
     }
-
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         launch(args);
     }

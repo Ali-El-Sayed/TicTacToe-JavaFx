@@ -1,5 +1,10 @@
 package ui.Screens;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,7 +17,9 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafxtest.GameButton;
+import  ui.components.GameButton;
+import ui.SceneController;
+import ui.components.GameButton;
 
 public class OfflineModeScreen extends VBox {
 
@@ -29,17 +36,13 @@ public class OfflineModeScreen extends VBox {
         hBox = new HBox();
         headerL = new Label();
         hBox0 = new HBox();
-        btnVsComputer = new GameButton("Vs Computer", GameButton.Mode.NORMAL, () -> {
-            System.out.println("Vs Computer Clicked");
+        btnVsComputer = new GameButton("VS COMPUTER", GameButton.Mode.NORMAL, () -> {
         });
-        btnTwoPlayer = new GameButton("Two Players", GameButton.Mode.NORMAL, () -> {
-            System.out.println("Tow Players Clicked");
+        btnTwoPlayer = new GameButton("TWO PLAYERS", GameButton.Mode.NORMAL, () -> {
+        });
+        btnBack = new GameButton(GameButton.Mode.BACK, () -> {
         });
         hBox1 = new HBox();
-        btnBack = new GameButton(GameButton.Mode.BACK, () -> {
-            System.out.println("Back Clicked");
-        });
-
         setAlignment(javafx.geometry.Pos.CENTER);
         setFillWidth(false);
         setMaxHeight(858);
@@ -93,6 +96,36 @@ public class OfflineModeScreen extends VBox {
         getChildren().add(hBox0);
         hBox1.getChildren().add(btnBack);
         getChildren().add(hBox1);
-
+         
+        btnVsComputer.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                SceneController sceneController = new SceneController();
+                try {
+                    sceneController.switchToSelectLevelScreen(event);
+                } catch (IOException ex) {
+                    Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        btnTwoPlayer.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                
+            }
+        });
+        btnBack.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                SceneController sceneController = new SceneController();
+                try {
+                    sceneController.switchToSelectMode(event);
+                } catch (IOException ex) {
+                    Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        
+        
     }
 }
