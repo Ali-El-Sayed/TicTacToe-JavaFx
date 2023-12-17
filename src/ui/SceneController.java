@@ -73,7 +73,7 @@ public class SceneController {
         stage.show();
     }
     public void switchToAboutMode(ActionEvent event) throws IOException{
-        //root = new SelectModeBase();
+        
         root = new AboutUsBase();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);

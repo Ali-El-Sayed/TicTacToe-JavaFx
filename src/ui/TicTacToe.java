@@ -5,14 +5,13 @@
  */
 package ui;
 
-import java.awt.SplashScreen;
+
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ui.Screens.*;
-
+import ui.Screens.GameBoardBase;
 
 public class TicTacToe extends Application {
     @Override
@@ -27,5 +26,5 @@ public class TicTacToe extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }
