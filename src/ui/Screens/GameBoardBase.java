@@ -12,7 +12,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 
-public class GameBoardFXML extends StackPane {
+public class GameBoardBase extends StackPane {
 
     protected final ImageView backGroundImage;
     protected final GridPane gridPane;
@@ -40,7 +40,7 @@ public class GameBoardFXML extends StackPane {
     protected final Label Player2Symbol;
     protected final Label player2NameAndScore;
 
-    public GameBoardFXML() {
+    public GameBoardBase() {
 
         backGroundImage = new ImageView();
         gridPane = new GridPane();

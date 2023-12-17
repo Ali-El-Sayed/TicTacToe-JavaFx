@@ -134,14 +134,20 @@ public class SplashScreenBase extends StackPane {
                 Platform.exit();
             }
         });
-        about_btn.setOnAction(new EventHandler<ActionEvent>() {
+        about_btn.setOnAction(new EventHandler<ActionEvent>() { /////////
         @Override
-            public void handle(ActionEvent Event){
-                JFrame jframe = new JFrame();
+            public void handle(ActionEvent event){
+                /*JFrame jframe = new JFrame();
                 jframe.setMaximizedBounds(null);
                 jframe.setSize(600, 300);
                 String message = "TIC TAC TOE GAME V1.0 DEVELOPED BY INTAKE 44 NATIVE MOBILE DEVELOPMENT TRACK TEAM\nALI EL SAYED\nESRAA ASEM\nMINA THABET\nMOHAMED HUSSEIN\nSALMA MAHER";
-                JOptionPane.showMessageDialog(jframe, message,"ABOUT",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(jframe, message,"ABOUT",JOptionPane.INFORMATION_MESSAGE);*/
+                SceneController s = new SceneController();
+                try {
+                    s.switchToAboutMode(event);
+                } catch (IOException ex) {
+                    Logger.getLogger(SplashScreenBase.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }  
         });
     }

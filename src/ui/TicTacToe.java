@@ -11,7 +11,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import ui.Screens.GameBoardFXML;
 import ui.Screens.*;
 
 
@@ -21,7 +20,7 @@ public class TicTacToe extends Application {
         Parent root = new SplashScreenBase(stage);
         Scene scene = new Scene(root,1343,858);
         stage.setScene(scene);
-        stage.setTitle("Welcome to our Tic Tac Toe Game");
+        stage.setTitle("Tic Tac Toe Game");
         stage.show();
         stage.setResizable(false);
     }
