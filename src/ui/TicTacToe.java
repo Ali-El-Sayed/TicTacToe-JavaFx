@@ -5,24 +5,23 @@
  */
 package ui;
 
-import java.awt.SplashScreen;
+
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import ui.Screens.SelectModeBase;
+import ui.Screens.GameBoardFXML;
 
-import ui.Screens.LoginBase;
-import ui.Screens.LoginsignupBase;
-import ui.Screens.SignupBase;
-import ui.Screens.SplashScreenBase;
+
+
+
 
 
 public class TicTacToe extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = new SplashScreenBase(stage);
+        Parent root = new GameBoardFXML();
         Scene scene = new Scene(root,1343,858);
         stage.setScene(scene);
         stage.show();

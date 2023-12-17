@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import ui.components.GameButton;
 import ui.components.GameButton.Mode;
 
@@ -21,6 +22,8 @@ public  class AvailablePlayersScreen extends VBox {
 
     protected final Label topLabel;
     protected final ListView availablePlayers;
+
+
     
     public class Player {
         public String username;

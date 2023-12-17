@@ -106,6 +106,11 @@ public class GameButton extends Button {
         });
 
     }
+    public void setPrefSize(double prefWidth,double prefHeight){
+        
+        this.currBtn.setFitWidth(prefWidth); 
+        this.currBtn.setFitHeight(prefHeight);
+    }
 
     void changeButton() {
         if (this.mode != Mode.BACK) {
