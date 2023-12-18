@@ -1,2 +1,4 @@
 *.class
 *.text
+/build
+/dist

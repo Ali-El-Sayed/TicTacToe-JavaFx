@@ -38,7 +38,16 @@ public class LoginBase extends StackPane {
         flowPane0 = new FlowPane();
         back_btn = new GameButton("", GameButton.Mode.BACK, () -> {
         });
-        login_btn = new GameButton("Login", GameButton.Mode.NORMAL, () -> {
+        login_btn = new GameButton("Login", GameButton.Mode.NORMAL, () -> { });
+        login_btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    new SceneController().switchToAvailablePlayersScreen(event);
+                } catch (IOException ex) {
+                    System.out.println("error on navigate to AvailablePlayersScreen");
+                }
+            }
         });
         label0 = new Label();
         email_tf = new TextField();
