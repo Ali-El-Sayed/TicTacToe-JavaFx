@@ -16,7 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import ui.Screens.GameBoardFXML;
+import ui.Screens.GameBoardScreen;
 import ui.Screens.LoginBase;
 import ui.Screens.LoginsignupBase;
 import ui.Screens.SignupBase;

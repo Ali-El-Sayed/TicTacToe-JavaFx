@@ -1,30 +1,22 @@
 package ui.Screens;
 
-import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
-import static java.lang.Math.random;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.application.Platform;
+import java.util.HashMap;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import ui.TicTacToe;
 
-public class GameBoardFXML extends StackPane {
+public class GameBoardScreen extends StackPane {
 
     protected final ImageView backGroundImage;
     protected final GridPane gridPane;
@@ -51,17 +43,11 @@ public class GameBoardFXML extends StackPane {
     protected final HBox hBoxPlayer2;
     protected final Label Player2Symbol;
     protected final Label player2NameAndScore;
-    protected ArrayList<Button> buttonsArr;
-    //protected ArrayList<Button> SelectedButtons;
-    protected int  clickCount = 1;
-    protected int computerMove;
-    protected Thread th;
-    protected char [] selectedButtons;
-    protected int [][] winProbabilities;
-    protected int [] selectedButtonsIndices;
-    
-    public GameBoardFXML() {
-        //i = new int [2];
+    protected int[][] winProbabilities;
+    boolean isX = true;
+    HashMap<Integer, String> checkedBtns = new HashMap();
+
+    public GameBoardScreen() {
         backGroundImage = new ImageView();
         gridPane = new GridPane();
         columnConstraints = new ColumnConstraints();
@@ -87,26 +73,8 @@ public class GameBoardFXML extends StackPane {
         hBoxPlayer2 = new HBox();
         Player2Symbol = new Label();
         player2NameAndScore = new Label();
-        
-        char [] selectedButtons = {'-','-','-','-','-','-','-','-','-','-'};
-        int [][] winProbabilities = {{1,2,3},{4,5,6},{7,8,9},{1,4,7},{2,5,8},{3,6,9},{1,5,9},{3,5,7}};
-        int [] selectedButtonsIndices = new int[5];
-        buttonsArr = new ArrayList<>();
-        //SelectedButtons = new ArrayList<>();
-        buttonsArr.add(boardButton1);
-        buttonsArr.add(boardButton2);
-        buttonsArr.add(boardButton3);
-        buttonsArr.add(boardButton4);
-        buttonsArr.add(boardButton5);
-        buttonsArr.add(boardButton6);
-        buttonsArr.add(boardButton7);
-        buttonsArr.add(boardButton8);
-        buttonsArr.add(boardButton9);
-        
-        
-        
-        
-        
+
+        winProbabilities = new int[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {1, 4, 7}, {2, 5, 8}, {3, 6, 9}, {1, 5, 9}, {3, 5, 7}};
 
         setMaxHeight(858.0);
         setMaxWidth(1343.0);
@@ -324,15 +292,15 @@ public class GameBoardFXML extends StackPane {
         gridPane.getRowConstraints().add(rowConstraints1);
         gridPane.getRowConstraints().add(rowConstraints2);
         gridPane.getRowConstraints().add(rowConstraints3);
-        gridPane.getChildren().add(boardButton8);
-        gridPane.getChildren().add(boardButton9);
+        gridPane.getChildren().add(boardButton1);
+        gridPane.getChildren().add(boardButton2);
+        gridPane.getChildren().add(boardButton3);
+        gridPane.getChildren().add(boardButton4);
         gridPane.getChildren().add(boardButton5);
         gridPane.getChildren().add(boardButton6);
-        gridPane.getChildren().add(boardButton4);
-        gridPane.getChildren().add(boardButton1);
-        gridPane.getChildren().add(boardButton3);
-        gridPane.getChildren().add(boardButton2);
         gridPane.getChildren().add(boardButton7);
+        gridPane.getChildren().add(boardButton8);
+        gridPane.getChildren().add(boardButton9);
         hBoxPlayer1.getChildren().add(Player1Symbol);
         hBoxPlayer1.getChildren().add(Player1NameAndScore);
         gridPane.getChildren().add(hBoxPlayer1);
@@ -340,426 +308,57 @@ public class GameBoardFXML extends StackPane {
         hBoxPlayer2.getChildren().add(player2NameAndScore);
         gridPane.getChildren().add(hBoxPlayer2);
         getChildren().add(gridPane);
-        
-//        for(int i=clickCount; i <=5; i++){
-//        buttonsArr[i].setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//                if(clickCount%2==1)
-//                    boardButton1.setText("X");
-//                else
-//                    boardButton1.setText("O");
-//                clickCount++;
-//            }
-//        });
-//        }
-        //int [8][3] = {{1,2,3},{4,5,6},{7,8,9}};
-        //[][] = selectedButtons [1,5,6,4,2,3]
-        
-        
-        boardButton1.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(clickCount<6)
-                {
-                    boardButton1.setText("X");
-                    selectedButtons[0]= 'X';
-                    
-                    //SelectedButtons.add(boardButton1);
-                    buttonsArr.remove(boardButton1);
-                    clickCount++;
-                    new Thread(){
-                    public void run() {
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(GameBoardFXML.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        
-                        Platform.runLater(() -> {
-                            Random x = new Random();
-                            computerMove=x.nextInt(buttonsArr.size());
-                            buttonsArr.get(computerMove).setText("O");
-                            buttonsArr.remove(buttonsArr.get(computerMove));
-                        });
-                        
+
+        for (Node node : gridPane.getChildren()) {
+            if (node.getClass() == Button.class) {
+                Button btn = (Button) node;
+                btn.setOnAction((ActionEvent event) -> {
+                    handleTurn(event);
+                    Integer btn1 = gridPane.getChildren().indexOf(node);
+                    checkedBtns.put(btn1 + 1, isX ? "O" : "X");
+                    if (isWinner()) {
+                        handleGameOver(event);
                     }
-                    }.start();
-                }
+                });
             }
-        });
-        
-        boardButton2.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(clickCount<6)
-                {
-                    boardButton2.setText("X");
-                    selectedButtons[1]= 'X';
-                    if(   (selectedButtons[0]=='X'&&selectedButtons[1]=='X'&&selectedButtons[2]=='X')
-                       || (selectedButtons[3]=='X'&&selectedButtons[4]=='X'&&selectedButtons[5]=='X')
-                       || (selectedButtons[6]=='X'&&selectedButtons[7]=='X'&&selectedButtons[8]=='X')
-                       || (selectedButtons[0]=='X'&&selectedButtons[3]=='X'&&selectedButtons[6]=='X')     
-                       || (selectedButtons[1]=='X'&&selectedButtons[4]=='X'&&selectedButtons[7]=='X')
-                       || (selectedButtons[2]=='X'&&selectedButtons[5]=='X'&&selectedButtons[8]=='X') 
-                       || (selectedButtons[1]=='X'&&selectedButtons[4]=='X'&&selectedButtons[8]=='X')     
-                       || (selectedButtons[2]=='X'&&selectedButtons[4]=='X'&&selectedButtons[6]=='X')
-                      )
-                    {
-                        boardButton1.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                        boardButton2.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                        boardButton3.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                    }    
-                    buttonsArr.remove(boardButton2);
-                    clickCount++;
-                    new Thread(){
-                    public void run() {
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(GameBoardFXML.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        
-                        Platform.runLater(() -> {
-                            Random x = new Random();
-                            computerMove=x.nextInt(buttonsArr.size());
-                            buttonsArr.get(computerMove).setText("O");
-                            buttonsArr.remove(buttonsArr.get(computerMove));
-                        });
-                        
-                    }
-                    }.start();
-                }
+
+        }
+
+    }
+
+    private void handleTurn(ActionEvent event) {
+        Button btn = (Button) event.getTarget();
+        if (!btn.isDisable()) {
+            btn.setText(isX ? "X" : "O");
+            isX = !isX;
+            btn.setOnAction((e) -> {
+            });
+
+        }
+
+    }
+
+    private boolean isWinner() {
+        for (int[] winCase : winProbabilities) {
+            if (checkedBtns.getOrDefault(winCase[0], "A").equals(checkedBtns.getOrDefault(winCase[1], "B"))
+                    && checkedBtns.getOrDefault(winCase[0], "D").equals(checkedBtns.getOrDefault(winCase[2], "D"))) {
+                handleWinner(winCase);
+                return true;
             }
-        });
-        
-        boardButton3.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(clickCount<6)
-                {
-                    boardButton3.setText("X");
-                    selectedButtons[2]= 'X';
-                    if(   (selectedButtons[0]=='X'&&selectedButtons[1]=='X'&&selectedButtons[2]=='X')
-                       || (selectedButtons[3]=='X'&&selectedButtons[4]=='X'&&selectedButtons[5]=='X')
-                       || (selectedButtons[6]=='X'&&selectedButtons[7]=='X'&&selectedButtons[8]=='X')
-                       || (selectedButtons[0]=='X'&&selectedButtons[3]=='X'&&selectedButtons[6]=='X')     
-                       || (selectedButtons[1]=='X'&&selectedButtons[4]=='X'&&selectedButtons[7]=='X')
-                       || (selectedButtons[2]=='X'&&selectedButtons[5]=='X'&&selectedButtons[8]=='X') 
-                       || (selectedButtons[1]=='X'&&selectedButtons[4]=='X'&&selectedButtons[8]=='X')     
-                       || (selectedButtons[2]=='X'&&selectedButtons[4]=='X'&&selectedButtons[6]=='X')
-                      )
-                    {
-                        boardButton1.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                        boardButton2.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                        boardButton3.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                    }
-                    buttonsArr.remove(boardButton3);
-                    clickCount++;
-                    new Thread(){
-                    public void run() {
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(GameBoardFXML.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        
-                        Platform.runLater(() -> {
-                            Random x = new Random();
-                            computerMove=x.nextInt(buttonsArr.size());
-                            buttonsArr.get(computerMove).setText("O");
-                            buttonsArr.remove(buttonsArr.get(computerMove));
-                        });
-                        
-                    }
-                    }.start();
-                }
-            }
-        });
-        boardButton4.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(clickCount<6)
-                {
-                    boardButton4.setText("X");
-                    selectedButtons[3]= 'X';
-                    if(   (selectedButtons[0]=='X'&&selectedButtons[1]=='X'&&selectedButtons[2]=='X')
-                       || (selectedButtons[3]=='X'&&selectedButtons[4]=='X'&&selectedButtons[5]=='X')
-                       || (selectedButtons[6]=='X'&&selectedButtons[7]=='X'&&selectedButtons[8]=='X')
-                       || (selectedButtons[0]=='X'&&selectedButtons[3]=='X'&&selectedButtons[6]=='X')     
-                       || (selectedButtons[1]=='X'&&selectedButtons[4]=='X'&&selectedButtons[7]=='X')
-                       || (selectedButtons[2]=='X'&&selectedButtons[5]=='X'&&selectedButtons[8]=='X') 
-                       || (selectedButtons[1]=='X'&&selectedButtons[4]=='X'&&selectedButtons[8]=='X')     
-                       || (selectedButtons[2]=='X'&&selectedButtons[4]=='X'&&selectedButtons[6]=='X')
-                      )
-                    {
-                        boardButton1.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                        boardButton2.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                        boardButton3.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                    }
-                    buttonsArr.remove(boardButton4);
-                    clickCount++;
-                    new Thread(){
-                    public void run() {
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(GameBoardFXML.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        
-                        Platform.runLater(() -> {
-                            Random x = new Random();
-                            computerMove=x.nextInt(buttonsArr.size());
-                            buttonsArr.get(computerMove).setText("O");
-                            buttonsArr.remove(buttonsArr.get(computerMove));
-                        });
-                        
-                    }
-                    }.start();
-                }
-            }
-        });
-        boardButton5.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(clickCount<6)
-                {
-                    boardButton5.setText("X");
-                    selectedButtons[4]= 'X';
-                    buttonsArr.remove(boardButton5);
-                    clickCount++;
-                    if(   (selectedButtons[0]=='X'&&selectedButtons[1]=='X'&&selectedButtons[2]=='X')
-                       || (selectedButtons[3]=='X'&&selectedButtons[4]=='X'&&selectedButtons[5]=='X')
-                       || (selectedButtons[6]=='X'&&selectedButtons[7]=='X'&&selectedButtons[8]=='X')
-                       || (selectedButtons[0]=='X'&&selectedButtons[3]=='X'&&selectedButtons[6]=='X')     
-                       || (selectedButtons[1]=='X'&&selectedButtons[4]=='X'&&selectedButtons[7]=='X')
-                       || (selectedButtons[2]=='X'&&selectedButtons[5]=='X'&&selectedButtons[8]=='X') 
-                       || (selectedButtons[1]=='X'&&selectedButtons[4]=='X'&&selectedButtons[8]=='X')     
-                       || (selectedButtons[2]=='X'&&selectedButtons[4]=='X'&&selectedButtons[6]=='X')
-                      )
-                    {
-                        boardButton1.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                        boardButton2.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                        boardButton3.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                    }
-                    new Thread(){
-                    public void run() {
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(GameBoardFXML.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        
-                        Platform.runLater(() -> {
-                            Random x = new Random();
-                            computerMove=x.nextInt(buttonsArr.size());
-                            buttonsArr.get(computerMove).setText("O");
-                            buttonsArr.remove(buttonsArr.get(computerMove));
-                        });
-                        
-                    }
-                    }.start();
-                }
-            }
-        });
-        boardButton6.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(clickCount<6)
-                {
-                    boardButton6.setText("X");
-                    selectedButtons[5]= 'X';
-                    if(   (selectedButtons[0]=='X'&&selectedButtons[1]=='X'&&selectedButtons[2]=='X')
-                       || (selectedButtons[3]=='X'&&selectedButtons[4]=='X'&&selectedButtons[5]=='X')
-                       || (selectedButtons[6]=='X'&&selectedButtons[7]=='X'&&selectedButtons[8]=='X')
-                       || (selectedButtons[0]=='X'&&selectedButtons[3]=='X'&&selectedButtons[6]=='X')     
-                       || (selectedButtons[1]=='X'&&selectedButtons[4]=='X'&&selectedButtons[7]=='X')
-                       || (selectedButtons[2]=='X'&&selectedButtons[5]=='X'&&selectedButtons[8]=='X') 
-                       || (selectedButtons[1]=='X'&&selectedButtons[4]=='X'&&selectedButtons[8]=='X')     
-                       || (selectedButtons[2]=='X'&&selectedButtons[4]=='X'&&selectedButtons[6]=='X')
-                      )
-                    {
-                        boardButton1.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                        boardButton2.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                        boardButton3.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                    }
-                    buttonsArr.remove(boardButton6);
-                    clickCount++;
-                    new Thread(){
-                    public void run() {
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(GameBoardFXML.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        
-                        Platform.runLater(() -> {
-                            Random x = new Random();
-                            computerMove=x.nextInt(buttonsArr.size());
-                            buttonsArr.get(computerMove).setText("O");
-                            buttonsArr.remove(buttonsArr.get(computerMove));
-                        });
-                        
-                    }
-                    }.start();
-                }
-            }
-        });
-        boardButton7.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(clickCount<6)
-                {
-                    boardButton7.setText("X");
-                    selectedButtons[6]= 'X';
-                    if(   (selectedButtons[0]=='X'&&selectedButtons[1]=='X'&&selectedButtons[2]=='X')
-                       || (selectedButtons[3]=='X'&&selectedButtons[4]=='X'&&selectedButtons[5]=='X')
-                       || (selectedButtons[6]=='X'&&selectedButtons[7]=='X'&&selectedButtons[8]=='X')
-                       || (selectedButtons[0]=='X'&&selectedButtons[3]=='X'&&selectedButtons[6]=='X')     
-                       || (selectedButtons[1]=='X'&&selectedButtons[4]=='X'&&selectedButtons[7]=='X')
-                       || (selectedButtons[2]=='X'&&selectedButtons[5]=='X'&&selectedButtons[8]=='X') 
-                       || (selectedButtons[1]=='X'&&selectedButtons[4]=='X'&&selectedButtons[8]=='X')     
-                       || (selectedButtons[2]=='X'&&selectedButtons[4]=='X'&&selectedButtons[6]=='X')
-                      )
-                    {
-                        boardButton1.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                        boardButton2.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                        boardButton3.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                    }
-                    buttonsArr.remove(boardButton7);
-                    clickCount++;
-                    new Thread(){
-                    public void run() {
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(GameBoardFXML.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        
-                        Platform.runLater(() -> {
-                            Random x = new Random();
-                            computerMove=x.nextInt(buttonsArr.size());
-                            buttonsArr.get(computerMove).setText("O");
-                            buttonsArr.remove(buttonsArr.get(computerMove));
-                        });
-                    }
-                    }.start();
-                }
-            }
-        });
-        boardButton8.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(clickCount<6)
-                {
-                    boardButton8.setText("X");
-                    selectedButtons[7]= 'X';
-                    if(   (selectedButtons[0]=='X'&&selectedButtons[1]=='X'&&selectedButtons[2]=='X')
-                       || (selectedButtons[3]=='X'&&selectedButtons[4]=='X'&&selectedButtons[5]=='X')
-                       || (selectedButtons[6]=='X'&&selectedButtons[7]=='X'&&selectedButtons[8]=='X')
-                       || (selectedButtons[0]=='X'&&selectedButtons[3]=='X'&&selectedButtons[6]=='X')     
-                       || (selectedButtons[1]=='X'&&selectedButtons[4]=='X'&&selectedButtons[7]=='X')
-                       || (selectedButtons[2]=='X'&&selectedButtons[5]=='X'&&selectedButtons[8]=='X') 
-                       || (selectedButtons[1]=='X'&&selectedButtons[4]=='X'&&selectedButtons[8]=='X')     
-                       || (selectedButtons[2]=='X'&&selectedButtons[4]=='X'&&selectedButtons[6]=='X')
-                      )
-                    {
-                        boardButton1.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                        boardButton2.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                        boardButton3.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                    }
-                    buttonsArr.remove(boardButton8);
-                    clickCount++;
-                    new Thread(){
-                    public void run() {
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(GameBoardFXML.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        
-                        Platform.runLater(() -> {
-                            Random x = new Random();
-                            computerMove=x.nextInt(buttonsArr.size());
-                            buttonsArr.get(computerMove).setText("O");
-                            buttonsArr.remove(buttonsArr.get(computerMove));
-                        });
-                    }
-                    }.start();
-                }
-            }
-        });
-        boardButton9.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(clickCount<6)
-                {
-                    boardButton9.setText("X");
-                    selectedButtons[8]= 'X';
-                    if(   (selectedButtons[0]=='X'&&selectedButtons[1]=='X'&&selectedButtons[2]=='X')
-                       || (selectedButtons[3]=='X'&&selectedButtons[4]=='X'&&selectedButtons[5]=='X')
-                       || (selectedButtons[6]=='X'&&selectedButtons[7]=='X'&&selectedButtons[8]=='X')
-                       || (selectedButtons[0]=='X'&&selectedButtons[3]=='X'&&selectedButtons[6]=='X')     
-                       || (selectedButtons[1]=='X'&&selectedButtons[4]=='X'&&selectedButtons[7]=='X')
-                       || (selectedButtons[2]=='X'&&selectedButtons[5]=='X'&&selectedButtons[8]=='X') 
-                       || (selectedButtons[1]=='X'&&selectedButtons[4]=='X'&&selectedButtons[8]=='X')     
-                       || (selectedButtons[2]=='X'&&selectedButtons[4]=='X'&&selectedButtons[6]=='X')
-                      )
-                    {
-                        boardButton1.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                        boardButton2.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                        boardButton3.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                    }
-                    buttonsArr.remove(boardButton9);
-                    clickCount++;
-                    new Thread(){
-                    public void run() {
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(GameBoardFXML.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        
-                        Platform.runLater(() -> {
-                            Random x = new Random();
-                            computerMove=x.nextInt(buttonsArr.size());
-                            buttonsArr.get(computerMove).setText("O");
-                            buttonsArr.remove(buttonsArr.get(computerMove));
-                        });
-                    }
-                    }.start();
-                }
-            }
-        });
-       }
-//public void check(char xo){
-//                if(selectedButtons[0]=='X'&&selectedButtons[1]=='X'&&selectedButtons[2]=='X')
-//                    {        
-//                        boardButton1.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-//                        boardButton2.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-//                        boardButton3.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-//                    }
-//                        
-//                if(selectedButtons[3]=='X'&&selectedButtons[4]=='X'&&selectedButtons[5]=='X')
-//                    {        
-//                        boardButton4.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-//                        boardButton5.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-//                        boardButton6.setTextFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-//                    }
-//                if(selectedButtons[6]=='X'&&selectedButtons[7]=='X'&&selectedButtons[8]=='X')
-//                       || (selectedButtons[0]=='X'&&selectedButtons[3]=='X'&&selectedButtons[6]=='X')     
-//                       || (selectedButtons[1]=='X'&&selectedButtons[4]=='X'&&selectedButtons[7]=='X')
-//                       || (selectedButtons[2]=='X'&&selectedButtons[5]=='X'&&selectedButtons[8]=='X') 
-//                       || (selectedButtons[1]=='X'&&selectedButtons[4]=='X'&&selectedButtons[8]=='X')     
-//                       || (selectedButtons[2]=='X'&&selectedButtons[4]=='X'&&selectedButtons[6]=='X')
-//                      )
-//
-//}    
-}       
-//            scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event) {
-//                System.out.println((int)event.getX());
-//            }
-//        });
-    
+        }
+
+        return false;
+
+    }
+
+    private void handleGameOver(ActionEvent e) {
+
+    }
+
+    private void handleWinner(int[] winCase) {
+        for (int i : winCase) {
+            Button btn = (Button) gridPane.getChildren().get(i - 1);
+            btn.setTextFill(Color.WHITE);
+        }
+    }
+}
