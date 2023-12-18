@@ -34,13 +34,17 @@ public class OfflineModeScreen extends VBox {
         hBox = new HBox();
         headerL = new Label();
         hBox0 = new HBox();
-        btnVsComputer = new GameButton("VS COMPUTER", GameButton.Mode.NORMAL, () -> {
+        btnVsComputer = new GameButton("Vs Computer", GameButton.Mode.NORMAL, () -> {
+            System.out.println("Vs Computer Clicked");
         });
-        btnTwoPlayer = new GameButton("TWO PLAYERS", GameButton.Mode.NORMAL, () -> {
-        });
-        btnBack = new GameButton(GameButton.Mode.BACK, () -> {
+        btnTwoPlayer = new GameButton("Two Players", GameButton.Mode.NORMAL, () -> {
+            System.out.println("Tow Players Clicked");
         });
         hBox1 = new HBox();
+        btnBack = new GameButton(GameButton.Mode.BACK, () -> {
+            System.out.println("Back Clicked");
+        });
+
         setAlignment(javafx.geometry.Pos.CENTER);
         setFillWidth(false);
         setMaxHeight(858);

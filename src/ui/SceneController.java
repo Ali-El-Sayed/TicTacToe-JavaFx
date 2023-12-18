@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ui.Screens.AboutUsBase;
+import ui.Screens.AvailablePlayersScreen;
 import ui.Screens.GameBoardScreen;
 import ui.Screens.LoginBase;
 import ui.Screens.LoginsignupBase;
@@ -93,4 +94,13 @@ public class SceneController {
     stage.setScene(scene);
     stage.show();
   }
+  
+  public void switchToAvailablePlayersScreen(ActionEvent event) throws IOException {
+    root = new AvailablePlayersScreen();
+    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+    scene = new Scene(root);
+    stage.setScene(scene);
+    stage.show();
+  }
+
 }
