@@ -1,5 +1,6 @@
 package ui.Screens;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -24,19 +25,22 @@ public  class ListRow extends GridPane {
     protected final Button inviteLabel;
     protected final Label usernameLabel;
 
-    public ListRow() {
+    public ListRow(ImageView avatarImageView, Circle statusCircle, Label usernameLabel) {
+        
+     
     
         columnConstraints = new ColumnConstraints();
         columnConstraints0 = new ColumnConstraints();
         columnConstraints1 = new ColumnConstraints();
         columnConstraints2 = new ColumnConstraints();
         rowConstraints = new RowConstraints();
-        avatarLabel = new ImageView();
-        statusLabel = new Circle();
-        inviteLabel = new GameButton("INVITE",Mode.NORMAL,()->{});
-        inviteLabel.setPrefSize(150, 60);
+        this.avatarLabel = avatarImageView;
+        
+        this.statusLabel = statusCircle;
+        this.inviteLabel = new GameButton("INVITE",Mode.NORMAL,()->{});
+        inviteLabel.setPrefSize(130, 65);
         inviteLabel.setStyle("-fx-background-color: transparent;");
-        usernameLabel = new Label();
+        this.usernameLabel = usernameLabel; 
         
         
 
@@ -78,7 +82,7 @@ public  class ListRow extends GridPane {
         GridPane.setColumnIndex(statusLabel, 1);
         GridPane.setHalignment(statusLabel, javafx.geometry.HPos.CENTER);
         GridPane.setValignment(statusLabel, javafx.geometry.VPos.CENTER);
-        statusLabel.setFill(javafx.scene.paint.Color.DODGERBLUE);
+        statusLabel.setFill(statusLabel.getFill());
         statusLabel.setRadius(10.0);
         statusLabel.setStroke(javafx.scene.paint.Color.BLACK);
         statusLabel.setStrokeType(javafx.scene.shape.StrokeType.INSIDE);
@@ -92,8 +96,10 @@ public  class ListRow extends GridPane {
         GridPane.setColumnIndex(usernameLabel, 2);
         GridPane.setHalignment(usernameLabel, javafx.geometry.HPos.CENTER);
         GridPane.setValignment(usernameLabel, javafx.geometry.VPos.CENTER);
-        usernameLabel.setText("Label");
-        
+        usernameLabel.setText(usernameLabel.getText());
+        usernameLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;");
+        setMargin(inviteLabel, new Insets(0, 0, 0, 80));
+
 
         getColumnConstraints().add(columnConstraints);
         getColumnConstraints().add(columnConstraints0);
@@ -102,8 +108,8 @@ public  class ListRow extends GridPane {
         getRowConstraints().add(rowConstraints);
         getChildren().add(avatarLabel);
         getChildren().add(statusLabel);
-        getChildren().add(inviteLabel);
         getChildren().add(usernameLabel);
+        getChildren().add(inviteLabel);
         
         
 

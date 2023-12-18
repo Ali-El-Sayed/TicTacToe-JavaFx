@@ -69,12 +69,15 @@ public  class AvailablePlayersScreen extends VBox {
         availablePlayers.setPrefWidth(600.0);
         availablePlayers.setStyle("-fx-background-color: transparent; -fx-control-inner-background: transparent;");
         availablePlayers.setCellFactory(param -> new PlayerListCell());
+        
         Player player1 = new Player("John Doe", "/assets/cricket-player.png", true);
         Player player2 = new Player("salmamaher", "/assets/cricket-player.png", false);
         Player player3 = new Player("AhmedSamy", "/assets/cricket-player.png", true);
+        Player player4 = new Player("Mohammed55", "/assets/cricket-player.png", true);
+        Player player5 = new Player("rana44", "/assets/cricket-player.png", true);
 
 
-        availablePlayers.getItems().addAll(player1, player2, player3);
+        availablePlayers.getItems().addAll(player1, player2, player3,player4,player5);
         setAlignment(javafx.geometry.Pos.CENTER);
      
         getChildren().add(topLabel);
@@ -92,12 +95,12 @@ public  class AvailablePlayersScreen extends VBox {
                 setText(null);
                 setGraphic(null);
             } else {
-               // HBox playerGrid = createPlayerBox(player);
-                setGraphic(new ListRow());
+                ListRow playerGrid = createPlayerBox(player);
+                setGraphic(playerGrid);
             }
         }
 
-     /*   private HBox createPlayerBox(Player player) {
+       private ListRow createPlayerBox(Player player) {
             ImageView avatarImageView = new ImageView(new Image(getClass().getResourceAsStream(player.getAvatarPath())));
             avatarImageView.setFitWidth(50);
             avatarImageView.setFitHeight(50);
@@ -112,18 +115,12 @@ public  class AvailablePlayersScreen extends VBox {
             inviteButton.setOnAction(event -> {
                 System.out.println("Inviting " + player.getUsername());
             });
-            inviteButton.setStyle("-fx-background-color: transparent; -fx-min-width: 80px; -fx-min-height: 30px; -fx-max-width: 80px; -fx-max-height: 30px;");
-            HBox playerBox = new HBox(avatarImageView, statusCircle, usernameLabel, inviteButton);
-            
-            playerBox.setAlignment(Pos.CENTER);
-            playerBox.setSpacing(30);
-            playerBox.setBackground(Background.EMPTY);
- 
-            HBox.setMargin(inviteButton, new javafx.geometry.Insets(50, 10, 10, 10));
+            ListRow playerBox = new ListRow(avatarImageView, statusCircle, usernameLabel);
+
             
 
             return playerBox;
-        }*/
+        }
     }
 }
 
