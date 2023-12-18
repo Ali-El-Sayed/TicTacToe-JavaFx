@@ -38,13 +38,13 @@ public class SelectLevelScreen extends VBox {
         headerL = new Label();
         hBox0 = new HBox();
         btnEasy = new GameButton("EASY", GameButton.Mode.NORMAL, () -> {
-            System.out.println("Easy Clicked");
+            
         });
         btnIntermediate = new GameButton("MEDIUM", GameButton.Mode.NORMAL, () -> {
-            System.out.println("Intermdeiate Clicked");
+            
         });
         btnHard = new GameButton("HARD", GameButton.Mode.NORMAL, () -> {
-            System.out.println("Hard Clicked");
+           
         });
         hBox1 = new HBox();
         btnBack = new GameButton(GameButton.Mode.BACK, () -> {
@@ -114,6 +114,39 @@ public class SelectLevelScreen extends VBox {
                 SceneController sceneController = new SceneController();
                 try {
                     sceneController.switchToOfflineMode(event);
+                } catch (IOException ex) {
+                    Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        btnEasy.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                SceneController sceneController = new SceneController();
+                try {
+                    sceneController.switchToGameBoard(event);
+                } catch (IOException ex) {
+                    Logger.getLogger(SelectLevelScreen.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        btnIntermediate.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                SceneController sceneController = new SceneController();
+                try {
+                    sceneController.switchToGameBoard(event);
+                } catch (IOException ex) {
+                    Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        btnHard.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                SceneController sceneController = new SceneController();
+                try {
+                    sceneController.switchToGameBoard(event);
                 } catch (IOException ex) {
                     Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
                 }
