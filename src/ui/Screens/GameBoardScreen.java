@@ -16,11 +16,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-<<<<<<<< HEAD:src/ui/Screens/GameBoardBase.java
-public class GameBoardBase extends StackPane {
-========
 public class GameBoardScreen extends StackPane {
->>>>>>>> mina:src/ui/Screens/GameBoardScreen.java
 
     protected final ImageView backGroundImage;
     protected final GridPane gridPane;
@@ -51,14 +47,7 @@ public class GameBoardScreen extends StackPane {
     boolean isX = true;
     HashMap<Integer, String> checkedBtns = new HashMap();
 
-<<<<<<<< HEAD:src/ui/Screens/GameBoardBase.java
-    public GameBoardBase() {
-    
-        
-
-========
     public GameBoardScreen() {
->>>>>>>> mina:src/ui/Screens/GameBoardScreen.java
         backGroundImage = new ImageView();
         gridPane = new GridPane();
         columnConstraints = new ColumnConstraints();
@@ -258,11 +247,8 @@ public class GameBoardScreen extends StackPane {
         Player1Symbol.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
         Player1Symbol.setPrefHeight(92.0);
         Player1Symbol.setPrefWidth(98.0);
-<<<<<<<< HEAD:src/ui/Screens/GameBoardBase.java
         Player1Symbol.setText("X");
-========
-        Player1Symbol.setText("");
->>>>>>>> mina:src/ui/Screens/GameBoardScreen.java
+
         Player1Symbol.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
         Player1Symbol.setPadding(new Insets(0.0, 15.0, 0.0, 0.0));
         Player1Symbol.setFont(new Font("System Bold", 36.0));
@@ -285,11 +271,7 @@ public class GameBoardScreen extends StackPane {
         Player2Symbol.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
         Player2Symbol.setPrefHeight(92.0);
         Player2Symbol.setPrefWidth(129.0);
-<<<<<<<< HEAD:src/ui/Screens/GameBoardBase.java
         Player2Symbol.setText("O");
-========
-        Player2Symbol.setText("");
->>>>>>>> mina:src/ui/Screens/GameBoardScreen.java
         Player2Symbol.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
         Player2Symbol.setFont(new Font("Arial Rounded MT Bold", 42.0));
         Player2Symbol.setPadding(new Insets(0.0, 15.0, 0.0, 0.0));
@@ -301,9 +283,6 @@ public class GameBoardScreen extends StackPane {
         player2NameAndScore.setTextFill(javafx.scene.paint.Color.valueOf("#187135"));
         player2NameAndScore.setFont(new Font("Berlin Sans FB Bold", 50.0));
         player2NameAndScore.setPadding(new Insets(0.0, 0.0, 0.0, 20.0));
-        
-        
-        
 
         getChildren().add(backGroundImage);
         gridPane.getColumnConstraints().add(columnConstraints);
@@ -384,5 +363,4 @@ public class GameBoardScreen extends StackPane {
         }
     }
 
-   
 }
