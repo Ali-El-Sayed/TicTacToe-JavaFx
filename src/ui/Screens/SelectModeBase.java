@@ -1,10 +1,6 @@
 package ui.Screens;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
@@ -15,7 +11,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import ui.SceneController;
+import ui.TicTacToe;
+import ui.Screens.LoginBase;
 import ui.components.GameButton;
 
 public class SelectModeBase extends StackPane {
@@ -35,12 +32,10 @@ public class SelectModeBase extends StackPane {
         borderPane = new BorderPane();
         hBox = new HBox();
         btnOfflineMode = new GameButton("Offline", GameButton.Mode.NORMAL, () -> {
-
-            System.out.println("test btn");
-
-        }
-        );
-        btnOnlineMode = new GameButton("Online", GameButton.Mode.NORMAL,() -> {
+            System.out.println("Offline");
+        });
+        
+        btnOnlineMode = new GameButton("Online", GameButton.Mode.NORMAL, () -> {
             System.out.println("Online");
         });
         text = new Text();
@@ -48,6 +43,8 @@ public class SelectModeBase extends StackPane {
         btnBack = new GameButton(GameButton.Mode.BACK, () -> {
             System.out.println("Back");
         });
+        
+        
 
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
@@ -59,7 +56,7 @@ public class SelectModeBase extends StackPane {
         imageView.setFitHeight(858.0);
         imageView.setFitWidth(1343.0);
         imageView.setPickOnBounds(true);
-        imageView.setPreserveRatio(true);
+        imageView.setPreserveRatio(false);
         imageView.setImage(new Image(getClass().getResource("/assets/background.png").toExternalForm()));
 
         borderPane.setPrefHeight(200.0);
@@ -110,45 +107,14 @@ public class SelectModeBase extends StackPane {
         btnBack.setPadding(new Insets(0.0, 150.0, 0.0, 0.0));
         HBox.setMargin(btnBack, new Insets(0.0, 0.0, 0.0, 200.0));
         borderPane.setBottom(hBox0);
-
+        
+        
+        
         getChildren().add(imageView);
         hBox.getChildren().add(btnOfflineMode);
         hBox.getChildren().add(btnOnlineMode);
         hBox0.getChildren().add(btnBack);
         getChildren().add(borderPane);
-        btnOfflineMode.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                SceneController sceneController = new SceneController();
-                try {
-                    sceneController.switchToOfflineMode(event);
-                } catch (IOException ex) {
-                    Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        btnOnlineMode.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                SceneController sceneController = new SceneController();
-                try {
-                    sceneController.switchToLogInSignUp(event);
-                } catch (IOException ex) {
-                    Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        btnBack.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                SceneController sceneController = new SceneController();
-                try {
-                    sceneController.switchToSplashScreen(event);
-                } catch (IOException ex) {
-                    Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
 
     }
 }

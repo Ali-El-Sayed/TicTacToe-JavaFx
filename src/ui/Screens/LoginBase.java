@@ -1,10 +1,5 @@
 package ui.Screens;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
@@ -17,8 +12,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
-import  ui.components.GameButton;
-import ui.SceneController;
+import ui.components.GameButton;
+
 
 public class LoginBase extends StackPane {
 
@@ -43,7 +38,16 @@ public class LoginBase extends StackPane {
         flowPane0 = new FlowPane();
         back_btn = new GameButton("", GameButton.Mode.BACK, () -> {
         });
-        login_btn = new GameButton("Login", GameButton.Mode.NORMAL, () -> {
+        login_btn = new GameButton("Login", GameButton.Mode.NORMAL, () -> { });
+        login_btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    new SceneController().switchToAvailablePlayersScreen(event);
+                } catch (IOException ex) {
+                    System.out.println("error on navigate to AvailablePlayersScreen");
+                }
+            }
         });
         label0 = new Label();
         email_tf = new TextField();
@@ -64,13 +68,12 @@ public class LoginBase extends StackPane {
         imageView.setImage(new Image(getClass().getResource("/assets/background.png").toExternalForm()));
 
         BorderPane.setAlignment(label, javafx.geometry.Pos.CENTER);
-        label.setAlignment(javafx.geometry.Pos.TOP_CENTER);
-        label.setPrefHeight(203.0);
-        label.setPrefWidth(984.0);
-        label.setText("LET'S PLAY!");
-        BorderPane.setMargin(label, new Insets(120.0, 0.0, 0.0, 0.0));
-        label.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-        label.setFont(new Font("Berlin Sans FB Bold", 150.0));
+        label.setAlignment(javafx.geometry.Pos.TOP_LEFT);
+        label.setPrefHeight(218.0);
+        label.setPrefWidth(590.0);
+        label.setText("TIC TAC TOE!");
+        label.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
+        label.setFont(new Font("Berlin Sans FB Bold", 75.0));
         borderPane.setTop(label);
 
         BorderPane.setAlignment(flowPane, javafx.geometry.Pos.CENTER);
@@ -91,7 +94,7 @@ public class LoginBase extends StackPane {
         back_btn.setMnemonicParsing(false);
         back_btn.setPrefHeight(21.0);
         back_btn.setPrefWidth(58.0);
-        FlowPane.setMargin(back_btn, new Insets(0.0, 0.0, -230.0, 73.0));
+        FlowPane.setMargin(back_btn, new Insets(0.0, 0.0, -2.0, 90.0));
         back_btn.setCursor(Cursor.HAND);
         borderPane.setLeft(flowPane0);
 
@@ -101,7 +104,7 @@ public class LoginBase extends StackPane {
         login_btn.setMnemonicParsing(false);
         login_btn.setPrefHeight(31.0);
         login_btn.setPrefWidth(93.0);
-        BorderPane.setMargin(login_btn, new Insets(0.0, 0.0, 230.0, 0.0));
+        BorderPane.setMargin(login_btn, new Insets(-50.0, 0.0, 55.0, 0.0));
         login_btn.setCursor(Cursor.HAND);
         borderPane.setBottom(login_btn);
 
@@ -146,16 +149,5 @@ public class LoginBase extends StackPane {
         getChildren().add(password_tf);
         getChildren().add(label1);
 
-        back_btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                SceneController sceneController = new SceneController();
-                try {
-                    sceneController.switchToLogInSignUp(event);
-                } catch (IOException ex) {
-                    Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
     }
 }
