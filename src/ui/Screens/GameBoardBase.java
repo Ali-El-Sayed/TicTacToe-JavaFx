@@ -41,6 +41,8 @@ public class GameBoardBase extends StackPane {
     protected final Label player2NameAndScore;
 
     public GameBoardBase() {
+    
+        
 
         backGroundImage = new ImageView();
         gridPane = new GridPane();
@@ -239,7 +241,7 @@ public class GameBoardBase extends StackPane {
         Player1Symbol.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
         Player1Symbol.setPrefHeight(92.0);
         Player1Symbol.setPrefWidth(98.0);
-        Player1Symbol.setText("X ");
+        Player1Symbol.setText("X");
         Player1Symbol.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
         Player1Symbol.setPadding(new Insets(0.0, 15.0, 0.0, 0.0));
         Player1Symbol.setFont(new Font("System Bold", 36.0));
@@ -262,7 +264,7 @@ public class GameBoardBase extends StackPane {
         Player2Symbol.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
         Player2Symbol.setPrefHeight(92.0);
         Player2Symbol.setPrefWidth(129.0);
-        Player2Symbol.setText("O ");
+        Player2Symbol.setText("O");
         Player2Symbol.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
         Player2Symbol.setFont(new Font("Arial Rounded MT Bold", 42.0));
         Player2Symbol.setPadding(new Insets(0.0, 15.0, 0.0, 0.0));
@@ -274,6 +276,9 @@ public class GameBoardBase extends StackPane {
         player2NameAndScore.setTextFill(javafx.scene.paint.Color.valueOf("#187135"));
         player2NameAndScore.setFont(new Font("Berlin Sans FB Bold", 50.0));
         player2NameAndScore.setPadding(new Insets(0.0, 0.0, 0.0, 20.0));
+        
+        
+        
 
         getChildren().add(backGroundImage);
         gridPane.getColumnConstraints().add(columnConstraints);
@@ -302,4 +307,6 @@ public class GameBoardBase extends StackPane {
         getChildren().add(gridPane);
 
     }
+
+   
 }

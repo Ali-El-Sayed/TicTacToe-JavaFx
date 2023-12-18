@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.StackPane;
+import static javafx.scene.layout.StackPane.setMargin;
 
 public class GameButton extends Button {
 
@@ -110,6 +111,8 @@ public class GameButton extends Button {
         
         this.currBtn.setFitWidth(prefWidth); 
         this.currBtn.setFitHeight(prefHeight);
+        //setMargin(this.currBtn, new Insets(0, 0, 0, 4));
+       
     }
 
     void changeButton() {
