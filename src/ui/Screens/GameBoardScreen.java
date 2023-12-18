@@ -1,6 +1,9 @@
 package ui.Screens;
 
+import java.util.HashMap;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -10,9 +13,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-public class GameBoardFXML extends StackPane {
+public class GameBoardScreen extends StackPane {
 
     protected final ImageView backGroundImage;
     protected final GridPane gridPane;
@@ -39,9 +43,11 @@ public class GameBoardFXML extends StackPane {
     protected final HBox hBoxPlayer2;
     protected final Label Player2Symbol;
     protected final Label player2NameAndScore;
+    protected int[][] winProbabilities;
+    boolean isX = true;
+    HashMap<Integer, String> checkedBtns = new HashMap();
 
-    public GameBoardFXML() {
-
+    public GameBoardScreen() {
         backGroundImage = new ImageView();
         gridPane = new GridPane();
         columnConstraints = new ColumnConstraints();
@@ -67,6 +73,8 @@ public class GameBoardFXML extends StackPane {
         hBoxPlayer2 = new HBox();
         Player2Symbol = new Label();
         player2NameAndScore = new Label();
+
+        winProbabilities = new int[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {1, 4, 7}, {2, 5, 8}, {3, 6, 9}, {1, 5, 9}, {3, 5, 7}};
 
         setMaxHeight(858.0);
         setMaxWidth(1343.0);
@@ -128,7 +136,7 @@ public class GameBoardFXML extends StackPane {
         boardButton8.setPrefHeight(166.0);
         boardButton8.setPrefWidth(176.0);
         boardButton8.setStyle("-fx-background-color: transparent;");
-        boardButton8.setText("O");
+        boardButton8.setText("");
         boardButton8.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
         GridPane.setMargin(boardButton8, new Insets(0.0));
         boardButton8.setFont(new Font("Arial Rounded MT Bold", 110.0));
@@ -141,7 +149,7 @@ public class GameBoardFXML extends StackPane {
         boardButton9.setPrefHeight(166.0);
         boardButton9.setPrefWidth(176.0);
         boardButton9.setStyle("-fx-background-color: transparent;");
-        boardButton9.setText("O");
+        boardButton9.setText("");
         boardButton9.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
         GridPane.setMargin(boardButton9, new Insets(0.0));
         boardButton9.setFont(new Font("Arial Rounded MT Bold", 110.0));
@@ -154,7 +162,7 @@ public class GameBoardFXML extends StackPane {
         boardButton5.setPrefHeight(166.0);
         boardButton5.setPrefWidth(176.0);
         boardButton5.setStyle("-fx-background-color: transparent;");
-        boardButton5.setText("O");
+        boardButton5.setText("");
         boardButton5.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
         boardButton5.setFont(new Font("Arial Rounded MT Bold", 110.0));
 
@@ -166,7 +174,7 @@ public class GameBoardFXML extends StackPane {
         boardButton6.setPrefHeight(166.0);
         boardButton6.setPrefWidth(176.0);
         boardButton6.setStyle("-fx-background-color: transparent;");
-        boardButton6.setText("X");
+        boardButton6.setText("");
         boardButton6.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
         GridPane.setMargin(boardButton6, new Insets(0.0));
         boardButton6.setFont(new Font("Arial Rounded MT Bold", 110.0));
@@ -177,7 +185,7 @@ public class GameBoardFXML extends StackPane {
         boardButton4.setPrefHeight(166.0);
         boardButton4.setPrefWidth(176.0);
         boardButton4.setStyle("-fx-background-color: transparent;");
-        boardButton4.setText("O");
+        boardButton4.setText("");
         boardButton4.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
         GridPane.setMargin(boardButton4, new Insets(0.0));
         boardButton4.setFont(new Font("Arial Rounded MT Bold", 110.0));
@@ -189,7 +197,7 @@ public class GameBoardFXML extends StackPane {
         boardButton1.setPrefHeight(166.0);
         boardButton1.setPrefWidth(176.0);
         boardButton1.setStyle("-fx-background-color: transparent;");
-        boardButton1.setText("X");
+        boardButton1.setText("");
         boardButton1.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
         GridPane.setMargin(boardButton1, new Insets(0.0));
         boardButton1.setFont(new Font("Arial Rounded MT Bold", 110.0));
@@ -202,7 +210,7 @@ public class GameBoardFXML extends StackPane {
         boardButton3.setPrefHeight(166.0);
         boardButton3.setPrefWidth(176.0);
         boardButton3.setStyle("-fx-background-color: transparent;");
-        boardButton3.setText("O");
+        boardButton3.setText("");
         boardButton3.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
         GridPane.setMargin(boardButton3, new Insets(0.0));
         boardButton3.setFont(new Font("Arial Rounded MT Bold", 110.0));
@@ -215,7 +223,7 @@ public class GameBoardFXML extends StackPane {
         boardButton2.setPrefHeight(166.0);
         boardButton2.setPrefWidth(176.0);
         boardButton2.setStyle("-fx-background-color: transparent;");
-        boardButton2.setText("X");
+        boardButton2.setText("");
         boardButton2.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
         GridPane.setMargin(boardButton2, new Insets(0.0));
         boardButton2.setFont(new Font("Arial Rounded MT Bold", 110.0));
@@ -227,7 +235,7 @@ public class GameBoardFXML extends StackPane {
         boardButton7.setPrefHeight(166.0);
         boardButton7.setPrefWidth(176.0);
         boardButton7.setStyle("-fx-background-color: transparent;");
-        boardButton7.setText("X");
+        boardButton7.setText("");
         boardButton7.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
         boardButton7.setFont(new Font("Arial Rounded MT Bold", 110.0));
 
@@ -239,7 +247,8 @@ public class GameBoardFXML extends StackPane {
         Player1Symbol.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
         Player1Symbol.setPrefHeight(92.0);
         Player1Symbol.setPrefWidth(98.0);
-        Player1Symbol.setText("X ");
+        Player1Symbol.setText("X");
+
         Player1Symbol.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
         Player1Symbol.setPadding(new Insets(0.0, 15.0, 0.0, 0.0));
         Player1Symbol.setFont(new Font("System Bold", 36.0));
@@ -248,7 +257,7 @@ public class GameBoardFXML extends StackPane {
         Player1NameAndScore.setPrefHeight(92.0);
         Player1NameAndScore.setPrefWidth(358.0);
         Player1NameAndScore.setStyle("-fx-background-color: #68C8A7; -fx-background-radius: 25px;");
-        Player1NameAndScore.setText("Nourhan: 5");
+        Player1NameAndScore.setText("Nourhan: 0");
         Player1NameAndScore.setTextFill(javafx.scene.paint.Color.valueOf("#187135"));
         Player1NameAndScore.setFont(new Font("Berlin Sans FB Bold", 50.0));
         Player1NameAndScore.setPadding(new Insets(0.0, 0.0, 0.0, 20.0));
@@ -262,7 +271,7 @@ public class GameBoardFXML extends StackPane {
         Player2Symbol.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
         Player2Symbol.setPrefHeight(92.0);
         Player2Symbol.setPrefWidth(129.0);
-        Player2Symbol.setText("O ");
+        Player2Symbol.setText("O");
         Player2Symbol.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
         Player2Symbol.setFont(new Font("Arial Rounded MT Bold", 42.0));
         Player2Symbol.setPadding(new Insets(0.0, 15.0, 0.0, 0.0));
@@ -270,7 +279,7 @@ public class GameBoardFXML extends StackPane {
         player2NameAndScore.setPrefHeight(92.0);
         player2NameAndScore.setPrefWidth(344.0);
         player2NameAndScore.setStyle("-fx-background-color: #68C8A7; -fx-background-radius: 25px;");
-        player2NameAndScore.setText("Israa : 3");
+        player2NameAndScore.setText("Israa : 0");
         player2NameAndScore.setTextFill(javafx.scene.paint.Color.valueOf("#187135"));
         player2NameAndScore.setFont(new Font("Berlin Sans FB Bold", 50.0));
         player2NameAndScore.setPadding(new Insets(0.0, 0.0, 0.0, 20.0));
@@ -284,15 +293,15 @@ public class GameBoardFXML extends StackPane {
         gridPane.getRowConstraints().add(rowConstraints1);
         gridPane.getRowConstraints().add(rowConstraints2);
         gridPane.getRowConstraints().add(rowConstraints3);
-        gridPane.getChildren().add(boardButton8);
-        gridPane.getChildren().add(boardButton9);
+        gridPane.getChildren().add(boardButton1);
+        gridPane.getChildren().add(boardButton2);
+        gridPane.getChildren().add(boardButton3);
+        gridPane.getChildren().add(boardButton4);
         gridPane.getChildren().add(boardButton5);
         gridPane.getChildren().add(boardButton6);
-        gridPane.getChildren().add(boardButton4);
-        gridPane.getChildren().add(boardButton1);
-        gridPane.getChildren().add(boardButton3);
-        gridPane.getChildren().add(boardButton2);
         gridPane.getChildren().add(boardButton7);
+        gridPane.getChildren().add(boardButton8);
+        gridPane.getChildren().add(boardButton9);
         hBoxPlayer1.getChildren().add(Player1Symbol);
         hBoxPlayer1.getChildren().add(Player1NameAndScore);
         gridPane.getChildren().add(hBoxPlayer1);
@@ -301,5 +310,57 @@ public class GameBoardFXML extends StackPane {
         gridPane.getChildren().add(hBoxPlayer2);
         getChildren().add(gridPane);
 
+        for (Node node : gridPane.getChildren()) {
+            if (node.getClass() == Button.class) {
+                Button btn = (Button) node;
+                btn.setOnAction((ActionEvent event) -> {
+                    handleTurn(event);
+                    Integer btn1 = gridPane.getChildren().indexOf(node);
+                    checkedBtns.put(btn1 + 1, isX ? "O" : "X");
+                    if (isWinner()) {
+                        handleGameOver(event);
+                    }
+                });
+            }
+
+        }
+
     }
+
+    private void handleTurn(ActionEvent event) {
+        Button btn = (Button) event.getTarget();
+        if (!btn.isDisable()) {
+            btn.setText(isX ? "X" : "O");
+            isX = !isX;
+            btn.setOnAction((e) -> {
+            });
+
+        }
+
+    }
+
+    private boolean isWinner() {
+        for (int[] winCase : winProbabilities) {
+            if (checkedBtns.getOrDefault(winCase[0], "A").equals(checkedBtns.getOrDefault(winCase[1], "B"))
+                    && checkedBtns.getOrDefault(winCase[0], "D").equals(checkedBtns.getOrDefault(winCase[2], "D"))) {
+                handleWinner(winCase);
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
+    private void handleGameOver(ActionEvent e) {
+
+    }
+
+    private void handleWinner(int[] winCase) {
+        for (int i : winCase) {
+            Button btn = (Button) gridPane.getChildren().get(i - 1);
+            btn.setTextFill(Color.WHITE);
+        }
+    }
+
 }
