@@ -1,5 +1,10 @@
 package ui.Screens;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
@@ -12,6 +17,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
+import ui.SceneController;
 import ui.components.GameButton;
 
 
@@ -36,7 +42,18 @@ public class LoginBase extends StackPane {
         label = new Label();
         flowPane = new FlowPane();
         flowPane0 = new FlowPane();
-        back_btn = new GameButton("", GameButton.Mode.BACK, () -> {
+        back_btn = new GameButton("", GameButton.Mode.BACK, () -> {});
+        back_btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                    
+                try {
+                    new SceneController().switchToLogInSignUp(event);
+                } catch (IOException ex) {
+                    Logger.getLogger(SplashScreenBase.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
         });
         login_btn = new GameButton("Login", GameButton.Mode.NORMAL, () -> { });
         login_btn.setOnAction(new EventHandler<ActionEvent>() {

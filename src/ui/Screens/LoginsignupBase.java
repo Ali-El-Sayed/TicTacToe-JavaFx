@@ -1,5 +1,10 @@
 package ui.Screens;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
@@ -10,6 +15,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
+import ui.SceneController;
 import ui.components.GameButton;
 
 public class LoginsignupBase extends StackPane {
@@ -28,13 +34,43 @@ public class LoginsignupBase extends StackPane {
         imageView = new ImageView();
         borderPane = new BorderPane();
         flowPane = new FlowPane();
-        signin_btn = new GameButton("Sign in", GameButton.Mode.NORMAL, () -> {
+        signin_btn = new GameButton("Sign in", GameButton.Mode.NORMAL, () -> {});
+        signin_btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                    
+                try {
+                    new SceneController().switchToLogIn(event);
+                } catch (IOException ex) {
+                    Logger.getLogger(SplashScreenBase.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
         });
         signup_btn = new GameButton("Sign up", GameButton.Mode.NORMAL, () -> {
         });
+        signup_btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                    
+                try {
+                    new SceneController().switchToSignUp(event);
+                } catch (IOException ex) {
+                    Logger.getLogger(SplashScreenBase.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        });
         label = new Label();
         flowPane0 = new FlowPane();
-        back_btn = new GameButton("", GameButton.Mode.BACK, () -> {
+        back_btn = new GameButton("", GameButton.Mode.BACK, () -> {});
+        back_btn.setOnAction((ActionEvent event) -> {
+            SceneController sceneController = new SceneController();
+            try {
+                sceneController.switchToSelectMode(event);
+            } catch (IOException ex) {
+                Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
 
         setMaxHeight(USE_PREF_SIZE);

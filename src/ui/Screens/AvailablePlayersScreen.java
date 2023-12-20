@@ -73,11 +73,12 @@ public  class AvailablePlayersScreen extends VBox {
         Player player1 = new Player("John Doe", "/assets/cricket-player.png", true);
         Player player2 = new Player("salmamaher", "/assets/cricket-player.png", false);
         Player player3 = new Player("AhmedSamy", "/assets/cricket-player.png", true);
-        Player player4 = new Player("Mohammed55", "/assets/cricket-player.png", true);
-        Player player5 = new Player("rana44", "/assets/cricket-player.png", true);
+        Player player4 = new Player("Mohammed55", "/assets/cricket-player.png", false);
+        Player player5 = new Player("Mohammed55", "/assets/cricket-player.png", false);
+        Player player6 = new Player("rana44", "/assets/cricket-player.png", true);
 
 
-        availablePlayers.getItems().addAll(player1, player2, player3,player4,player5);
+        availablePlayers.getItems().addAll(player1, player2, player3,player4,player5,player6);
         setAlignment(javafx.geometry.Pos.CENTER);
      
         getChildren().add(topLabel);
