@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -34,17 +35,37 @@ public class OfflineModeScreen extends VBox {
         hBox = new HBox();
         headerL = new Label();
         hBox0 = new HBox();
-        btnVsComputer = new GameButton("Vs Computer", GameButton.Mode.NORMAL, () -> {
-            System.out.println("Vs Computer Clicked");
+        btnVsComputer = new GameButton("Vs Computer", GameButton.Mode.NORMAL, () -> {});
+        btnVsComputer.setOnAction((ActionEvent event) -> {
+            SceneController sceneController = new SceneController();
+            try {
+                sceneController.switchToSelectLevelScreen(event);
+            } catch (IOException ex) {
+                Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
-        btnTwoPlayer = new GameButton("Two Players", GameButton.Mode.NORMAL, () -> {
-            System.out.println("Tow Players Clicked");
+        btnTwoPlayer = new GameButton("Two Players", GameButton.Mode.NORMAL, () -> {});
+        btnTwoPlayer.setOnAction((ActionEvent event) -> {
+            SceneController sceneController = new SceneController();
+            try {
+                sceneController.switchToGameBoard(event);
+            } catch (IOException ex) {
+                Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
         hBox1 = new HBox();
-        btnBack = new GameButton(GameButton.Mode.BACK, () -> {
-            System.out.println("Back Clicked");
+        btnBack = new GameButton(GameButton.Mode.BACK, () -> {});
+        btnBack.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    new SceneController().switchToSelectMode(event);
+                } catch (IOException ex) {
+                    Logger.getLogger(SignupBase.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         });
-
+        
         setAlignment(javafx.geometry.Pos.CENTER);
         setFillWidth(false);
         setMaxHeight(858);
@@ -98,27 +119,5 @@ public class OfflineModeScreen extends VBox {
         getChildren().add(hBox0);
         hBox1.getChildren().add(btnBack);
         getChildren().add(hBox1);
-
-        btnVsComputer.setOnAction((ActionEvent event) -> {
-        });
-
-        btnTwoPlayer.setOnAction((ActionEvent event) -> {
-            SceneController sceneController = new SceneController();
-            try {
-                sceneController.switchToGameBoard(event);
-            } catch (IOException ex) {
-                Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-
-        btnBack.setOnAction((ActionEvent event) -> {
-            SceneController sceneController = new SceneController();
-            try {
-                sceneController.switchToSelectMode(event);
-            } catch (IOException ex) {
-                Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-
     }
 }

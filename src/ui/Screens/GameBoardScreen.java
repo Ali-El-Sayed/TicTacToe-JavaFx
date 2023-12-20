@@ -1,10 +1,16 @@
 package ui.Screens;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,11 +21,12 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import ui.SceneController;
 
 public class GameBoardScreen extends StackPane {
 
     protected final ImageView backGroundImage;
-    protected final GridPane gridPane;
+    public final GridPane gridPane;
     protected final ColumnConstraints columnConstraints;
     protected final ColumnConstraints columnConstraints0;
     protected final ColumnConstraints columnConstraints1;
@@ -257,7 +264,7 @@ public class GameBoardScreen extends StackPane {
         Player1NameAndScore.setPrefHeight(92.0);
         Player1NameAndScore.setPrefWidth(358.0);
         Player1NameAndScore.setStyle("-fx-background-color: #68C8A7; -fx-background-radius: 25px;");
-        Player1NameAndScore.setText("Nourhan: 0");
+        Player1NameAndScore.setText("Player 1: 0");
         Player1NameAndScore.setTextFill(javafx.scene.paint.Color.valueOf("#187135"));
         Player1NameAndScore.setFont(new Font("Berlin Sans FB Bold", 50.0));
         Player1NameAndScore.setPadding(new Insets(0.0, 0.0, 0.0, 20.0));
@@ -279,7 +286,7 @@ public class GameBoardScreen extends StackPane {
         player2NameAndScore.setPrefHeight(92.0);
         player2NameAndScore.setPrefWidth(344.0);
         player2NameAndScore.setStyle("-fx-background-color: #68C8A7; -fx-background-radius: 25px;");
-        player2NameAndScore.setText("Israa : 0");
+        player2NameAndScore.setText("PC : 0");
         player2NameAndScore.setTextFill(javafx.scene.paint.Color.valueOf("#187135"));
         player2NameAndScore.setFont(new Font("Berlin Sans FB Bold", 50.0));
         player2NameAndScore.setPadding(new Insets(0.0, 0.0, 0.0, 20.0));
@@ -314,6 +321,7 @@ public class GameBoardScreen extends StackPane {
             if (node.getClass() == Button.class) {
                 Button btn = (Button) node;
                 btn.setOnAction((ActionEvent event) -> {
+                    
                     handleTurn(event);
                     Integer btn1 = gridPane.getChildren().indexOf(node);
                     checkedBtns.put(btn1 + 1, isX ? "O" : "X");
@@ -329,13 +337,12 @@ public class GameBoardScreen extends StackPane {
 
     private void handleTurn(ActionEvent event) {
         Button btn = (Button) event.getTarget();
-        if (!btn.isDisable()) {
+      
             btn.setText(isX ? "X" : "O");
             isX = !isX;
             btn.setOnAction((e) -> {
+                
             });
-
-        }
 
     }
 
@@ -353,14 +360,22 @@ public class GameBoardScreen extends StackPane {
     }
 
     private void handleGameOver(ActionEvent e) {
-
+        
+            try {
+                new SceneController().switchToVideoScreen(e);
+            } catch (IOException ex) {
+                Logger.getLogger(GameBoardScreen.class.getName()).log(Level.SEVERE, null, ex);
+          
+            }
     }
 
     private void handleWinner(int[] winCase) {
         for (int i : winCase) {
             Button btn = (Button) gridPane.getChildren().get(i - 1);
             btn.setTextFill(Color.WHITE);
+
         }
+
     }
 
 }
