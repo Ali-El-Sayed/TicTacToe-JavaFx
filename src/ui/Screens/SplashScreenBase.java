@@ -1,5 +1,11 @@
 package ui.Screens;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
@@ -10,6 +16,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
+import ui.SceneController;
 import ui.components.GameButton;
 
 public class SplashScreenBase extends StackPane {
@@ -30,14 +37,39 @@ public class SplashScreenBase extends StackPane {
         borderPane = new BorderPane();
         label = new Label();
         flowPane = new FlowPane();
-        play_btn = new GameButton("Play", GameButton.Mode.NORMAL, () -> {
+        play_btn = new GameButton("Play", GameButton.Mode.NORMAL, () -> {});
+        play_btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                    
+                try {
+                    new SceneController().switchToSelectMode(event);
+                } catch (IOException ex) {
+                    Logger.getLogger(SplashScreenBase.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
         });
         imageView0 = new ImageView();
         about_btn = new GameButton("About", GameButton.Mode.NORMAL, () -> {
         });
+        about_btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                    
+                try {
+                    new SceneController().switchToAboutMode(event);
+                } catch (IOException ex) {
+                    Logger.getLogger(SplashScreenBase.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        });
         imageView1 = new ImageView();
         exit_btn = new GameButton("Exit", GameButton.Mode.NORMAL, () -> {
+            Platform.exit();
         });
+        
 
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);

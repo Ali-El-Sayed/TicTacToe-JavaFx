@@ -1,5 +1,9 @@
 package ui.Screens;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,6 +16,7 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import ui.SceneController;
 import ui.components.GameButton;
 
 public class SelectLevelScreen extends VBox {
@@ -30,18 +35,18 @@ public class SelectLevelScreen extends VBox {
         hBox = new HBox();
         headerL = new Label();
         hBox0 = new HBox();
-        btnEasy = new GameButton("Easy", GameButton.Mode.NORMAL, () -> {
-            System.out.println("Easy Clicked");
-        });
-        btnIntermediate = new GameButton("Intermediate", GameButton.Mode.NORMAL, () -> {
-            System.out.println("Intermdeiate Clicked");
-        });
-        btnHard = new GameButton("Hard", GameButton.Mode.NORMAL, () -> {
-            System.out.println("Hard Clicked");
-        });
+        btnEasy = new GameButton("Easy", GameButton.Mode.NORMAL, () -> { });
+        btnIntermediate = new GameButton("Intermediate", GameButton.Mode.NORMAL, () -> {});
+        btnHard = new GameButton("Hard", GameButton.Mode.NORMAL, () -> {});
         hBox1 = new HBox();
-        btnBack = new GameButton(GameButton.Mode.BACK, () -> {
-            System.out.println("Back Clicked");
+        btnBack = new GameButton(GameButton.Mode.BACK, () -> {});
+        btnBack.setOnAction((ActionEvent event) -> {
+            SceneController sceneController = new SceneController();
+            try {
+                sceneController.switchToOfflineMode(event);
+            } catch (IOException ex) {
+                Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
 
         Image img = new Image(getClass().getResourceAsStream("/assets/background.png"));

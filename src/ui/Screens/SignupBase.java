@@ -1,5 +1,8 @@
 package ui.Screens;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -15,6 +18,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
+import ui.SceneController;
 import ui.components.GameButton;
 
 public class SignupBase extends StackPane {
@@ -56,10 +60,29 @@ public class SignupBase extends StackPane {
         password_tf = new PasswordField();
         passwordrevealed_tf = new TextField();
         flowPane0 = new FlowPane();
-        back_btn = new GameButton("", GameButton.Mode.BACK, () -> {
+        back_btn = new GameButton("", GameButton.Mode.BACK, () -> {});
+        back_btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    new SceneController().switchToLogInSignUp(event);
+                } catch (IOException ex) {
+                    Logger.getLogger(SignupBase.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         });
         flowPane1 = new FlowPane();
         signup_btn = new GameButton("Sign up", GameButton.Mode.NORMAL, () -> {
+        });
+        signup_btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    new SceneController().switchToLogIn(event);
+                } catch (IOException ex) {
+                    Logger.getLogger(SignupBase.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         });
         passreveal_btn = new Button();
         imageView0 = new ImageView();

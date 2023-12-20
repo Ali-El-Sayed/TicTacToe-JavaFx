@@ -1,6 +1,11 @@
 package ui.Screens;
 
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
@@ -11,6 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import ui.SceneController;
 import ui.TicTacToe;
 import ui.Screens.LoginBase;
 import ui.components.GameButton;
@@ -31,21 +37,48 @@ public class SelectModeBase extends StackPane {
         imageView = new ImageView();
         borderPane = new BorderPane();
         hBox = new HBox();
-        btnOfflineMode = new GameButton("Offline", GameButton.Mode.NORMAL, () -> {
-            System.out.println("Offline");
+        btnOfflineMode = new GameButton("Offline", GameButton.Mode.NORMAL, () -> {});
+        btnOfflineMode.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                    
+                try {
+                    new SceneController().switchToOfflineMode(event);
+                } catch (IOException ex) {
+                    Logger.getLogger(SplashScreenBase.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
         });
         
-        btnOnlineMode = new GameButton("Online", GameButton.Mode.NORMAL, () -> {
-            System.out.println("Online");
+        btnOnlineMode = new GameButton("Online", GameButton.Mode.NORMAL, () -> {});
+        btnOnlineMode.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                    
+                try {
+                    new SceneController().switchToLogInSignUp(event);
+                } catch (IOException ex) {
+                    Logger.getLogger(SplashScreenBase.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
         });
         text = new Text();
         hBox0 = new HBox();
-        btnBack = new GameButton(GameButton.Mode.BACK, () -> {
-            System.out.println("Back");
-        });
-        
-        
+        btnBack = new GameButton(GameButton.Mode.BACK, () -> {});
+        btnBack.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                    
+                try {
+                    new SceneController().switchToSplashScreen(event);
+                } catch (IOException ex) {
+                    Logger.getLogger(SplashScreenBase.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
+            }
+        });
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);
