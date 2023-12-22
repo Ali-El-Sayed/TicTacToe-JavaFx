@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -22,6 +23,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import ui.SceneController;
+import ui.components.GameButton;
 
 public class GameBoardScreen extends StackPane {
 
@@ -44,6 +46,8 @@ public class GameBoardScreen extends StackPane {
     protected final Button boardButton3;
     protected final Button boardButton2;
     protected final Button boardButton7;
+    protected final Button back_btn;
+    protected final Button reset_btn;
     protected final HBox hBoxPlayer1;
     protected final Label Player1Symbol;
     protected final Label Player1NameAndScore;
@@ -52,6 +56,7 @@ public class GameBoardScreen extends StackPane {
     protected final Label player2NameAndScore;
     protected int[][] winProbabilities;
     boolean isX = true;
+    
     HashMap<Integer, String> checkedBtns = new HashMap();
 
     public GameBoardScreen() {
@@ -74,6 +79,8 @@ public class GameBoardScreen extends StackPane {
         boardButton3 = new Button();
         boardButton2 = new Button();
         boardButton7 = new Button();
+        back_btn = new GameButton("Exit game", GameButton.Mode.BACK);
+        reset_btn = new GameButton("New Game", GameButton.Mode.BACK);
         hBoxPlayer1 = new HBox();
         Player1Symbol = new Label();
         Player1NameAndScore = new Label();
@@ -89,7 +96,6 @@ public class GameBoardScreen extends StackPane {
         setMinWidth(USE_PREF_SIZE);
         setPrefHeight(858.0);
         setPrefWidth(1343.0);
-
         backGroundImage.setFitHeight(858.0);
         backGroundImage.setFitWidth(1343.0);
         backGroundImage.setPickOnBounds(true);
@@ -245,7 +251,11 @@ public class GameBoardScreen extends StackPane {
         boardButton7.setText("");
         boardButton7.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
         boardButton7.setFont(new Font("Arial Rounded MT Bold", 110.0));
-
+        
+        //back_btn.setLayoutX(400);
+        //back_btn.setLayoutY(300);
+        //reset_btn.setLayoutX(100);
+        reset_btn.setLayoutY(300);
         GridPane.setRowIndex(hBoxPlayer1, 1);
         hBoxPlayer1.setPrefHeight(100.0);
         hBoxPlayer1.setPrefWidth(542.0);
@@ -316,6 +326,11 @@ public class GameBoardScreen extends StackPane {
         hBoxPlayer2.getChildren().add(player2NameAndScore);
         gridPane.getChildren().add(hBoxPlayer2);
         getChildren().add(gridPane);
+        gridPane.getChildren().add(back_btn);
+        gridPane.getChildren().add(reset_btn);
+        gridPane.setMargin(reset_btn, new Insets(500.0, 0.0, -1120.0, 150.0));
+        gridPane.setMargin(back_btn, new Insets(500.0, 0.0, -1120.0, 0.0));
+        
 
         for (Node node : gridPane.getChildren()) {
             if (node.getClass() == Button.class) {
@@ -332,7 +347,35 @@ public class GameBoardScreen extends StackPane {
             }
 
         }
-
+        back_btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                for(int i=0; i<checkedBtns.size(); i++)
+                    checkedBtns.remove(i);
+                
+                SceneController sc = new SceneController();
+                try {
+                    sc.switchToSplashScreen(event);
+                } catch (IOException ex) {
+                    Logger.getLogger(GameBoardScreen.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        reset_btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                for(int i=0; i<checkedBtns.size(); i++)
+                    checkedBtns.remove(i);
+                
+                SceneController sc = new SceneController();
+                try {
+                    sc.switchToGameBoard(event);
+                } catch (IOException ex) {
+                    Logger.getLogger(GameBoardScreen.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+    
     }
 
     private void handleTurn(ActionEvent event) {
@@ -377,5 +420,6 @@ public class GameBoardScreen extends StackPane {
         }
 
     }
+
 
 }
