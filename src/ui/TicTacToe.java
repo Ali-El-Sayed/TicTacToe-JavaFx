@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.SplashScreen;
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -10,10 +11,9 @@ import ui.Screens.GameBoardScreen;
 import ui.Screens.SplashScreenBase;
 
 public class TicTacToe extends Application {
-
     @Override
     public void start(Stage stage) {
-        Parent root = new GameBoardScreen();
+        Parent root = new GameBoardScreen(stage);
         Scene scene = new Scene(root, 1343, 858);
         stage.setResizable(false);
         stage.setScene(scene);
@@ -21,8 +21,9 @@ public class TicTacToe extends Application {
         
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         launch(args);
+        
     }
 
 }
