@@ -7,10 +7,7 @@ import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -53,8 +50,14 @@ public class GameBoardScreen extends StackPane {
     protected int[][] winProbabilities;
     boolean isX = true;
     HashMap<Integer, String> checkedBtns = new HashMap();
+    int positions[];
+    int counter;
+    RecordingGame recordingGame;
 
     public GameBoardScreen() {
+        recordingGame = new RecordingGame();
+        positions = new int[9];
+        counter = 0;
         backGroundImage = new ImageView();
         gridPane = new GridPane();
         columnConstraints = new ColumnConstraints();
@@ -81,6 +84,7 @@ public class GameBoardScreen extends StackPane {
         Player2Symbol = new Label();
         player2NameAndScore = new Label();
 
+        Button[] arButton = {boardButton1, boardButton2, boardButton3, boardButton4, boardButton5, boardButton6, boardButton7, boardButton8, boardButton9};
         winProbabilities = new int[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {1, 4, 7}, {2, 5, 8}, {3, 6, 9}, {1, 5, 9}, {3, 5, 7}};
 
         setMaxHeight(858.0);
@@ -316,7 +320,7 @@ public class GameBoardScreen extends StackPane {
         hBoxPlayer2.getChildren().add(player2NameAndScore);
         gridPane.getChildren().add(hBoxPlayer2);
         getChildren().add(gridPane);
-
+        
         for (Node node : gridPane.getChildren()) {
             if (node.getClass() == Button.class) {
                 Button btn = (Button) node;
@@ -324,26 +328,28 @@ public class GameBoardScreen extends StackPane {
                     
                     handleTurn(event);
                     Integer btn1 = gridPane.getChildren().indexOf(node);
+                    recordingGame.record(btn1 + 1, counter);
+                    counter++;
                     checkedBtns.put(btn1 + 1, isX ? "O" : "X");
                     if (isWinner()) {
-                        handleGameOver(event);
+                        handleGameOver(event, arButton);
                     }
                 });
             }
-
+            
         }
-
+        
     }
 
     private void handleTurn(ActionEvent event) {
         Button btn = (Button) event.getTarget();
-      
-            btn.setText(isX ? "X" : "O");
-            isX = !isX;
-            btn.setOnAction((e) -> {
-                
-            });
-
+        
+        btn.setText(isX ? "X" : "O");
+        isX = !isX;
+        btn.setOnAction((e) -> {
+            
+        });
+        
     }
 
     private boolean isWinner() {
@@ -354,19 +360,19 @@ public class GameBoardScreen extends StackPane {
                 return true;
             }
         }
-
+        
         return false;
-
+        
     }
 
-    private void handleGameOver(ActionEvent e) {
-        
-            try {
-                new SceneController().switchToVideoScreen(e);
-            } catch (IOException ex) {
-                Logger.getLogger(GameBoardScreen.class.getName()).log(Level.SEVERE, null, ex);
-          
-            }
+    private void handleGameOver(ActionEvent e, Button[] arButtons) {
+        recordingGame.startReplay(arButtons);
+        try {
+            new SceneController().switchToVideoScreen(e);
+        } catch (IOException ex) {
+            Logger.getLogger(GameBoardScreen.class.getName()).log(Level.SEVERE, null, ex);
+            
+        } 
     }
 
     private void handleWinner(int[] winCase) {
@@ -375,7 +381,7 @@ public class GameBoardScreen extends StackPane {
             btn.setTextFill(Color.WHITE);
 
         }
-
+        
     }
-
+     
 }
