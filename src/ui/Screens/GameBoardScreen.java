@@ -1,16 +1,19 @@
 package ui.Screens;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.net.Socket;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,7 +24,9 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import ui.SceneController;
+import ui.components.GameButton;
 
 public class GameBoardScreen extends StackPane {
 
@@ -44,6 +49,8 @@ public class GameBoardScreen extends StackPane {
     protected final Button boardButton3;
     protected final Button boardButton2;
     protected final Button boardButton7;
+    protected final Button back_btn;
+    protected final Button reset_btn;
     protected final HBox hBoxPlayer1;
     protected final Label Player1Symbol;
     protected final Label Player1NameAndScore;
@@ -51,10 +58,20 @@ public class GameBoardScreen extends StackPane {
     protected final Label Player2Symbol;
     protected final Label player2NameAndScore;
     protected int[][] winProbabilities;
-    boolean isX = true;
+    protected boolean isX = true;
+    protected String str;
+    protected String str1;
+    protected Socket cs;
+    protected DataInputStream dataInputStream;
+    protected BufferedReader ear;
+    protected PrintStream mouth;
+    protected Button btn;
+
     HashMap<Integer, String> checkedBtns = new HashMap();
 
-    public GameBoardScreen() {
+    public GameBoardScreen(Stage s) {
+        initializeConnection();
+
         backGroundImage = new ImageView();
         gridPane = new GridPane();
         columnConstraints = new ColumnConstraints();
@@ -74,6 +91,8 @@ public class GameBoardScreen extends StackPane {
         boardButton3 = new Button();
         boardButton2 = new Button();
         boardButton7 = new Button();
+        back_btn = new GameButton("Exit game", GameButton.Mode.BACK);
+        reset_btn = new GameButton("New Game", GameButton.Mode.BACK);
         hBoxPlayer1 = new HBox();
         Player1Symbol = new Label();
         Player1NameAndScore = new Label();
@@ -89,7 +108,6 @@ public class GameBoardScreen extends StackPane {
         setMinWidth(USE_PREF_SIZE);
         setPrefHeight(858.0);
         setPrefWidth(1343.0);
-
         backGroundImage.setFitHeight(858.0);
         backGroundImage.setFitWidth(1343.0);
         backGroundImage.setPickOnBounds(true);
@@ -246,6 +264,10 @@ public class GameBoardScreen extends StackPane {
         boardButton7.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
         boardButton7.setFont(new Font("Arial Rounded MT Bold", 110.0));
 
+        //back_btn.setLayoutX(400);
+        //back_btn.setLayoutY(300);
+        //reset_btn.setLayoutX(100);
+        reset_btn.setLayoutY(300);
         GridPane.setRowIndex(hBoxPlayer1, 1);
         hBoxPlayer1.setPrefHeight(100.0);
         hBoxPlayer1.setPrefWidth(542.0);
@@ -316,34 +338,95 @@ public class GameBoardScreen extends StackPane {
         hBoxPlayer2.getChildren().add(player2NameAndScore);
         gridPane.getChildren().add(hBoxPlayer2);
         getChildren().add(gridPane);
+        gridPane.getChildren().add(back_btn);
+        gridPane.getChildren().add(reset_btn);
+        gridPane.setMargin(reset_btn, new Insets(500.0, 0.0, -1120.0, 150.0));
+        gridPane.setMargin(back_btn, new Insets(500.0, 0.0, -1120.0, 0.0));
 
         for (Node node : gridPane.getChildren()) {
             if (node.getClass() == Button.class) {
-                Button btn = (Button) node;
+                btn = (Button) node;
                 btn.setOnAction((ActionEvent event) -> {
-                    
-                    handleTurn(event);
                     Integer btn1 = gridPane.getChildren().indexOf(node);
-                    checkedBtns.put(btn1 + 1, isX ? "O" : "X");
+                    if (isX) {
+                        str1 = "X";
+                    } else {
+                        str1 = "O";
+                    }
+                    checkedBtns.put(btn1 + 1, str1);
+                    try {
+                        handleTurn(event);
+                    } catch (IOException ex) {
+                        Logger.getLogger(GameBoardScreen.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     if (isWinner()) {
                         handleGameOver(event);
                     }
+
                 });
-            }
 
+            };
         }
+        back_btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                for (int i = 0; i < checkedBtns.size(); i++) {
+                    checkedBtns.remove(i);
+                }
 
+                SceneController sc = new SceneController();
+                try {
+                    sc.switchToSplashScreen(event);
+                } catch (IOException ex) {
+                    Logger.getLogger(GameBoardScreen.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        reset_btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                for (int i = 0; i < checkedBtns.size(); i++) {
+                    checkedBtns.remove(i);
+                }
+
+                SceneController sc = new SceneController();
+                try {
+                    sc.switchToGameBoard(event);
+                } catch (IOException ex) {
+                    Logger.getLogger(GameBoardScreen.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
     }
 
-    private void handleTurn(ActionEvent event) {
-        Button btn = (Button) event.getTarget();
-      
-            btn.setText(isX ? "X" : "O");
-            isX = !isX;
-            btn.setOnAction((e) -> {
-                
-            });
+    private void initializeConnection() {
+        new Thread(() -> {
+            try {
+                cs = new Socket("127.0.0.1", 5000);
+                dataInputStream = new DataInputStream(cs.getInputStream());
+                ear = new BufferedReader(new InputStreamReader(dataInputStream));
+                mouth = new PrintStream(cs.getOutputStream());
+                while (true) {
+                    if (cs.isConnected()) {
+                        System.out.println(cs.getLocalAddress());
+                        System.out.println(ear.readLine());
+                    }
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(GameBoardScreen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }).start();
+    }
 
+    private void handleTurn(ActionEvent event) throws IOException {
+        btn = (Button) event.getTarget();
+
+        btn.setText(str1);
+        mouth.println(btn.getText());
+
+        isX = !isX;
+        btn.setOnAction((e) -> {
+        });
     }
 
     private boolean isWinner() {
@@ -360,13 +443,15 @@ public class GameBoardScreen extends StackPane {
     }
 
     private void handleGameOver(ActionEvent e) {
-        
-            try {
-                new SceneController().switchToVideoScreen(e);
-            } catch (IOException ex) {
-                Logger.getLogger(GameBoardScreen.class.getName()).log(Level.SEVERE, null, ex);
-          
-            }
+
+        try {
+            new SceneController().switchToVideoScreen(e);
+
+        } catch (IOException ex) {
+            Logger.getLogger(GameBoardScreen.class
+                    .getName()).log(Level.SEVERE, null, ex);
+
+        }
     }
 
     private void handleWinner(int[] winCase) {

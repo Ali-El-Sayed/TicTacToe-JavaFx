@@ -66,6 +66,51 @@ public class GameButton extends Button {
         });
 
     }
+    public GameButton(String label, Mode m) {
+        this.mode = m;
+        this.label = new Label(label);
+        this.label.setCenterShape(true);
+        this.label.setStyle("-fx-font-weight: bold; -fx-font-family:Algerian; -fx-font-size: 20px; -fx-text-fill: white;");
+        this.label.setPadding(new Insets(0, 0, 15, 0));
+
+        if (mode != Mode.BACK) {
+            currBtn = new ImageView(new Image(getClass().getResourceAsStream(NORMAL)));
+            currBtn.setFitHeight(120);
+            currBtn.setFitWidth(300);
+        } else {
+            currBtn = new ImageView(new Image(getClass().getResourceAsStream("/assets/BackBtn.png")));
+            currBtn.setFitHeight(70);
+            currBtn.setFitWidth(140);
+        }
+
+        StackPane stackPane = new StackPane();
+        stackPane.getChildren().addAll(currBtn, this.label);
+        setGraphic(stackPane);
+
+        this.setBorder(Border.EMPTY);
+        this.setBackground(Background.EMPTY);
+
+        this.setOnMouseEntered((e) -> {
+            this.setCursor(Cursor.HAND);
+        });
+
+        this.setOnMouseExited(e -> {
+            this.setCursor(Cursor.DEFAULT);
+        });
+
+        this.setOnMousePressed((e) -> {
+            changeButton();
+            this.setEffect(new DropShadow());
+            this.setCursor(Cursor.CLOSED_HAND);
+        });
+        this.setOnMouseReleased((e) -> {
+            changeButton();
+            this.setEffect(null);
+            this.setCursor(Cursor.HAND);
+        });
+
+    }
+
 
     public GameButton(Mode m, OnClick onclick) {
         this.label = new Label();
