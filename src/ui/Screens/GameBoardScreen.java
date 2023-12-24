@@ -1,9 +1,6 @@
 package ui.Screens;
 
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -18,7 +15,6 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import ui.SceneController;
 
 public class GameBoardScreen extends StackPane {
 
@@ -320,12 +316,12 @@ public class GameBoardScreen extends StackPane {
         hBoxPlayer2.getChildren().add(player2NameAndScore);
         gridPane.getChildren().add(hBoxPlayer2);
         getChildren().add(gridPane);
-        
+
         for (Node node : gridPane.getChildren()) {
             if (node.getClass() == Button.class) {
                 Button btn = (Button) node;
                 btn.setOnAction((ActionEvent event) -> {
-                    
+
                     handleTurn(event);
                     Integer btn1 = gridPane.getChildren().indexOf(node);
                     recordingGame.record(btn1 + 1, counter);
@@ -336,20 +332,20 @@ public class GameBoardScreen extends StackPane {
                     }
                 });
             }
-            
+
         }
-        
+
     }
 
     private void handleTurn(ActionEvent event) {
         Button btn = (Button) event.getTarget();
-        
+
         btn.setText(isX ? "X" : "O");
         isX = !isX;
         btn.setOnAction((e) -> {
-            
+
         });
-        
+
     }
 
     private boolean isWinner() {
@@ -360,28 +356,24 @@ public class GameBoardScreen extends StackPane {
                 return true;
             }
         }
-        
         return false;
-        
     }
 
     private void handleGameOver(ActionEvent e, Button[] arButtons) {
         recordingGame.startReplay(arButtons);
-        try {
-            new SceneController().switchToVideoScreen(e);
-        } catch (IOException ex) {
-            Logger.getLogger(GameBoardScreen.class.getName()).log(Level.SEVERE, null, ex);
-            
-        } 
+
+        openVideoPopUp();
     }
 
     private void handleWinner(int[] winCase) {
         for (int i : winCase) {
             Button btn = (Button) gridPane.getChildren().get(i - 1);
             btn.setTextFill(Color.WHITE);
-
         }
-        
     }
-     
+
+    private void openVideoPopUp() {
+        videoPopUp.openVideoPopUp();
+    }
+
 }
