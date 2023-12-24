@@ -1,22 +1,19 @@
 package ui.Screens;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -28,7 +25,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import ui.SceneController;
 import ui.components.GameButton;
 
@@ -66,24 +62,16 @@ public class GameBoardScreen extends StackPane {
     protected String str;
     protected String str1;
     protected Socket cs;
-    protected DataInputStream ear;
+    protected DataInputStream dataInputStream;
+    protected BufferedReader ear;
     protected PrintStream mouth;
     protected Button btn;
 
     HashMap<Integer, String> checkedBtns = new HashMap();
 
     public GameBoardScreen(Stage s) {
-        try {
-            cs = new Socket("127.0.0.1", 5010);
-            ear = new DataInputStream(cs.getInputStream());
-            mouth = new PrintStream(cs.getOutputStream());
-            if (cs.isConnected()) {
-                System.out.println(cs.getLocalAddress());
-                System.out.println(ear.readLine());
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(GameBoardScreen.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        initializeConnection();
+
         backGroundImage = new ImageView();
         gridPane = new GridPane();
         columnConstraints = new ColumnConstraints();
@@ -409,34 +397,33 @@ public class GameBoardScreen extends StackPane {
                 }
             }
         });
-        new Thread() {
-            @Override
-            public void run() {
+    }
+
+    private void initializeConnection() {
+        new Thread(() -> {
+            try {
+                cs = new Socket("127.0.0.1", 5000);
+                dataInputStream = new DataInputStream(cs.getInputStream());
+                ear = new BufferedReader(new InputStreamReader(dataInputStream));
+                mouth = new PrintStream(cs.getOutputStream());
                 while (true) {
-                    try {
-                        str1 = ear.readLine();
-                        //if (str1 != null) {
-                        System.out.println(str1);
-                        Platform.runLater(() -> {
-                            btn.setText(str1);
-                        });
-
-                        //}
-                    } catch (IOException ex) {
-                        Logger.getLogger(GameBoardScreen.class.getName()).log(Level.SEVERE, null, ex);
+                    if (cs.isConnected()) {
+                        System.out.println(cs.getLocalAddress());
+                        System.out.println(ear.readLine());
                     }
-
                 }
+            } catch (IOException ex) {
+                Logger.getLogger(GameBoardScreen.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }.start();
+        }).start();
     }
 
     private void handleTurn(ActionEvent event) throws IOException {
         btn = (Button) event.getTarget();
 
-        mouth.println(btn.getText());
         btn.setText(str1);
-        System.out.println(str1);
+        mouth.println(btn.getText());
+
         isX = !isX;
         btn.setOnAction((e) -> {
         });
