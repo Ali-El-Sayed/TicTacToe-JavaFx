@@ -29,7 +29,7 @@ public class VideoScreenBase extends AnchorPane {
     protected final Button back_btn;
     protected final File file;
     protected final Media media;
-     protected final MediaPlayer mediaPlayer;
+    protected final MediaPlayer mediaPlayer;
     public VideoScreenBase() {
 
         imageView = new ImageView();
@@ -38,7 +38,7 @@ public class VideoScreenBase extends AnchorPane {
         winnerName = new Label();
         back_btn = new GameButton(GameButton.Mode.BACK, () -> {
         });
-         back_btn.setOnAction(new EventHandler<ActionEvent>() {
+        back_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 SceneController sceneController = new SceneController();
@@ -94,7 +94,7 @@ public class VideoScreenBase extends AnchorPane {
         getChildren().add(winnerName);
         getChildren().add(back_btn);
         // --add-modules javafx.controls,javafx.media
-        file =new File("C:/Users/LEGION/Desktop/winnerVideo.mp4");
+        file =new File("C:/Users/p&p/Desktop/winnerVideo.mp4");
         media=new Media(file.toURI().toString());
         mediaPlayer=new MediaPlayer(media);
         congratsVideo.setMediaPlayer(mediaPlayer);

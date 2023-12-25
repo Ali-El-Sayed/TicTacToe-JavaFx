@@ -2,15 +2,15 @@ package ui.Screens;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,7 +23,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import ui.SceneController;
 
-public class GameBoardScreen extends StackPane {
+public abstract class GameBoardScreen extends StackPane {
 
     protected final ImageView backGroundImage;
     public final GridPane gridPane;
@@ -316,50 +316,33 @@ public class GameBoardScreen extends StackPane {
         hBoxPlayer2.getChildren().add(player2NameAndScore);
         gridPane.getChildren().add(hBoxPlayer2);
         getChildren().add(gridPane);
-
-        for (Node node : gridPane.getChildren()) {
-            if (node.getClass() == Button.class) {
-                Button btn = (Button) node;
-                btn.setOnAction((ActionEvent event) -> {
-                    
-                    handleTurn(event);
-                    Integer btn1 = gridPane.getChildren().indexOf(node);
-                    checkedBtns.put(btn1 + 1, isX ? "O" : "X");
-                    if (isWinner()) {
-                        handleGameOver(event);
-                    }
-                });
-            }
-
-        }
+        // executorService = Executors.newSingleThreadScheduledExecutor();
+     
 
     }
 
-    private void handleTurn(ActionEvent event) {
-        Button btn = (Button) event.getTarget();
-      
-            btn.setText(isX ? "X" : "O");
-            isX = !isX;
-            btn.setOnAction((e) -> {
-                
-            });
+    public abstract void initializeBtnHandler() ;
+       
+    
 
-    }
+    public abstract void  handlePressedButton(ActionEvent event) ;
 
-    private boolean isWinner() {
+    protected boolean isWinner() {
         for (int[] winCase : winProbabilities) {
             if (checkedBtns.getOrDefault(winCase[0], "A").equals(checkedBtns.getOrDefault(winCase[1], "B"))
                     && checkedBtns.getOrDefault(winCase[0], "D").equals(checkedBtns.getOrDefault(winCase[2], "D"))) {
-                handleWinner(winCase);
-                return true;
+                
+                    handleWinner(winCase);
+                    return true;
+                }
             }
-        }
 
-        return false;
+            return false;
 
     }
+    
 
-    private void handleGameOver(ActionEvent e) {
+    protected void handleGameOver(ActionEvent e) {
         
             try {
                 new SceneController().switchToVideoScreen(e);
@@ -369,7 +352,7 @@ public class GameBoardScreen extends StackPane {
             }
     }
 
-    private void handleWinner(int[] winCase) {
+    protected void handleWinner(int[] winCase) {
         for (int i : winCase) {
             Button btn = (Button) gridPane.getChildren().get(i - 1);
             btn.setTextFill(Color.WHITE);
@@ -377,5 +360,25 @@ public class GameBoardScreen extends StackPane {
         }
 
     }
+ /*private void computerMove() {
+   
+        boolean isMoveMade = false;
+        while (!isMoveMade) {
+            int randomIndex = new Random().nextInt(9);
+            Button randomComputerButton = (Button) gridPane.getChildren().get(randomIndex);
+            if (randomComputerButton.getText().isEmpty()) {
+                Integer btn1 = gridPane.getChildren().indexOf(randomComputerButton);
+                checkedBtns.put(btn1 + 1, "o");
+                Platform.runLater(() -> {
+                    randomComputerButton.setText("o");
+                   
+                
+                });
+                isMoveMade = true;
+
+            }
+        }
+ }*/
+
 
 }
