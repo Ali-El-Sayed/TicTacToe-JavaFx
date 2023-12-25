@@ -14,8 +14,8 @@ public class TicTacToe extends Application {
 
     @Override
     public void start(Stage stage) {
-       Pc comp=new Pc(Pc.Level.HARD);
-        Parent root = new SinglePlayer(comp);
+       Pc pc=new Pc(Pc.Level.EASY);
+        Parent root = new SinglePlayer(pc);
         Scene scene = new Scene(root, 1343, 858);
         stage.setResizable(false);
         stage.setScene(scene);

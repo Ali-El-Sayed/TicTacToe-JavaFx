@@ -31,8 +31,8 @@ public class Pc implements Playable {
         switch (level) {
             case EASY:
                 return easyLevel(keySet);
-            case HARD:
-                return hardLevel(keySet);
+//            case HARD:
+//                return hardLevel(keySet);
 
         }
         return -1;
@@ -52,14 +52,18 @@ public class Pc implements Playable {
 
         }
     }
+    public enum Level {
+        EASY, MEDIUM, HARD
+    };
+}
 
 
-    public int hardLevel(Set<Integer> keySet) {
+  /*  public int hardLevel(Set<Integer> keySet) {
         System.out.println("in hardlevel");
             return findBestMove(keySet);
     }
      
- int findBestMove(Set<Integer> keySet) {
+int findBestMove(Set<Integer> keySet) {
     int bestMove = -1;
     int bestScore = Integer.MIN_VALUE;
 
@@ -102,12 +106,10 @@ int minimax(Set<Integer> checkedBtns, int depth, boolean isMaximizing) {
     }
 }
 
-    public enum Level {
-        EASY, MEDIUM, HARD
-    };
+
 
 }
-
+*/
 
  
 
