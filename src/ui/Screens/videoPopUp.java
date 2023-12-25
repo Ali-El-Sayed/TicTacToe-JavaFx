@@ -30,41 +30,42 @@ public class videoPopUp {
     public static void openVideoPopUp() {
         Stage videoStage = new Stage();
         videoStage.initModality(Modality.APPLICATION_MODAL);
-        videoStage.setTitle("Video Dialog");
+        videoStage.setTitle("Winning Celebrations");
 
         Media media = new Media(new File("C:/Users/LEGION/Desktop/winnerVideo.mp4").toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         MediaView mediaView = new MediaView(mediaPlayer);
-        Button playAgain = new GameButton("Test", GameButton.Mode.NORMAL, () -> {
-            System.out.println("hi");
+        Button playAgain = new GameButton("Play Again", GameButton.Mode.NORMAL, () -> {
+            System.out.println("Play");
         });
         playAgain.setPrefSize(250, 100);
         Button Back = new GameButton(GameButton.Mode.BACK, () -> {
-            System.out.println("hi");
+            System.out.println("Back");
         });
         Back.setPrefSize(250, 100);
+
         HBox hBox = new HBox();
         HBox.setMargin(playAgain, new Insets(25.0, 40.0, 20.0, 20.0));
         HBox.setMargin(Back, new Insets(25.0, 0.0, 0.0, 0.0));
         hBox.getChildren().add(playAgain);
         hBox.getChildren().add(Back);
 
-        BorderPane dialogRoot = new BorderPane();
-        dialogRoot.setCenter(mediaView);
+        BorderPane root = new BorderPane();
+        root.setCenter(mediaView);
         BorderPane.setAlignment(mediaView, Pos.TOP_CENTER);
 
-        dialogRoot.setBottom(hBox);
+        root.setBottom(hBox);
         BorderPane.setAlignment(hBox, Pos.TOP_LEFT);
 
-        dialogRoot.setBackground(new Background(new BackgroundImage(new Image("/assets/background.png"),
+        root.setBackground(new Background(new BackgroundImage(new Image("/assets/background.png"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT)));
 
-        Scene dialogScene = new Scene(dialogRoot, 1200, 858);
+        Scene scene = new Scene(root, 1200, 858);
 
-        videoStage.setScene(dialogScene);
+        videoStage.setScene(scene);
         videoStage.setResizable(false);
         videoStage.setOnCloseRequest(event -> {
             mediaPlayer.stop();
