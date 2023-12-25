@@ -19,7 +19,7 @@ import javafx.scene.control.Button;
  *
  * @author p&p
  */
-public class SinglePlayer extends GameBoardScreen {
+public class SinglePlayer extends GameBoardScreen implements CommonBehaviorInModes{
 
     Pc pc;
     Player player;
@@ -49,13 +49,14 @@ public class SinglePlayer extends GameBoardScreen {
 
                         } else {
                             int index=pc.play(checkedBtns.keySet());
-                            System.out.println(checkedBtns.keySet());
+                            //System.out.println(checkedBtns.keySet());
                             checkedBtns.put(index , "o");
-                            System.out.println(checkedBtns);
+                            //System.out.println(checkedBtns);
                             Button computerButton = (Button) gridPane.getChildren().get(index-1);
-                            System.out.println(index);
+                            //System.out.println(index);
                             
                             computerButton.setText("o");
+                            mouth.println(computerButton.getText());
                             if (isWinner()) {
                                 handleGameOver(event);
                             }
@@ -70,6 +71,7 @@ public class SinglePlayer extends GameBoardScreen {
         Button btn = (Button) event.getTarget();
 
         btn.setText("X");
+        mouth.println(btn.getText());
 
         btn.setOnAction((e) -> {
 

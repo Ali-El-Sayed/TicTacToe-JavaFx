@@ -38,7 +38,7 @@ public class Pc implements Playable {
         return -1;
     }
     public int easyLevel(Set<Integer> keySet) {
-        System.out.println("in easylevel");
+        //System.out.println("in easylevel");
 
         int randomIndex = new Random().nextInt(9)+1;
 

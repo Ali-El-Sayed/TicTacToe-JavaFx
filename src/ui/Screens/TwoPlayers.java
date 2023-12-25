@@ -14,7 +14,7 @@ import javafx.scene.control.Button;
  *
  * @author p&p
  */
-public class TwoPlayers extends GameBoardScreen {
+public class TwoPlayers extends GameBoardScreen implements CommonBehaviorInModes{
 
     @Override
     public void initializeBtnHandler() {

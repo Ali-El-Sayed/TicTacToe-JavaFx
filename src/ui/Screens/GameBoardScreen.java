@@ -1,6 +1,10 @@
 package ui.Screens;
 
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.net.Socket;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.logging.Level;
@@ -23,7 +27,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import ui.SceneController;
 
-public abstract class GameBoardScreen extends StackPane {
+public  class GameBoardScreen extends StackPane {
 
     protected final ImageView backGroundImage;
     public final GridPane gridPane;
@@ -53,6 +57,10 @@ public abstract class GameBoardScreen extends StackPane {
     protected int[][] winProbabilities;
     boolean isX = true;
     HashMap<Integer, String> checkedBtns = new HashMap();
+    Socket socket;
+    DataInputStream ear;
+    PrintStream mouth;
+     
 
     public GameBoardScreen() {
         backGroundImage = new ImageView();
@@ -316,16 +324,38 @@ public abstract class GameBoardScreen extends StackPane {
         hBoxPlayer2.getChildren().add(player2NameAndScore);
         gridPane.getChildren().add(hBoxPlayer2);
         getChildren().add(gridPane);
-        // executorService = Executors.newSingleThreadScheduledExecutor();
+        
+        try {
+            Socket socket = new Socket("127.0.0.1", 5005);
+            ear=new DataInputStream(socket.getInputStream());
+            mouth=new PrintStream(socket.getOutputStream());
+
+        } catch (IOException ex) {
+            Logger.getLogger(GameBoardScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        new Thread (){
+            @Override
+            public void run(){
+                while (true){
+                    try {
+                        String str = ear.readLine();
+                        Platform.runLater(() -> {
+                            System.out.println("received from server"+str);
+ 
+                        });
+                    } catch (IOException ex) {
+                        Logger.getLogger(GameBoardScreen.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+            
+        }.start();
+            
+
      
 
     }
 
-    public abstract void initializeBtnHandler() ;
-       
-    
-
-    public abstract void  handlePressedButton(ActionEvent event) ;
 
     protected boolean isWinner() {
         for (int[] winCase : winProbabilities) {
@@ -360,25 +390,8 @@ public abstract class GameBoardScreen extends StackPane {
         }
 
     }
- /*private void computerMove() {
-   
-        boolean isMoveMade = false;
-        while (!isMoveMade) {
-            int randomIndex = new Random().nextInt(9);
-            Button randomComputerButton = (Button) gridPane.getChildren().get(randomIndex);
-            if (randomComputerButton.getText().isEmpty()) {
-                Integer btn1 = gridPane.getChildren().indexOf(randomComputerButton);
-                checkedBtns.put(btn1 + 1, "o");
-                Platform.runLater(() -> {
-                    randomComputerButton.setText("o");
-                   
-                
-                });
-                isMoveMade = true;
+    
 
-            }
-        }
- }*/
 
 
 }
