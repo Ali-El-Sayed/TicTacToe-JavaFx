@@ -84,7 +84,7 @@ public class SceneController {
     }
 
     public void switchToGameBoard(ActionEvent event) throws IOException {
-        root = new GameBoardScreen(stage);
+        root = new GameBoardScreen();
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

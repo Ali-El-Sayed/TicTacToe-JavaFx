@@ -22,88 +22,86 @@ import ui.components.GameButton;
 
 public class VideoScreenBase extends AnchorPane {
 
-    protected final ImageView imageView;
-    protected final MediaView congratsVideo;
-    protected final Label WinnerLabel;
-    protected final Label winnerName;
-    protected final Button back_btn;
-    protected final File file;
-    protected final Media media;
-     protected final MediaPlayer mediaPlayer;
-    public VideoScreenBase() {
+  protected final ImageView imageView;
+  protected final MediaView congratsVideo;
+  protected final Label WinnerLabel;
+  protected final Label winnerName;
+  protected final Button back_btn;
+  protected final File file;
+  protected final Media media;
+  protected final MediaPlayer mediaPlayer;
 
-        imageView = new ImageView();
-        congratsVideo = new MediaView();
-        WinnerLabel = new Label();
-        winnerName = new Label();
-        back_btn = new GameButton(GameButton.Mode.BACK, () -> {
-        });
-         back_btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                SceneController sceneController = new SceneController();
-                try {
-                    mediaPlayer.stop();
-                    sceneController.switchToGameBoard(event);
-                } catch (IOException ex) {
-                    Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        setId("AnchorPane");
-        setPrefHeight(858.0);
-        setPrefWidth(1343.0);
+  public VideoScreenBase() {
 
-        imageView.setFitHeight(858.0);
-        imageView.setFitWidth(1343.0);
-        imageView.setPickOnBounds(true);
-        imageView.setPreserveRatio(true);
-        imageView.setImage(new Image(getClass().getResource("/assets/background.png").toExternalForm()));
+    imageView = new ImageView();
+    congratsVideo = new MediaView();
+    WinnerLabel = new Label();
+    winnerName = new Label();
+    back_btn = new GameButton(GameButton.Mode.BACK, () -> {
+    });
+    back_btn.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent event) {
+        SceneController sceneController = new SceneController();
+        try {
+          mediaPlayer.stop();
+          sceneController.switchToGameBoard(event);
+        } catch (IOException ex) {
+          Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      }
+    });
+    setId("AnchorPane");
+    setPrefHeight(858.0);
+    setPrefWidth(1343.0);
 
-        congratsVideo.setFitHeight(800.0);
-        congratsVideo.setFitWidth(1343.0);
-        congratsVideo.setLayoutY(80.0);
+    imageView.setFitHeight(858.0);
+    imageView.setFitWidth(1343.0);
+    imageView.setPickOnBounds(true);
+    imageView.setPreserveRatio(true);
+    imageView.setImage(new Image(getClass().getResource("/assets/background.png").toExternalForm()));
 
-        WinnerLabel.setLayoutX(468.0);
-        WinnerLabel.setPrefHeight(69.0);
-        WinnerLabel.setPrefWidth(237.0);
-        WinnerLabel.setText("Winner  : ");
-        WinnerLabel.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
-        WinnerLabel.setFont(new Font("Berlin Sans FB Bold", 50.0));
+    congratsVideo.setFitHeight(800.0);
+    congratsVideo.setFitWidth(1343.0);
+    congratsVideo.setLayoutY(80.0);
 
-        winnerName.setLayoutX(707.0);
-        winnerName.setPrefHeight(34.0);
-        winnerName.setPrefWidth(274.0);
-        winnerName.setText("Israa");
-        winnerName.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
-        winnerName.setFont(new Font("Berlin Sans FB Bold", 50.0));
+    WinnerLabel.setLayoutX(468.0);
+    WinnerLabel.setPrefHeight(69.0);
+    WinnerLabel.setPrefWidth(237.0);
+    WinnerLabel.setText("Winner  : ");
+    WinnerLabel.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
+    WinnerLabel.setFont(new Font("Berlin Sans FB Bold", 50.0));
 
-        back_btn.setLayoutX(90.0);
-        back_btn.setLayoutY(20.0);
-        back_btn.setMinHeight(50.0);
-        back_btn.setMinWidth(110.0);
-        back_btn.setMnemonicParsing(false);
-        back_btn.setPrefHeight(31.0);
-        back_btn.setPrefWidth(90.0);
-        back_btn.setCursor(Cursor.HAND);
-        back_btn.setPadding(new Insets(0.0, 150.0, 0.0, 0.0));
+    winnerName.setLayoutX(707.0);
+    winnerName.setPrefHeight(34.0);
+    winnerName.setPrefWidth(274.0);
+    winnerName.setText("Israa");
+    winnerName.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
+    winnerName.setFont(new Font("Berlin Sans FB Bold", 50.0));
 
-        getChildren().add(imageView);
-        
-        getChildren().add(WinnerLabel);
-        getChildren().add(winnerName);
-        getChildren().add(back_btn);
-        // --add-modules javafx.controls,javafx.media
-        file =new File("C:/Users/dell/Desktop/winnerVideo.mp4");
-        media=new Media(file.toURI().toString());
-        mediaPlayer=new MediaPlayer(media);
-        congratsVideo.setMediaPlayer(mediaPlayer);
-        getChildren().add(congratsVideo);
-         mediaPlayer.play();
-    
-    }
-    
-    
-    
-    
+    back_btn.setLayoutX(90.0);
+    back_btn.setLayoutY(20.0);
+    back_btn.setMinHeight(50.0);
+    back_btn.setMinWidth(110.0);
+    back_btn.setMnemonicParsing(false);
+    back_btn.setPrefHeight(31.0);
+    back_btn.setPrefWidth(90.0);
+    back_btn.setCursor(Cursor.HAND);
+    back_btn.setPadding(new Insets(0.0, 150.0, 0.0, 0.0));
+
+    getChildren().add(imageView);
+
+    getChildren().add(WinnerLabel);
+    getChildren().add(winnerName);
+    getChildren().add(back_btn);
+    // --add-modules javafx.controls,javafx.media
+    file = new File("C:/Users/p&p/Desktop/winnerVideo.mp4");
+    media = new Media(file.toURI().toString());
+    mediaPlayer = new MediaPlayer(media);
+    congratsVideo.setMediaPlayer(mediaPlayer);
+    getChildren().add(congratsVideo);
+    mediaPlayer.play();
+
+  }
+
 }
