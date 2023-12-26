@@ -1,11 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ui.Screens;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -23,6 +22,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import ui.SceneController;
 import ui.components.GameButton;
 
 public class videoPopUp {
@@ -35,9 +35,8 @@ public class videoPopUp {
         Media media = new Media(new File("C:/Users/LEGION/Desktop/winnerVideo.mp4").toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         MediaView mediaView = new MediaView(mediaPlayer);
-        Button playAgain = new GameButton("Play Again", GameButton.Mode.NORMAL, () -> {
-            System.out.println("Play");
-        });
+        Button playAgain = new GameButton("Play Again", GameButton.Mode.NORMAL, () -> { });
+        
         playAgain.setPrefSize(250, 100);
         Button Back = new GameButton(GameButton.Mode.BACK, () -> {
             System.out.println("Back");
@@ -64,7 +63,16 @@ public class videoPopUp {
                 BackgroundSize.DEFAULT)));
 
         Scene scene = new Scene(root, 1200, 858);
-
+        
+        playAgain.setOnAction((event) -> {
+            try {
+                videoStage.close();
+                
+                new SceneController().switchToGameBoard(event);
+            } catch (IOException ex) {
+                Logger.getLogger(videoPopUp.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
         videoStage.setScene(scene);
         videoStage.setResizable(false);
         videoStage.setOnCloseRequest(event -> {
