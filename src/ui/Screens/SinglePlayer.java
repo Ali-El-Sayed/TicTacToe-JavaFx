@@ -1,24 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ui.Screens;
 
 import data.*;
 
-import java.util.Random;
-import java.util.Set;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 
-/**
- *
- * @author p&p
- */
 public class SinglePlayer extends GameBoardScreen implements CommonBehaviorInModes{
 
     Pc pc;
@@ -34,6 +23,7 @@ public class SinglePlayer extends GameBoardScreen implements CommonBehaviorInMod
 
     }
 
+    @Override
     public void initializeBtnHandler(){
          for (Node node : gridPane.getChildren()) {
             if (node.getClass() == Button.class) {
@@ -66,6 +56,7 @@ public class SinglePlayer extends GameBoardScreen implements CommonBehaviorInMod
             }
         }
     }
+    @Override
     public void handlePressedButton(ActionEvent event) {
         System.out.println("in handlePressedButton");
         Button btn = (Button) event.getTarget();
