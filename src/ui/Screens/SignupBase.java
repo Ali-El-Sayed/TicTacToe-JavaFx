@@ -1,8 +1,6 @@
 package ui.Screens;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -23,70 +21,76 @@ import ui.components.GameButton;
 
 public class SignupBase extends StackPane {
 
-    protected final ImageView imageView;
-    protected final BorderPane borderPane;
-    protected final Label label;
-    protected final FlowPane flowPane;
-    protected final Label label0;
-    protected final TextField fname_tf;
-    protected final Label label1;
-    protected final TextField lname_tf;
-    protected final Label label2;
-    protected final TextField email_tf;
-    protected final Label label3;
-    protected final PasswordField password_tf;
-    protected final TextField passwordrevealed_tf;
-    protected final FlowPane flowPane0;
-    protected final Button back_btn;
-    protected final FlowPane flowPane1;
-    protected final Button signup_btn;
-    protected final Button passreveal_btn;
-    protected final ImageView imageView0;
-    protected boolean togglePass;
-    public SignupBase() {
+    protected final ImageView imageView = new ImageView();
+    protected final BorderPane borderPane = new BorderPane();
+    protected final Label label = new Label();
+    protected final FlowPane flowPane = new FlowPane();
+    protected final Label label0 = new Label();
+    protected final TextField fname_tf = new TextField();
+    protected final Label label1 = new Label();
+    protected final TextField lname_tf = new TextField();
+    protected final Label label2 = new Label();
+    protected final TextField email_tf = new TextField();
+    protected final Label label3 = new Label();
+    protected final PasswordField password_tf = new PasswordField();
+    protected final TextField passwordrevealed_tf = new TextField();
+    protected final FlowPane flowPane0 = new FlowPane();
+    protected final Button back_btn = new GameButton("", GameButton.Mode.BACK, () -> {
+    });
+    protected final FlowPane flowPane1 = new FlowPane();
+    protected final Button signup_btn = new GameButton("Sign up", GameButton.Mode.NORMAL, () -> {
+    });
+    protected final Button passreveal_btn = new Button();
+    protected final ImageView imageView0 = new ImageView();
+    protected boolean togglePass = false;
 
-        togglePass=false;
-        imageView = new ImageView();
-        borderPane = new BorderPane();
-        label = new Label();
-        flowPane = new FlowPane();
-        label0 = new Label();
-        fname_tf = new TextField();
-        label1 = new Label();
-        lname_tf = new TextField();
-        label2 = new Label();
-        email_tf = new TextField();
-        label3 = new Label();
-        password_tf = new PasswordField();
-        passwordrevealed_tf = new TextField();
-        flowPane0 = new FlowPane();
-        back_btn = new GameButton("", GameButton.Mode.BACK, () -> {});
+    public SignupBase() {
+        setupLayout();
+
         back_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 try {
                     new SceneController().switchToLogInSignUp(event);
                 } catch (IOException ex) {
-                    Logger.getLogger(SignupBase.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.printStackTrace();
                 }
             }
         });
-        flowPane1 = new FlowPane();
-        signup_btn = new GameButton("Sign up", GameButton.Mode.NORMAL, () -> {
-        });
+
         signup_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 try {
                     new SceneController().switchToLogIn(event);
                 } catch (IOException ex) {
-                    Logger.getLogger(SignupBase.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.printStackTrace();
                 }
             }
         });
-        passreveal_btn = new Button();
-        imageView0 = new ImageView();
+        passreveal_btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (!togglePass) {
+                    passwordrevealed_tf.setText(password_tf.getText());
+                    togglePass = true;
+                    passwordrevealed_tf.setVisible(true);
+                    password_tf.setVisible(false);
+                    imageView0.setImage(new Image(getClass().getResource("/assets/open.png").toExternalForm()));
 
+                } else {
+                    togglePass = false;
+                    password_tf.setText(passwordrevealed_tf.getText());
+                    passwordrevealed_tf.setVisible(false);
+                    password_tf.setVisible(true);
+                    imageView0.setImage(new Image(getClass().getResource("/assets/closed.png").toExternalForm()));
+
+                }
+            }
+        });
+    }
+
+    private void setupLayout() {
         flowPane1.setAlignment(Pos.BOTTOM_CENTER);
         flowPane1.setAlignment(Pos.BOTTOM_CENTER);
         setMaxHeight(USE_PREF_SIZE);
@@ -264,27 +268,5 @@ public class SignupBase extends StackPane {
         flowPane1.getChildren().add(signup_btn);
         getChildren().add(borderPane);
         getChildren().add(passreveal_btn);
-
-        passreveal_btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(!togglePass){
-                    passwordrevealed_tf.setText(password_tf.getText());
-                    togglePass=true;
-                    passwordrevealed_tf.setVisible(true);
-                    password_tf.setVisible(false);
-                    imageView0.setImage(new Image(getClass().getResource("/assets/open.png").toExternalForm()));
-                    
-                }
-                else{
-                    togglePass=false;
-                    password_tf.setText(passwordrevealed_tf.getText());
-                    passwordrevealed_tf.setVisible(false);
-                    password_tf.setVisible(true);
-                    imageView0.setImage(new Image(getClass().getResource("/assets/closed.png").toExternalForm()));
-                     
-                }
-            }
-        });
     }
 }
