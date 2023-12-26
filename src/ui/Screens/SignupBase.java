@@ -138,13 +138,7 @@ public class SignupBase extends StackPane {
         label0.setTextFill(javafx.scene.paint.Color.WHITE);
         label0.setFont(new Font("Berlin Sans FB Bold", 45.0));
 
-        username_tf.setMaxWidth(650.0);
-        username_tf.setMinHeight(60.0);
-        username_tf.setMinWidth(0.0);
-        username_tf.setPrefHeight(30.0);
-        username_tf.setPrefWidth(0.0);
-        username_tf.setFont(new Font("Berlin Sans FB Bold", 24.0));
-        FlowPane.setMargin(username_tf, new Insets(-30.0, 0.0, 0.0, 0.0));
+       
 
         label2.setAlignment(javafx.geometry.Pos.TOP_LEFT);
         label2.setPrefHeight(50.0);
@@ -241,7 +235,6 @@ public class SignupBase extends StackPane {
 
         getChildren().add(imageView);
         flowPane.getChildren().add(label0);
-        flowPane.getChildren().add(username_tf);
         flowPane.getChildren().add(label2);
         flowPane.getChildren().add(email_tf);
         flowPane.getChildren().add(label3);
@@ -253,13 +246,11 @@ public class SignupBase extends StackPane {
         getChildren().add(passreveal_btn);
 
         revealPassword(passreveal_btn, password_tf, passwordrevealed_tf);
-        validateSignUp(username_tf, email_tf, password_tf, passwordrevealed_tf, signup_btn);
     }
 
     void revealPassword(Button btn, TextField password, TextField passRevealed) {
 
         btn.setOnAction(new EventHandler<ActionEvent>() {
-            //boolean togglePass = false;
 
             @Override
             public void handle(ActionEvent event) {
@@ -284,7 +275,6 @@ public class SignupBase extends StackPane {
 
     void validateSignUp(TextField username, TextField email, TextField password, TextField passRev, Button btn) {
         final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        boolean toggleFields = false;
         Label usernameLabel = new Label();
         usernameLabel.setAlignment(javafx.geometry.Pos.BASELINE_LEFT);
         Label emailLabel = new Label();

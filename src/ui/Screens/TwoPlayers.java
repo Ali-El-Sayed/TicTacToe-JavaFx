@@ -10,12 +10,9 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 
-
-
-public class TwoPlayers extends GameBoardScreen implements CommonBehaviorInModes{
+public class TwoPlayers extends GameBoardScreen implements CommonBehaviorInModes {
 
     public TwoPlayers() {
-        super();
     }
 
     @Override
@@ -39,7 +36,6 @@ public class TwoPlayers extends GameBoardScreen implements CommonBehaviorInModes
         }
     }
 
-
     @Override
     public void handlePressedButton(ActionEvent event) {
         Button btn = (Button) event.getTarget();
@@ -50,5 +46,5 @@ public class TwoPlayers extends GameBoardScreen implements CommonBehaviorInModes
 
         });
     }
-    
+
 }
