@@ -10,11 +10,13 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 
-/**
- *
- * @author p&p
- */
+
+
 public class TwoPlayers extends GameBoardScreen implements CommonBehaviorInModes{
+
+    public TwoPlayers() {
+        super();
+    }
 
     @Override
     public void initializeBtnHandler() {
