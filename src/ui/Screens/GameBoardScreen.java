@@ -456,15 +456,6 @@ public class GameBoardScreen extends StackPane {
     }
 
     private void handleGameOver(ActionEvent e) {
-
-        try {
-            new SceneController().switchToVideoScreen(e);
-
-        } catch (IOException ex) {
-            Logger.getLogger(GameBoardScreen.class
-                    .getName()).log(Level.SEVERE, null, ex);
-
-        }
     }
 
     private void handleWinner(int[] winCase) {

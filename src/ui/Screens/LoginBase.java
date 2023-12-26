@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,7 +20,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import ui.SceneController;
 import ui.components.GameButton;
-
 
 public class LoginBase extends StackPane {
 
@@ -42,11 +42,12 @@ public class LoginBase extends StackPane {
         label = new Label();
         flowPane = new FlowPane();
         flowPane0 = new FlowPane();
-        back_btn = new GameButton("", GameButton.Mode.BACK, () -> {});
+        back_btn = new GameButton("", GameButton.Mode.BACK, () -> {
+        });
         back_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                    
+
                 try {
                     new SceneController().switchToLogInSignUp(event);
                 } catch (IOException ex) {
@@ -55,7 +56,8 @@ public class LoginBase extends StackPane {
 
             }
         });
-        login_btn = new GameButton("Login", GameButton.Mode.NORMAL, () -> { });
+        login_btn = new GameButton("Login", GameButton.Mode.NORMAL, () -> {
+        });
         login_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -165,6 +167,45 @@ public class LoginBase extends StackPane {
         getChildren().add(email_tf);
         getChildren().add(password_tf);
         getChildren().add(label1);
+        validateLogin(email_tf, password_tf);
+    }
 
+    public void validateLogin(TextField emailTF, TextField passwordTF) {
+        final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Label emailLabel = new Label();
+        emailLabel.setTextFill(javafx.scene.paint.Color.RED);
+        Label passwordLabel = new Label("Please enter your password");
+        passwordLabel.setTextFill(javafx.scene.paint.Color.RED);
+        emailLabel.setVisible(false);
+        passwordLabel.setVisible(false);
+        emailLabel.setPrefWidth(260);
+        passwordLabel.setPrefWidth(260);
+        StackPane.setMargin(emailLabel, new Insets(-10.0, 180.0, 0.0, 0.0));
+        StackPane.setMargin(passwordLabel, new Insets(210.0, 180.0, 0.0, 0.0));
+        getChildren().add(emailLabel);
+        getChildren().add(passwordLabel);
+        login_btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (emailTF.getText().isEmpty()) {
+                    emailLabel.setText("Please enter your email address");
+                    emailLabel.setVisible(true);
+                } else if ((!emailTF.getText().matches(EMAIL_REGEX)) && (!emailTF.getText().isEmpty())) {
+                    emailLabel.setText("Please enter a valid email address");
+                    emailLabel.setVisible(true);
+                } else {
+                    emailLabel.setVisible(false);
+                }
+                if (passwordTF.getText().isEmpty()) {
+                    passwordLabel.setText("Please enter your password");
+                    passwordLabel.setVisible(true);
+                } else if ((passwordTF.getText().length() < 8) && (!passwordTF.getText().isEmpty())) {
+                    passwordLabel.setText("Password must be at least 8 characters");
+                    passwordLabel.setVisible(true);
+                } else {
+                    passwordLabel.setVisible(false);
+                }
+            }
+        });
     }
 }
