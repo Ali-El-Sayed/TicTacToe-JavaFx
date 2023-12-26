@@ -1,14 +1,19 @@
 package ui;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import ui.Screens.AboutUsBase;
 import ui.Screens.AvailablePlayersScreen;
 import ui.Screens.GameBoardScreen;
@@ -26,7 +31,9 @@ public class SceneController {
     private Stage stage;
     private Scene scene;
     private Parent root;
-
+    
+    
+    
     public void switchToSelectMode(ActionEvent event) throws IOException {
         root = new SelectModeBase();
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -119,7 +126,7 @@ public class SceneController {
             } catch (InterruptedException ex) {
                 Logger.getLogger(SceneController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        });
+        });      
     }
-
+    
 }
