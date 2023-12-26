@@ -7,6 +7,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ui.Screens.GameBoardScreen;
+import ui.Screens.LoginBase;
+import ui.Screens.SignupBase;
 
 public class TicTacToe extends Application {
   @Override

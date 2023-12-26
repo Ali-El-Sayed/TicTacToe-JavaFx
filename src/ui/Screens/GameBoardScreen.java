@@ -473,6 +473,33 @@ public class GameBoardScreen extends StackPane {
       }
     }
 
+    private void handleTurn(ActionEvent event) throws IOException {
+        btn = (Button) event.getTarget();
+
+        mouth.println(btn.getText());
+        btn.setText(str1);
+        System.out.println(str1);
+        isX = !isX;
+        btn.setOnAction((e) -> {
+        });
+    }
+
+    private boolean isWinner() {
+        for (int[] winCase : winProbabilities) {
+            if (checkedBtns.getOrDefault(winCase[0], "A").equals(checkedBtns.getOrDefault(winCase[1], "B"))
+                    && checkedBtns.getOrDefault(winCase[0], "D").equals(checkedBtns.getOrDefault(winCase[2], "D"))) {
+                handleWinner(winCase);
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
+    private void handleGameOver(ActionEvent e) {
+    }
+
     return false;
 
   }

@@ -129,37 +129,22 @@ public class SignupBase extends StackPane {
         flowPane.setOrientation(javafx.geometry.Orientation.VERTICAL);
         flowPane.setPrefHeight(200.0);
         flowPane.setPrefWidth(200.0);
-        flowPane.setVgap(30.0);
+        flowPane.setVgap(50.0);
 
         label0.setAlignment(javafx.geometry.Pos.TOP_LEFT);
         label0.setPrefHeight(50.0);
         label0.setPrefWidth(350.0);
-        label0.setText("First Name");
+        label0.setText("Username");
         label0.setTextFill(javafx.scene.paint.Color.WHITE);
         label0.setFont(new Font("Berlin Sans FB Bold", 45.0));
 
-        fname_tf.setMaxWidth(650.0);
-        fname_tf.setMinHeight(60.0);
-        fname_tf.setMinWidth(0.0);
-        fname_tf.setPrefHeight(30.0);
-        fname_tf.setPrefWidth(0.0);
-        fname_tf.setFont(new Font("Berlin Sans FB Bold", 24.0));
-        FlowPane.setMargin(fname_tf, new Insets(-30.0, 0.0, 0.0, 0.0));
-
-        label1.setAlignment(javafx.geometry.Pos.TOP_LEFT);
-        label1.setPrefHeight(50.0);
-        label1.setPrefWidth(350.0);
-        label1.setText("Last Name");
-        label1.setTextFill(javafx.scene.paint.Color.WHITE);
-        label1.setFont(new Font("Berlin Sans FB Bold", 45.0));
-
-        lname_tf.setMaxWidth(650.0);
-        lname_tf.setMinHeight(60.0);
-        lname_tf.setMinWidth(0.0);
-        lname_tf.setPrefHeight(30.0);
-        lname_tf.setPrefWidth(0.0);
-        lname_tf.setFont(new Font("Berlin Sans FB Bold", 24.0));
-        FlowPane.setMargin(lname_tf, new Insets(-30.0, 0.0, 0.0, 0.0));
+        username_tf.setMaxWidth(650.0);
+        username_tf.setMinHeight(60.0);
+        username_tf.setMinWidth(0.0);
+        username_tf.setPrefHeight(30.0);
+        username_tf.setPrefWidth(0.0);
+        username_tf.setFont(new Font("Berlin Sans FB Bold", 24.0));
+        FlowPane.setMargin(username_tf, new Insets(-30.0, 0.0, 0.0, 0.0));
 
         label2.setAlignment(javafx.geometry.Pos.TOP_LEFT);
         label2.setPrefHeight(50.0);
@@ -188,7 +173,7 @@ public class SignupBase extends StackPane {
         password_tf.setMinWidth(0.0);
         password_tf.setPrefHeight(30.0);
         password_tf.setPrefWidth(509.0);
-        FlowPane.setMargin(password_tf, new Insets(-30.0, 0.0, 0.0, 0.0));
+        FlowPane.setMargin(password_tf, new Insets(-110.0, 0.0, 0.0, 0.0));
         password_tf.setFont(new Font("Berlin Sans FB Bold", 24.0));
         passwordrevealed_tf.setMaxWidth(650.0);
         passwordrevealed_tf.setMinHeight(60.0);
@@ -196,7 +181,7 @@ public class SignupBase extends StackPane {
         passwordrevealed_tf.setPrefHeight(30.0);
         passwordrevealed_tf.setPrefWidth(509.0);
         passwordrevealed_tf.setVisible(false);
-        FlowPane.setMargin(passwordrevealed_tf, new Insets(0.0, 0.0, -60.0, 0.0));
+        FlowPane.setMargin(passwordrevealed_tf, new Insets(-30.0, 0.0, 0.0, 0.0));
         passwordrevealed_tf.toBack();
         password_tf.toFront();
         passwordrevealed_tf.setFont(new Font("Berlin Sans FB Bold", 24.0));
@@ -245,7 +230,7 @@ public class SignupBase extends StackPane {
         passreveal_btn.setPrefHeight(1.0);
         passreveal_btn.setPrefWidth(1.0);
         passreveal_btn.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-        StackPane.setMargin(passreveal_btn, new Insets(0.0, -350.0, -550.0, 0.0));
+        StackPane.setMargin(passreveal_btn, new Insets(-155.0, -350.0, -550.0, 0.0));
 
         imageView0.setFitHeight(35.0);
         imageView0.setFitWidth(50.0);
@@ -256,9 +241,7 @@ public class SignupBase extends StackPane {
 
         getChildren().add(imageView);
         flowPane.getChildren().add(label0);
-        flowPane.getChildren().add(fname_tf);
-        flowPane.getChildren().add(label1);
-        flowPane.getChildren().add(lname_tf);
+        flowPane.getChildren().add(username_tf);
         flowPane.getChildren().add(label2);
         flowPane.getChildren().add(email_tf);
         flowPane.getChildren().add(label3);
@@ -268,5 +251,105 @@ public class SignupBase extends StackPane {
         flowPane1.getChildren().add(signup_btn);
         getChildren().add(borderPane);
         getChildren().add(passreveal_btn);
+
+        revealPassword(passreveal_btn, password_tf, passwordrevealed_tf);
+        validateSignUp(username_tf, email_tf, password_tf, passwordrevealed_tf, signup_btn);
+    }
+
+    void revealPassword(Button btn, TextField password, TextField passRevealed) {
+
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            //boolean togglePass = false;
+
+            @Override
+            public void handle(ActionEvent event) {
+
+                if (!togglePass) {
+                    passRevealed.setText(password.getText());
+                    passRevealed.setVisible(true);
+                    password.setVisible(false);
+                    imageView0.setImage(new Image(getClass().getResource("/assets/open.png").toExternalForm()));
+                    togglePass = !togglePass;
+                } else {
+
+                    password.setText(passRevealed.getText());
+                    passRevealed.setVisible(false);
+                    password.setVisible(true);
+                    imageView0.setImage(new Image(getClass().getResource("/assets/closed.png").toExternalForm()));
+                    togglePass = !togglePass;
+                }
+            }
+        });
+    }
+
+    void validateSignUp(TextField username, TextField email, TextField password, TextField passRev, Button btn) {
+        final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        boolean toggleFields = false;
+        Label usernameLabel = new Label();
+        usernameLabel.setAlignment(javafx.geometry.Pos.BASELINE_LEFT);
+        Label emailLabel = new Label();
+        Label passwordLabel = new Label();
+        usernameLabel.setTextFill(javafx.scene.paint.Color.RED);
+        emailLabel.setTextFill(javafx.scene.paint.Color.RED);
+        passwordLabel.setTextFill(javafx.scene.paint.Color.RED);
+        usernameLabel.setVisible(false);
+        usernameLabel.setPrefWidth(260);
+        emailLabel.setPrefWidth(260);
+        passwordLabel.setPrefWidth(260);
+        usernameLabel.setAlignment(Pos.CENTER_LEFT);
+        emailLabel.setVisible(false);
+        passwordLabel.setVisible(false);
+        StackPane.setMargin(usernameLabel, new Insets(-280.0, 290.0, 0.0, 0.0));
+        StackPane.setMargin(emailLabel, new Insets(100.0, 290.0, 0.0, 0.0));
+        StackPane.setMargin(passwordLabel, new Insets(480.0, 290.0, 0.0, 0.0));
+        getChildren().add(usernameLabel);
+        getChildren().add(emailLabel);
+        getChildren().add(passwordLabel);
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (username.getText().isEmpty()) {
+                    usernameLabel.setText("Please enter your username");
+                    usernameLabel.setVisible(true);
+                } else if ((username.getText().length() < 4) && (!username.getText().isEmpty())) {
+                    usernameLabel.setText("Username must be at least 4 characters");
+                    usernameLabel.setVisible(true);
+                } else {
+                    usernameLabel.setVisible(false);
+                }
+
+                if (email.getText().isEmpty()) {
+                    emailLabel.setText("Please enter your email address");
+                    emailLabel.setVisible(true);
+                } else if ((!email.getText().matches(EMAIL_REGEX)) && (!email.getText().isEmpty())) {
+                    emailLabel.setText("Please enter a valid email address");
+                    emailLabel.setVisible(true);
+                } else {
+                    emailLabel.setVisible(false);
+                }
+
+                if (!togglePass) {
+                    if (password.getText().isEmpty()) {
+                        passwordLabel.setText("Please enter your password");
+                        passwordLabel.setVisible(true);
+                    } else if ((password.getText().length() < 8) && (!password.getText().isEmpty())) {
+                        passwordLabel.setText("Password must be at least 8 characters");
+                        passwordLabel.setVisible(true);
+                    } else {
+                        passwordLabel.setVisible(false);
+                    }
+                } else {
+                    if (passRev.getText().isEmpty()) {
+                        passwordLabel.setText("Please enter your password");
+                        passwordLabel.setVisible(true);
+                    } else if ((passRev.getText().length() < 8) && (!passRev.getText().isEmpty())) {
+                        passwordLabel.setText("Password must be at least 8 characters");
+                        passwordLabel.setVisible(true);
+                    } else {
+                        passwordLabel.setVisible(false);
+                    }
+                }
+            }
+        });
     }
 }

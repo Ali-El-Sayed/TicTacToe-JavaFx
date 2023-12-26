@@ -9,10 +9,13 @@ import java.net.Socket;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 public class GameHandler extends Thread {
     BufferedReader ear;
     PrintStream mouth;
+
     static Vector<GameHandler> clients = new Vector<GameHandler>();
 
     public GameHandler(Socket cs) {

@@ -19,7 +19,6 @@ import ui.Screens.SelectLevelScreen;
 import ui.Screens.SelectModeBase;
 import ui.Screens.SignupBase;
 import ui.Screens.SplashScreenBase;
-import ui.Screens.VideoScreenBase;
 
 public class SceneController {
 
@@ -105,21 +104,6 @@ public class SceneController {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-    }
-
-    public void switchToVideoScreen(ActionEvent event) throws IOException {
-        root = new VideoScreenBase();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        Platform.runLater(() -> {
-            try {
-                Thread.sleep(1000);
-                stage.setScene(scene);
-                stage.show();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(SceneController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
     }
 
 }
