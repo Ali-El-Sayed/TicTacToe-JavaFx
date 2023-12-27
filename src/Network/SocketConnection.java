@@ -13,6 +13,14 @@ public class SocketConnection extends Thread {
     private BufferedReader receiver;
     private PrintStream sender;
 
+    public BufferedReader getReceiver() {
+        return receiver;
+    }
+
+    public PrintStream getSender() {
+        return sender;
+    }
+
     private SocketConnection() {
         initializeSocket();
     }
@@ -28,13 +36,11 @@ public class SocketConnection extends Thread {
     private void initializeSocket() {
         try {
             socket = new Socket(Endpoint.SERVER_IP, Endpoint.PORT_NUMBER);
-            this.start();
+            System.out.println("Connection Stablished : " + socket.isConnected());
+
         } catch (IOException ex) {
             System.err.println("Connection Failed");
         }
-    }
-
-    private void setupIOSteams() {
         if (socket.isConnected()) {
             try {
                 receiver = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -43,18 +49,17 @@ public class SocketConnection extends Thread {
                 System.err.println("Failed IO");
             }
         }
+        this.start();
+    }
+
+    private void setupIOSteams() {
 
         while (socket.isConnected()) {
             try {
                 String receivedMessage = receiver.readLine();
                 if (!receivedMessage.isEmpty()) {
                     System.out.println(receivedMessage);
-
                 }
-                for (int i = 0; i < 10; i++) {
-                    sender.println("Hello");
-                }
-
             } catch (IOException ex) {
 
             }

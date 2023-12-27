@@ -35,11 +35,22 @@ public class SelectLevelScreen extends VBox {
         hBox = new HBox();
         headerL = new Label();
         hBox0 = new HBox();
-        btnEasy = new GameButton("Easy", GameButton.Mode.NORMAL, () -> { });
-        btnIntermediate = new GameButton("Intermediate", GameButton.Mode.NORMAL, () -> {});
-        btnHard = new GameButton("Hard", GameButton.Mode.NORMAL, () -> {});
+        btnEasy = new GameButton("Easy", GameButton.Mode.NORMAL, () -> {
+        });
+        btnEasy.setOnAction((e) -> {
+            try {
+                new SceneController().switchToGameBoard(e);
+            } catch (IOException ex) {
+                Logger.getLogger(SelectLevelScreen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        btnIntermediate = new GameButton("Intermediate", GameButton.Mode.NORMAL, () -> {
+        });
+        btnHard = new GameButton("Hard", GameButton.Mode.NORMAL, () -> {
+        });
         hBox1 = new HBox();
-        btnBack = new GameButton(GameButton.Mode.BACK, () -> {});
+        btnBack = new GameButton(GameButton.Mode.BACK, () -> {
+        });
         btnBack.setOnAction((ActionEvent event) -> {
             SceneController sceneController = new SceneController();
             try {

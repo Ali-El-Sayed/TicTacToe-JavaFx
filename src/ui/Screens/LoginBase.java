@@ -1,12 +1,15 @@
 package ui.Screens;
 
+import Network.Request.NetworkRequest;
+import Network.Request.RequestHandler;
+import Network.Request.data.LoginRequest;
+import Network.SocketConnection;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -61,11 +64,15 @@ public class LoginBase extends StackPane {
         login_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                try {
-                    new SceneController().switchToAvailablePlayersScreen(event);
-                } catch (IOException ex) {
-                    System.out.println("error on navigate to AvailablePlayersScreen");
-                }
+                System.out.println("Login BTN ");
+//                    new SceneController().switchToAvailablePlayersScreen(event);
+                NetworkRequest<LoginRequest> networkRequest = new NetworkRequest<>();
+                networkRequest.setRequestType(NetworkRequest.RequestType.LOGIN);
+                networkRequest.setRequestData(new LoginRequest(email_tf.getText(), password_tf.getText()));
+                String requestJson = RequestHandler.getJsonRequest(networkRequest);
+                System.out.println(requestJson);
+                SocketConnection.getInstance().getSender().println(requestJson);
+
             }
         });
         label0 = new Label();
@@ -184,28 +191,29 @@ public class LoginBase extends StackPane {
         StackPane.setMargin(passwordLabel, new Insets(210.0, 180.0, 0.0, 0.0));
         getChildren().add(emailLabel);
         getChildren().add(passwordLabel);
-        login_btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (emailTF.getText().isEmpty()) {
-                    emailLabel.setText("Please enter your email address");
-                    emailLabel.setVisible(true);
-                } else if ((!emailTF.getText().matches(EMAIL_REGEX)) && (!emailTF.getText().isEmpty())) {
-                    emailLabel.setText("Please enter a valid email address");
-                    emailLabel.setVisible(true);
-                } else {
-                    emailLabel.setVisible(false);
-                }
-                if (passwordTF.getText().isEmpty()) {
-                    passwordLabel.setText("Please enter your password");
-                    passwordLabel.setVisible(true);
-                } else if ((passwordTF.getText().length() < 8) && (!passwordTF.getText().isEmpty())) {
-                    passwordLabel.setText("Password must be at least 8 characters");
-                    passwordLabel.setVisible(true);
-                } else {
-                    passwordLabel.setVisible(false);
-                }
-            }
-        });
+//        login_btn.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                if (emailTF.getText().isEmpty()) {
+//                    emailLabel.setText("Please enter your email address");
+//                    emailLabel.setVisible(true);
+//                } else if ((!emailTF.getText().matches(EMAIL_REGEX)) && (!emailTF.getText().isEmpty())) {
+//                    emailLabel.setText("Please enter a valid email address");
+//                    emailLabel.setVisible(true);
+//                } else {
+//                    emailLabel.setVisible(false);
+//                }
+//                if (passwordTF.getText().isEmpty()) {
+//                    passwordLabel.setText("Please enter your password");
+//                    passwordLabel.setVisible(true);
+//                } else if ((passwordTF.getText().length() < 8) && (!passwordTF.getText().isEmpty())) {
+//                    passwordLabel.setText("Password must be at least 8 characters");
+//                    passwordLabel.setVisible(true);
+//                } else {
+//                    passwordLabel.setVisible(false);
+//                }
+//            }
+//        });
+//    }
     }
 }

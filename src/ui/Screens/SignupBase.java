@@ -52,7 +52,6 @@ public class SignupBase extends StackPane {
 
     public SignupBase() {
         setupLayout();
-
         back_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -69,11 +68,7 @@ public class SignupBase extends StackPane {
             public void handle(ActionEvent event) {
 
                 if (validateEntries(username_tf, email_tf, password_tf, passwordrevealed_tf)) {
-                    try {
-                        new SceneController().switchToAvailablePlayersScreen(event);
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
+
                 }
             }
         });
@@ -132,8 +127,6 @@ public class SignupBase extends StackPane {
         label0.setText("Username");
         label0.setTextFill(javafx.scene.paint.Color.WHITE);
         label0.setFont(new Font("Berlin Sans FB Bold", 45.0));
-
-       
 
         label2.setAlignment(javafx.geometry.Pos.TOP_LEFT);
         label2.setPrefHeight(50.0);
@@ -303,7 +296,6 @@ public class SignupBase extends StackPane {
     }
 
     boolean validatePassword(TextField password, TextField passRev) {
-//       final String PASSWORD_REGEX = "^[^\\s]+$";
         final String PASSWORD_REGEX = "^\\S+$";
         if (!togglePass) {
             if (password.getText().isEmpty()) {
@@ -326,11 +318,10 @@ public class SignupBase extends StackPane {
             } else if ((!passRev.getText().matches(PASSWORD_REGEX))) {
                 passwordLabel.setText("Password must be have no spaces");
                 return false;
-            }
-            else if ((passRev.getText().length() < 8)) {
+            } else if ((passRev.getText().length() < 8)) {
                 passwordLabel.setText("Password must be at least 8 characters");
                 return false;
-            }  else {
+            } else {
                 passwordLabel.setText("");
                 return true;
             }
