@@ -26,9 +26,14 @@ public class SignupBase extends StackPane {
     protected final Label label = new Label();
     protected final FlowPane flowPane = new FlowPane();
     protected final Label label0 = new Label();
+    protected final Label usernameLabel = new Label();
+    protected final Label emailLabel = new Label();
+    protected final Label passwordLabel = new Label();
+
     protected final TextField fname_tf = new TextField();
     protected final Label label1 = new Label();
     protected final TextField lname_tf = new TextField();
+    protected final TextField username_tf = new TextField();
     protected final Label label2 = new Label();
     protected final TextField email_tf = new TextField();
     protected final Label label3 = new Label();
@@ -43,6 +48,7 @@ public class SignupBase extends StackPane {
     protected final Button passreveal_btn = new Button();
     protected final ImageView imageView0 = new ImageView();
     protected boolean togglePass = false;
+    protected boolean togglePassField = false;
 
     public SignupBase() {
         setupLayout();
@@ -61,31 +67,20 @@ public class SignupBase extends StackPane {
         signup_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                try {
-                    new SceneController().switchToLogIn(event);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+
+                if (validateEntries(username_tf, email_tf, password_tf, passwordrevealed_tf)) {
+                    try {
+                        new SceneController().switchToAvailablePlayersScreen(event);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
         });
         passreveal_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (!togglePass) {
-                    passwordrevealed_tf.setText(password_tf.getText());
-                    togglePass = true;
-                    passwordrevealed_tf.setVisible(true);
-                    password_tf.setVisible(false);
-                    imageView0.setImage(new Image(getClass().getResource("/assets/open.png").toExternalForm()));
-
-                } else {
-                    togglePass = false;
-                    password_tf.setText(passwordrevealed_tf.getText());
-                    passwordrevealed_tf.setVisible(false);
-                    password_tf.setVisible(true);
-                    imageView0.setImage(new Image(getClass().getResource("/assets/closed.png").toExternalForm()));
-
-                }
+                revealPassword(password_tf, passwordrevealed_tf);
             }
         });
     }
@@ -251,105 +246,107 @@ public class SignupBase extends StackPane {
         flowPane1.getChildren().add(signup_btn);
         getChildren().add(borderPane);
         getChildren().add(passreveal_btn);
-
-        revealPassword(passreveal_btn, password_tf, passwordrevealed_tf);
-        validateSignUp(username_tf, email_tf, password_tf, passwordrevealed_tf, signup_btn);
-    }
-
-    void revealPassword(Button btn, TextField password, TextField passRevealed) {
-
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            //boolean togglePass = false;
-
-            @Override
-            public void handle(ActionEvent event) {
-
-                if (!togglePass) {
-                    passRevealed.setText(password.getText());
-                    passRevealed.setVisible(true);
-                    password.setVisible(false);
-                    imageView0.setImage(new Image(getClass().getResource("/assets/open.png").toExternalForm()));
-                    togglePass = !togglePass;
-                } else {
-
-                    password.setText(passRevealed.getText());
-                    passRevealed.setVisible(false);
-                    password.setVisible(true);
-                    imageView0.setImage(new Image(getClass().getResource("/assets/closed.png").toExternalForm()));
-                    togglePass = !togglePass;
-                }
-            }
-        });
-    }
-
-    void validateSignUp(TextField username, TextField email, TextField password, TextField passRev, Button btn) {
-        final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        boolean toggleFields = false;
-        Label usernameLabel = new Label();
-        usernameLabel.setAlignment(javafx.geometry.Pos.BASELINE_LEFT);
-        Label emailLabel = new Label();
-        Label passwordLabel = new Label();
         usernameLabel.setTextFill(javafx.scene.paint.Color.RED);
+        usernameLabel.setPrefWidth(260);
         emailLabel.setTextFill(javafx.scene.paint.Color.RED);
         passwordLabel.setTextFill(javafx.scene.paint.Color.RED);
-        usernameLabel.setVisible(false);
-        usernameLabel.setPrefWidth(260);
         emailLabel.setPrefWidth(260);
         passwordLabel.setPrefWidth(260);
-        usernameLabel.setAlignment(Pos.CENTER_LEFT);
-        emailLabel.setVisible(false);
-        passwordLabel.setVisible(false);
-        StackPane.setMargin(usernameLabel, new Insets(-280.0, 290.0, 0.0, 0.0));
         StackPane.setMargin(emailLabel, new Insets(100.0, 290.0, 0.0, 0.0));
         StackPane.setMargin(passwordLabel, new Insets(480.0, 290.0, 0.0, 0.0));
-        getChildren().add(usernameLabel);
+        StackPane.setMargin(usernameLabel, new Insets(-280.0, 290.0, 0.0, 0.0));
         getChildren().add(emailLabel);
         getChildren().add(passwordLabel);
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (username.getText().isEmpty()) {
-                    usernameLabel.setText("Please enter your username");
-                    usernameLabel.setVisible(true);
-                } else if ((username.getText().length() < 4) && (!username.getText().isEmpty())) {
-                    usernameLabel.setText("Username must be at least 4 characters");
-                    usernameLabel.setVisible(true);
-                } else {
-                    usernameLabel.setVisible(false);
-                }
+        getChildren().add(usernameLabel);
 
-                if (email.getText().isEmpty()) {
-                    emailLabel.setText("Please enter your email address");
-                    emailLabel.setVisible(true);
-                } else if ((!email.getText().matches(EMAIL_REGEX)) && (!email.getText().isEmpty())) {
-                    emailLabel.setText("Please enter a valid email address");
-                    emailLabel.setVisible(true);
-                } else {
-                    emailLabel.setVisible(false);
-                }
-
-                if (!togglePass) {
-                    if (password.getText().isEmpty()) {
-                        passwordLabel.setText("Please enter your password");
-                        passwordLabel.setVisible(true);
-                    } else if ((password.getText().length() < 8) && (!password.getText().isEmpty())) {
-                        passwordLabel.setText("Password must be at least 8 characters");
-                        passwordLabel.setVisible(true);
-                    } else {
-                        passwordLabel.setVisible(false);
-                    }
-                } else {
-                    if (passRev.getText().isEmpty()) {
-                        passwordLabel.setText("Please enter your password");
-                        passwordLabel.setVisible(true);
-                    } else if ((passRev.getText().length() < 8) && (!passRev.getText().isEmpty())) {
-                        passwordLabel.setText("Password must be at least 8 characters");
-                        passwordLabel.setVisible(true);
-                    } else {
-                        passwordLabel.setVisible(false);
-                    }
-                }
-            }
-        });
     }
+
+    void revealPassword(TextField password, TextField passRevealed) {
+        if (!togglePass) {
+            passRevealed.setText(password.getText());
+            passRevealed.setVisible(true);
+            password.setVisible(false);
+            imageView0.setImage(new Image(getClass().getResource("/assets/open.png").toExternalForm()));
+            togglePass = !togglePass;
+        } else {
+
+            password.setText(passRevealed.getText());
+            passRevealed.setVisible(false);
+            password.setVisible(true);
+            imageView0.setImage(new Image(getClass().getResource("/assets/closed.png").toExternalForm()));
+            togglePass = !togglePass;
+        }
+    }
+
+    boolean validateUsername(TextField username) {
+        final String USERNAME_REGEX = "^\\S+$";
+        if (username.getText().isEmpty()) {
+            usernameLabel.setText("Please enter your username");
+            return false;
+        } else if ((username.getText().length() < 4) && (!username.getText().isEmpty())) {
+            usernameLabel.setText("Username must be at least 4 characters");
+            return false;
+        } else if ((!username.getText().matches(USERNAME_REGEX)) && (!username.getText().isEmpty())) {
+            usernameLabel.setText("Password must be have no spaces");
+            return false;
+        } else {
+            usernameLabel.setText("");
+            return true;
+        }
+    }
+
+    boolean validateEmail(TextField email) {
+        final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        if (email.getText().isEmpty()) {
+            emailLabel.setText("Please enter your email address");
+            return false;
+        } else if ((!email.getText().matches(EMAIL_REGEX)) && (!email.getText().isEmpty())) {
+            emailLabel.setText("Please enter a valid email address");
+            return false;
+        } else {
+            emailLabel.setText("");
+            return true;
+        }
+    }
+
+    boolean validatePassword(TextField password, TextField passRev) {
+//       final String PASSWORD_REGEX = "^[^\\s]+$";
+        final String PASSWORD_REGEX = "^\\S+$";
+        if (!togglePass) {
+            if (password.getText().isEmpty()) {
+                passwordLabel.setText("Please enter your password");
+                return false;
+            } else if ((!password.getText().matches(PASSWORD_REGEX))) {
+                passwordLabel.setText("Password must be have no spaces");
+                return false;
+            } else if ((password.getText().length() < 8)) {
+                passwordLabel.setText("Password must be at least 8 characters");
+                return false;
+            } else {
+                passwordLabel.setText("");
+                return true;
+            }
+        } else {
+            if (passRev.getText().isEmpty()) {
+                passwordLabel.setText("Please enter your password");
+                return false;
+            } else if ((!passRev.getText().matches(PASSWORD_REGEX))) {
+                passwordLabel.setText("Password must be have no spaces");
+                return false;
+            }
+            else if ((passRev.getText().length() < 8)) {
+                passwordLabel.setText("Password must be at least 8 characters");
+                return false;
+            }  else {
+                passwordLabel.setText("");
+                return true;
+            }
+        }
+    }
+
+    boolean validateEntries(TextField username, TextField email, TextField password, TextField passRev) {
+        return ((validateUsername(username)) & (validateEmail(email)) & (validatePassword(password, passRev)));
+
+    }
+
 }
