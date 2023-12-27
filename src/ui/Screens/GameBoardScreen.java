@@ -1,10 +1,6 @@
 package ui.Screens;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -60,17 +56,12 @@ public class GameBoardScreen extends StackPane {
     protected boolean isX = true;
     protected String str;
     protected String str1;
-    protected Socket cs;
-    protected DataInputStream dataInputStream;
-    protected BufferedReader ear;
-    protected PrintStream mouth;
     protected Button btn;
 
     HashMap<Integer, String> checkedBtns = new HashMap();
     Socket socket;
 
     public GameBoardScreen() {
-        initializeConnection();
 
         winProbabilities = new int[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {1, 4, 7}, {2, 5, 8}, {3, 6, 9},
         {1, 5, 9}, {3, 5, 7}};
@@ -82,32 +73,6 @@ public class GameBoardScreen extends StackPane {
                 for (int i = 0; i < checkedBtns.size(); i++) {
                     checkedBtns.remove(i);
                 }
-
-                try {
-                    Socket socket = new Socket("127.0.0.1", 5005);
-                    ear = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    mouth = new PrintStream(socket.getOutputStream());
-
-                } catch (IOException ex) {
-                    Logger.getLogger(GameBoardScreen.class.getName()).log(Level.SEVERE, null, ex);
-                }
-//                new Thread() {
-//                    @Override
-//                    public void run() {
-//                        while (true) {
-//                            try {
-//                                String str = ear.readLine();
-//                                Platform.runLater(() -> {
-//                                    System.out.println("received from server" + str);
-//
-//                                });
-//                            } catch (IOException ex) {
-//                                Logger.getLogger(GameBoardScreen.class.getName()).log(Level.SEVERE, null, ex);
-//                            }
-//                        }
-//                    }
-//
-//                }.start();
 
                 SceneController sc = new SceneController();
                 try {
@@ -397,30 +362,10 @@ public class GameBoardScreen extends StackPane {
         }
     }
 
-    private void initializeConnection() {
-        new Thread(() -> {
-            try {
-                cs = new Socket("127.0.0.1", 5000);
-                dataInputStream = new DataInputStream(cs.getInputStream());
-                ear = new BufferedReader(new InputStreamReader(dataInputStream));
-                mouth = new PrintStream(cs.getOutputStream());
-                while (true) {
-                    if (cs.isConnected()) {
-                        System.out.println(cs.getLocalAddress());
-                        System.out.println(ear.readLine());
-                    }
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(GameBoardScreen.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }).start();
-    }
-
     private void handleTurn(ActionEvent event) throws IOException {
         btn = (Button) event.getTarget();
 
         btn.setText(str1);
-        mouth.println(btn.getText());
 
         isX = !isX;
         btn.setOnAction((e) -> {
