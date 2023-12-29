@@ -64,11 +64,7 @@ public class SignupBase extends StackPane {
         back_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                try {
-                    new SceneController().switchToLogInSignUp(event);
-                } catch (IOException ex) {
-                    Logger.getLogger(SignupBase.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                 SceneController.switchToLogInSignUp(event, borderPane);
             }
         });
         flowPane1 = new FlowPane();
@@ -77,11 +73,7 @@ public class SignupBase extends StackPane {
         signup_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                try {
-                    new SceneController().switchToLogIn(event);
-                } catch (IOException ex) {
-                    Logger.getLogger(SignupBase.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                 SceneController.switchToLogIn(event, borderPane);
             }
         });
         passreveal_btn = new Button();
