@@ -1,6 +1,12 @@
 package ui.Screens;
 
+import Network.Request.NetworkRequest;
+import Network.Request.RequestHandler;
+import Network.Request.data.RegisterRequest;
+import Network.SocketConnection;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -14,6 +20,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import static javafx.scene.layout.Region.USE_PREF_SIZE;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import ui.SceneController;
@@ -70,6 +77,12 @@ public class SignupBase extends StackPane {
 
                 if (validateEntries(username_tf, email_tf, password_tf, passwordrevealed_tf)) {
                     try {
+                NetworkRequest<RegisterRequest> networkRequest = new NetworkRequest<>();
+                networkRequest.setRequestType(NetworkRequest.RequestType.REGISTER);
+                networkRequest.setRequestData(new RegisterRequest(username_tf.getText(), email_tf.getText(), password_tf.getText()));
+                String requestJson = RequestHandler.getJsonRequest(networkRequest);
+                System.out.println(requestJson);
+                SocketConnection.getInstance().getSender().println(requestJson);
                         new SceneController().switchToAvailablePlayersScreen(event);
                     } catch (IOException ex) {
                         ex.printStackTrace();
@@ -133,7 +146,13 @@ public class SignupBase extends StackPane {
         label0.setTextFill(javafx.scene.paint.Color.WHITE);
         label0.setFont(new Font("Berlin Sans FB Bold", 45.0));
 
-       
+        username_tf.setMaxWidth(650.0);
+        username_tf.setMinHeight(60.0);
+        username_tf.setMinWidth(0.0);
+        username_tf.setPrefHeight(30.0);
+        username_tf.setPrefWidth(0.0);
+        username_tf.setFont(new Font("Berlin Sans FB Bold", 24.0));
+        FlowPane.setMargin(username_tf, new Insets(-30.0, 0.0, 0.0, 0.0));
 
         label2.setAlignment(javafx.geometry.Pos.TOP_LEFT);
         label2.setPrefHeight(50.0);
@@ -230,6 +249,7 @@ public class SignupBase extends StackPane {
 
         getChildren().add(imageView);
         flowPane.getChildren().add(label0);
+        flowPane.getChildren().add(username_tf);
         flowPane.getChildren().add(label2);
         flowPane.getChildren().add(email_tf);
         flowPane.getChildren().add(label3);
@@ -280,7 +300,7 @@ public class SignupBase extends StackPane {
             usernameLabel.setText("Username must be at least 4 characters");
             return false;
         } else if ((!username.getText().matches(USERNAME_REGEX)) && (!username.getText().isEmpty())) {
-            usernameLabel.setText("Password must be have no spaces");
+            usernameLabel.setText("Username must be have no spaces");
             return false;
         } else {
             usernameLabel.setText("");
@@ -303,7 +323,6 @@ public class SignupBase extends StackPane {
     }
 
     boolean validatePassword(TextField password, TextField passRev) {
-//       final String PASSWORD_REGEX = "^[^\\s]+$";
         final String PASSWORD_REGEX = "^\\S+$";
         if (!togglePass) {
             if (password.getText().isEmpty()) {
@@ -320,26 +339,23 @@ public class SignupBase extends StackPane {
                 return true;
             }
         } else {
-            if (passRev.getText().isEmpty()) {
-                passwordLabel.setText("Please enter your password");
+            if (password.getText().isEmpty()) {
+                passRev.setText("Please enter your password");
                 return false;
             } else if ((!passRev.getText().matches(PASSWORD_REGEX))) {
                 passwordLabel.setText("Password must be have no spaces");
                 return false;
-            }
-            else if ((passRev.getText().length() < 8)) {
+            } else if ((passRev.getText().length() < 8)) {
                 passwordLabel.setText("Password must be at least 8 characters");
                 return false;
-            }  else {
+            } else {
                 passwordLabel.setText("");
                 return true;
             }
         }
     }
 
-    boolean validateEntries(TextField username, TextField email, TextField password, TextField passRev) {
-        return ((validateUsername(username)) & (validateEmail(email)) & (validatePassword(password, passRev)));
-
+    boolean validateEntries(TextField username_tf, TextField email_tf, TextField password_tf, TextField passwordRevealed_tf) {
+        return ((validateUsername(username_tf)) && (validateEmail(email_tf)) && (validatePassword(password_tf, passwordRevealed_tf)));
     }
-
 }

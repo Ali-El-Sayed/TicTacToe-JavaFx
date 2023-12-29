@@ -1,4 +1,3 @@
-
 package ui.Screens;
 
 import java.sql.Connection;
@@ -9,18 +8,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.derby.jdbc.ClientDriver;
 
-
-
- class DatabaseQueries {
+class DatabaseQueries {
 
     public DatabaseQueries() {
         try {
             DriverManager.registerDriver(new ClientDriver());
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Tic-Tac-Toe", "root", "root");
-            
+
             PreparedStatement pst1 = con.prepareStatement("INSERT INTO Player (playerId,userName,Email,password,status,wins,loses,draws) "
-                    + "VALUES (23, 'Israa', 'israa@gmail', '123', true, 0, 0, 0)"); 
-            
+                    + "VALUES (23, 'Israa', 'israa@gmail', '123', true, 0, 0, 0)");
 
             pst1.executeUpdate();
 
@@ -35,6 +31,3 @@ import org.apache.derby.jdbc.ClientDriver;
         new DatabaseQueries();
     }
 }
-
-      
-

@@ -1,9 +1,7 @@
 package ui;
 
+import data.Pc;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -11,13 +9,13 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ui.Screens.AboutUsBase;
 import ui.Screens.AvailablePlayersScreen;
-import ui.Screens.GameBoardScreen;
 import ui.Screens.LoginBase;
 import ui.Screens.LoginsignupBase;
 import ui.Screens.OfflineModeScreen;
 import ui.Screens.SelectLevelScreen;
 import ui.Screens.SelectModeBase;
 import ui.Screens.SignupBase;
+import ui.Screens.SinglePlayer;
 import ui.Screens.SplashScreenBase;
 
 public class SceneController {
@@ -83,7 +81,7 @@ public class SceneController {
     }
 
     public void switchToGameBoard(ActionEvent event) throws IOException {
-        root = new GameBoardScreen();
+        root = new SinglePlayer(new Pc(Pc.Level.EASY));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
