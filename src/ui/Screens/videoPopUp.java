@@ -31,43 +31,18 @@ public class videoPopUp {
         Stage videoStage = new Stage();
         videoStage.initModality(Modality.APPLICATION_MODAL);
         videoStage.setTitle("Winning Celebrations");
-
-        Media media = new Media(new File("C:/Users/LEGION/Desktop/winnerVideo.mp4").toURI().toString());
+        Media media = new Media(new File("src/assets/winnerVideo.mp4").toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         MediaView mediaView = new MediaView(mediaPlayer);
-        Button playAgain = new GameButton("Play Again", GameButton.Mode.NORMAL, () -> { });
-        
-        playAgain.setPrefSize(250, 100);
-        Button Back = new GameButton(GameButton.Mode.BACK, () -> {
-            System.out.println("Back");
-        });
-        Back.setPrefSize(250, 100);
-
-        HBox hBox = new HBox();
-        HBox.setMargin(playAgain, new Insets(25.0, 40.0, 20.0, 20.0));
-        HBox.setMargin(Back, new Insets(25.0, 0.0, 0.0, 0.0));
-        hBox.getChildren().add(playAgain);
-        hBox.getChildren().add(Back);
-
         BorderPane root = new BorderPane();
         root.setCenter(mediaView);
         BorderPane.setAlignment(mediaView, Pos.TOP_CENTER);
-
-        root.setBottom(hBox);
-        BorderPane.setAlignment(hBox, Pos.TOP_LEFT);
-
         root.setBackground(new Background(new BackgroundImage(new Image("/assets/background.png"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT)));
-
-        Scene scene = new Scene(root, 1200, 858);
-        
-        playAgain.setOnAction((event) -> {
-            
-                SceneController.switchToGameBoard(event, root);
-        });
+        Scene scene = new Scene(root, 1200, 700);
         videoStage.setScene(scene);
         videoStage.setResizable(false);
         videoStage.setOnCloseRequest(event -> {

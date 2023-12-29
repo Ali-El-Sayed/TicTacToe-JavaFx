@@ -28,7 +28,7 @@ public class TwoPlayers extends GameBoardScreen implements CommonBehaviorInModes
                         Integer btn1 = gridPane.getChildren().indexOf(node);
                         checkedBtns.put(btn1 + 1, isX ? "O" : "X");
                         if (isWinner()) {
-                            handleGameOver(event);
+//                            handleGameOver(event);
 
                         }
                     }

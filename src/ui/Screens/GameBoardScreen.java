@@ -55,6 +55,9 @@ public class GameBoardScreen extends StackPane {
     protected String str;
     protected String str1;
     protected Button btn;
+    RecordingGame recordingGame;
+    Button []arButton;
+    int counter;
 
     HashMap<Integer, String> checkedBtns = new HashMap();
     Socket socket;
@@ -65,35 +68,19 @@ public class GameBoardScreen extends StackPane {
         {1, 5, 9}, {3, 5, 7}};
 
         initialoizeLayout();
-        back_btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                for (int i = 0; i < checkedBtns.size(); i++) {
-                    checkedBtns.remove(i);
-                }
-
-                SceneController sc = new SceneController();
-                try {
-                    sc.switchToSplashScreen(event);
-                } catch (IOException ex) {
-                    Logger.getLogger(GameBoardScreen.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        back_btn.setOnAction((event) -> {
+            for (int i = 0; i < checkedBtns.size(); i++) {
+                checkedBtns.remove(i);
             }
+            SceneController.switchToSplashScreen(event, gridPane);
         });
-        reset_btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                for (int i = 0; i < checkedBtns.size(); i++) {
-                    checkedBtns.remove(i);
-                }
-
-                SceneController sc = new SceneController();
-                try {
-                    sc.switchToGameBoard(event);
-                } catch (IOException ex) {
-                    Logger.getLogger(GameBoardScreen.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        reset_btn.setOnAction((event) -> {
+            for (int i = 0; i < checkedBtns.size(); i++) {
+                checkedBtns.remove(i);
             }
+            
+            SceneController sc = new SceneController();
+            SceneController.switchToGameBoard(event, gridPane);
         });
     }
 
@@ -335,7 +322,9 @@ public class GameBoardScreen extends StackPane {
         gridPane.getChildren().add(reset_btn);
         gridPane.setMargin(reset_btn, new Insets(500.0, 0.0, -1120.0, 150.0));
         gridPane.setMargin(back_btn, new Insets(500.0, 0.0, -1120.0, 0.0));
-
+        recordingGame = new RecordingGame();
+        counter=0;
+        arButton = new Button[]{boardButton1,boardButton2,boardButton3,boardButton4,boardButton5,boardButton6,boardButton7,boardButton8,boardButton9};
         for (Node node : gridPane.getChildren()) {
             if (node.getClass() == Button.class) {
                 btn = (Button) node;
@@ -347,26 +336,20 @@ public class GameBoardScreen extends StackPane {
                         str1 = "O";
                     }
                     checkedBtns.put(btn1 + 1, str1);
-                    try {
                         handleTurn(event);
-                    } catch (IOException ex) {
-                        Logger.getLogger(GameBoardScreen.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                    handleTurn(event);
-                    Integer btn1 = gridPane.getChildren().indexOf(node);
+                    btn1 = gridPane.getChildren().indexOf(node);
                     recordingGame.record(btn1 + 1, counter);
                     counter++;
                     checkedBtns.put(btn1 + 1, isX ? "O" : "X");
                     if (isWinner()) {
-                        handleGameOver(event, arButton);
+                        handleGameOver(event);
                     }
                 });
             }
         }
     }
 
-    private void handleTurn(ActionEvent event) throws IOException {
+    private void handleTurn(ActionEvent event)  {
         btn = (Button) event.getTarget();
 
         btn.setText(str1);
@@ -388,8 +371,8 @@ public class GameBoardScreen extends StackPane {
         return false;
     }
 
-    private void handleGameOver(ActionEvent e, Button[] arButtons) {
-        recordingGame.startReplay(arButtons);
+    protected void handleGameOver(ActionEvent e) {
+        recordingGame.startReplay(arButton);
         System.out.println("Winner");
         openVideoPopUp();
     }

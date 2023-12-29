@@ -1,6 +1,7 @@
 package ui;
 
 import animation.Animation;
+import data.Pc;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -8,12 +9,14 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import ui.Screens.AboutUsBase;
 import ui.Screens.AvailablePlayersScreen;
+import ui.Screens.GameBoardScreen;
 import ui.Screens.LoginBase;
 import ui.Screens.LoginsignupBase;
 import ui.Screens.OfflineModeScreen;
 import ui.Screens.SelectLevelScreen;
 import ui.Screens.SelectModeBase;
 import ui.Screens.SignupBase;
+import ui.Screens.SinglePlayer;
 
 import ui.Screens.SplashScreenBase;
 
@@ -61,8 +64,11 @@ public class SceneController {
     Animation.animated(currentPane, new AboutUsBase(), event);
   }
 
-  public void switchToAvailablePlayersScreen(ActionEvent event, Pane currentPane) {
+  public static void switchToAvailablePlayersScreen(ActionEvent event, Pane currentPane) {
     Animation.animated(currentPane, new AvailablePlayersScreen(), event);
   }
-
+  
+  public static void switchToSingle(ActionEvent event, Pane currentPane) {
+    Animation.animated(currentPane, new SinglePlayer(new Pc(Pc.Level.EASY)), event);
+  }
 }

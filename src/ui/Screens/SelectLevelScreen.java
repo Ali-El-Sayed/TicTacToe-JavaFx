@@ -38,7 +38,7 @@ public class SelectLevelScreen extends VBox {
         btnEasy = new GameButton("Easy", GameButton.Mode.NORMAL, () -> {
         });
         btnEasy.setOnAction((e) -> {
-            SceneController.switchToGameBoard(e, this);
+            SceneController.switchToSingle(e, this);
         });
         btnIntermediate = new GameButton("Intermediate", GameButton.Mode.NORMAL, () -> {
         });
