@@ -38,13 +38,7 @@ public class LoginsignupBase extends StackPane {
         signin_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                    
-                try {
-                    new SceneController().switchToLogIn(event);
-                } catch (IOException ex) {
-                    Logger.getLogger(SplashScreenBase.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
+                     SceneController.switchToLogIn(event,borderPane);   
             }
         });
         signup_btn = new GameButton("Sign up", GameButton.Mode.NORMAL, () -> {
@@ -53,24 +47,14 @@ public class LoginsignupBase extends StackPane {
             @Override
             public void handle(ActionEvent event) {
                     
-                try {
-                    new SceneController().switchToSignUp(event);
-                } catch (IOException ex) {
-                    Logger.getLogger(SplashScreenBase.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
+               SceneController.switchToSignUp(event, borderPane);
             }
         });
         label = new Label();
         flowPane0 = new FlowPane();
         back_btn = new GameButton("", GameButton.Mode.BACK, () -> {});
         back_btn.setOnAction((ActionEvent event) -> {
-            SceneController sceneController = new SceneController();
-            try {
-                sceneController.switchToSelectMode(event);
-            } catch (IOException ex) {
-                Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            SceneController.switchToSelectMode(event, borderPane);
         });
 
         setMaxHeight(USE_PREF_SIZE);

@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -37,17 +38,12 @@ public class SplashScreenBase extends StackPane {
         borderPane = new BorderPane();
         label = new Label();
         flowPane = new FlowPane();
-        play_btn = new GameButton("Play", GameButton.Mode.NORMAL, () -> {});
+        play_btn = new GameButton("Play", GameButton.Mode.NORMAL, () -> {
+        });
         play_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                    
-                try {
-                    new SceneController().switchToSelectMode(event);
-                } catch (IOException ex) {
-                    Logger.getLogger(SplashScreenBase.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
+                SceneController.switchToSelectMode(event, borderPane);
             }
         });
         imageView0 = new ImageView();
@@ -56,20 +52,14 @@ public class SplashScreenBase extends StackPane {
         about_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                    
-                try {
-                    new SceneController().switchToAboutMode(event);
-                } catch (IOException ex) {
-                    Logger.getLogger(SplashScreenBase.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
+                SceneController.switchToAboutUs(event, borderPane);
+               
             }
         });
         imageView1 = new ImageView();
         exit_btn = new GameButton("Exit", GameButton.Mode.NORMAL, () -> {
             Platform.exit();
         });
-        
 
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);

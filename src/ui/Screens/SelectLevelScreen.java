@@ -41,12 +41,7 @@ public class SelectLevelScreen extends VBox {
         hBox1 = new HBox();
         btnBack = new GameButton(GameButton.Mode.BACK, () -> {});
         btnBack.setOnAction((ActionEvent event) -> {
-            SceneController sceneController = new SceneController();
-            try {
-                sceneController.switchToOfflineMode(event);
-            } catch (IOException ex) {
-                Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
-            }
+             SceneController.switchToOfflineMode(event, this);
         });
 
         Image img = new Image(getClass().getResourceAsStream("/assets/background.png"));

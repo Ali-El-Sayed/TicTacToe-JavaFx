@@ -65,13 +65,8 @@ public class videoPopUp {
         Scene scene = new Scene(root, 1200, 858);
         
         playAgain.setOnAction((event) -> {
-            try {
-                videoStage.close();
-                
-                new SceneController().switchToGameBoard(event);
-            } catch (IOException ex) {
-                Logger.getLogger(videoPopUp.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            
+                SceneController.switchToGameBoard(event, root);
         });
         videoStage.setScene(scene);
         videoStage.setResizable(false);

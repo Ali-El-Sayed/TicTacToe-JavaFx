@@ -1,9 +1,11 @@
 package ui;
 
+import animation.Animation;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -12,6 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import ui.Screens.AboutUsBase;
@@ -32,101 +35,50 @@ public class SceneController {
     private Scene scene;
     private Parent root;
     
+   
+
+    public static void switchToSelectMode(ActionEvent event ,Pane currentPane)  {
+        Animation.animated(currentPane, new SelectModeBase(), event);
+    }
+
+    public static void switchToOfflineMode(ActionEvent event, Pane currentPane)  {
+         
+        Animation.animated(currentPane, new OfflineModeScreen(), event);
+    }
+
+    public static void switchToSplashScreen(ActionEvent event, Pane currentPane){
+         Animation.animated(currentPane, new SplashScreenBase(), event);
+    }
+
+    public static void switchToSelectLevelScreen(ActionEvent event, Pane currentPane){
+        
+        Animation.animated(currentPane, new SelectLevelScreen(), event);
+    }
+
+    public static void switchToLogInSignUp(ActionEvent event, Pane currentPane) {
+         Animation.animated(currentPane, new LoginsignupBase(), event);
+    }
+
+    public static void switchToSignUp(ActionEvent event, Pane currentPane)  {
+        Animation.animated(currentPane, new SignupBase(), event);
+    }
+
+    public static void switchToLogIn(ActionEvent event, Pane currentPane)  {
+        Animation.animated(currentPane, new LoginBase(), event);
+    }
+
+    public static void switchToGameBoard(ActionEvent event, Pane currentPane)  {
+        Animation.animated(currentPane, new GameBoardScreen(), event);
+    }
+
+    public static void switchToAboutUs(ActionEvent event,Pane currentPane)  {
+        Animation.animated(currentPane, new AboutUsBase(), event);
+    }
+
+    public void switchToAvailablePlayersScreen(ActionEvent event, Pane currentPane)  {
+        Animation.animated(currentPane, new AvailablePlayersScreen(), event);
+    }
+
     
-    
-    public void switchToSelectMode(ActionEvent event) throws IOException {
-        root = new SelectModeBase();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
 
-    public void switchToOfflineMode(ActionEvent event) throws IOException {
-        root = new OfflineModeScreen();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public void switchToSplashScreen(ActionEvent event) throws IOException {
-        root = new SplashScreenBase();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public void switchToSelectLevelScreen(ActionEvent event) throws IOException {
-        root = new SelectLevelScreen();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public void switchToLogInSignUp(ActionEvent event) throws IOException {
-        root = new LoginsignupBase();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public void switchToSignUp(ActionEvent event) throws IOException {
-        root = new SignupBase();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public void switchToLogIn(ActionEvent event) throws IOException {
-        root = new LoginBase();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public void switchToGameBoard(ActionEvent event) throws IOException {
-        root = new GameBoardScreen();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public void switchToAboutMode(ActionEvent event) throws IOException {
-        root = new AboutUsBase();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public void switchToAvailablePlayersScreen(ActionEvent event) throws IOException {
-        root = new AvailablePlayersScreen();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public void switchToVideoScreen(ActionEvent event) throws IOException {
-        root = new VideoScreenBase();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        Platform.runLater(() -> {
-            try {
-                Thread.sleep(1000);
-                stage.setScene(scene);
-                stage.show();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(SceneController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });      
-    }
-    
 }
