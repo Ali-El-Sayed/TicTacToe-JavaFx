@@ -37,32 +37,22 @@ public class OfflineModeScreen extends VBox {
         hBox0 = new HBox();
         btnVsComputer = new GameButton("Vs Computer", GameButton.Mode.NORMAL, () -> {});
         btnVsComputer.setOnAction((ActionEvent event) -> {
-            SceneController sceneController = new SceneController();
-            try {
-                sceneController.switchToSelectLevelScreen(event);
-            } catch (IOException ex) {
-                Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            
+             SceneController.switchToSelectLevelScreen(event, this);
         });
         btnTwoPlayer = new GameButton("Two Players", GameButton.Mode.NORMAL, () -> {});
         btnTwoPlayer.setOnAction((ActionEvent event) -> {
-            SceneController sceneController = new SceneController();
-            try {
-                sceneController.switchToGameBoard(event);
-            } catch (IOException ex) {
-                Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            
+             SceneController.switchToGameBoard(event,this);
         });
         hBox1 = new HBox();
         btnBack = new GameButton(GameButton.Mode.BACK, () -> {});
         btnBack.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                try {
-                    new SceneController().switchToSelectMode(event);
-                } catch (IOException ex) {
-                    Logger.getLogger(SignupBase.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                
+                    SceneController.switchToSelectMode(event, hBox);
+                
             }
         });
         

@@ -3,8 +3,6 @@ package ui.Screens;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -354,8 +352,14 @@ public class GameBoardScreen extends StackPane {
                     } catch (IOException ex) {
                         Logger.getLogger(GameBoardScreen.class.getName()).log(Level.SEVERE, null, ex);
                     }
+
+                    handleTurn(event);
+                    Integer btn1 = gridPane.getChildren().indexOf(node);
+                    recordingGame.record(btn1 + 1, counter);
+                    counter++;
+                    checkedBtns.put(btn1 + 1, isX ? "O" : "X");
                     if (isWinner()) {
-                        handleGameOver(event);
+                        handleGameOver(event, arButton);
                     }
                 });
             }
@@ -384,18 +388,21 @@ public class GameBoardScreen extends StackPane {
         return false;
     }
 
-    protected void handleGameOver(ActionEvent e) {
-
+    private void handleGameOver(ActionEvent e, Button[] arButtons) {
+        recordingGame.startReplay(arButtons);
         System.out.println("Winner");
+        openVideoPopUp();
     }
 
     protected void handleWinner(int[] winCase) {
         for (int i : winCase) {
             Button btn = (Button) gridPane.getChildren().get(i - 1);
             btn.setTextFill(Color.WHITE);
-
         }
+    }
 
+    private void openVideoPopUp() {
+        videoPopUp.openVideoPopUp();
     }
 
 }

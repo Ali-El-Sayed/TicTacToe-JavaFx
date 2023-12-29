@@ -63,11 +63,7 @@ public class SignupBase extends StackPane {
         back_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                try {
-                    new SceneController().switchToLogInSignUp(event);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+                 SceneController.switchToLogInSignUp(event, borderPane);
             }
         });
 
@@ -76,18 +72,16 @@ public class SignupBase extends StackPane {
             public void handle(ActionEvent event) {
 
                 if (validateEntries(username_tf, email_tf, password_tf, passwordrevealed_tf)) {
-                    try {
+                   
                 NetworkRequest<RegisterRequest> networkRequest = new NetworkRequest<>();
                 networkRequest.setRequestType(NetworkRequest.RequestType.REGISTER);
                 networkRequest.setRequestData(new RegisterRequest(username_tf.getText(), email_tf.getText(), password_tf.getText()));
                 String requestJson = RequestHandler.getJsonRequest(networkRequest);
                 System.out.println(requestJson);
                 SocketConnection.getInstance().getSender().println(requestJson);
-                        new SceneController().switchToAvailablePlayersScreen(event);
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
+                        SceneController.switchToLogIn(event, borderPane);
                 }
+                  
             }
         });
         passreveal_btn.setOnAction(new EventHandler<ActionEvent>() {

@@ -22,7 +22,7 @@ import ui.components.GameButton;
 public class AboutUsBase extends StackPane {
 
     protected final ImageView imageView;
-    protected final BorderPane borderPane;
+    public    final  BorderPane borderPane;
     protected final HBox hBox;
     protected final Button back_btn;
     protected final VBox vBox;
@@ -155,12 +155,9 @@ public class AboutUsBase extends StackPane {
         back_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                SceneController sceneController = new SceneController();
-                try {
-                    sceneController.switchToSplashScreen(event);
-                } catch (IOException ex) {
-                    Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                
+                SceneController.switchToSplashScreen(event, borderPane);
+                
             }
         });
     }

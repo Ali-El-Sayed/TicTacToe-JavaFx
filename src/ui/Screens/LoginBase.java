@@ -49,14 +49,8 @@ public class LoginBase extends StackPane {
         });
         back_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event) {
-
-                try {
-                    new SceneController().switchToLogInSignUp(event);
-                } catch (IOException ex) {
-                    Logger.getLogger(SplashScreenBase.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
+            public void handle(ActionEvent event) {                    
+                 SceneController.switchToLogInSignUp(event, borderPane);
             }
         });
         login_btn = new GameButton("Login", GameButton.Mode.NORMAL, () -> {
@@ -73,6 +67,9 @@ public class LoginBase extends StackPane {
                 System.out.println(requestJson);
                 SocketConnection.getInstance().getSender().println(requestJson);
 
+                // navigation 
+                //  SceneController.switchToAboutUs(event, borderPane);
+                
             }
         });
         label0 = new Label();
