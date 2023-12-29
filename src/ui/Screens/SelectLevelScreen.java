@@ -38,11 +38,7 @@ public class SelectLevelScreen extends VBox {
         btnEasy = new GameButton("Easy", GameButton.Mode.NORMAL, () -> {
         });
         btnEasy.setOnAction((e) -> {
-            try {
-                new SceneController().switchToGameBoard(e);
-            } catch (IOException ex) {
-                Logger.getLogger(SelectLevelScreen.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            SceneController.switchToGameBoard(e, this);
         });
         btnIntermediate = new GameButton("Intermediate", GameButton.Mode.NORMAL, () -> {
         });
