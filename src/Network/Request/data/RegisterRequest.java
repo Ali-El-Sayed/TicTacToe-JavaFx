@@ -1,15 +1,16 @@
 package Network.Request.data;
 
-public class RegisterRequest {
+public class RegisterRequest extends NetworkRequest {
 
     private String userName;
     private String email;
     private String password;
 
     public RegisterRequest(String userName, String email, String password) {
-        this.userName = userName;
+        this.requestType = NetworkRequest.RequestType.REGISTER;
         this.email = email;
         this.password = password;
+        this.userName = userName;
     }
 
     public String getUserName() {

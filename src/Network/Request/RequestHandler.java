@@ -1,5 +1,6 @@
 package Network.Request;
 
+import Network.Request.data.NetworkRequest;
 import com.google.gson.Gson;
 
 public class RequestHandler {

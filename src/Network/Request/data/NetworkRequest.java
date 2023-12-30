@@ -1,4 +1,4 @@
-package Network.Request;
+package Network.Request.data;
 
 public class NetworkRequest<T> {
 

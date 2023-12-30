@@ -1,12 +1,9 @@
 package ui.Screens;
 
-import Network.Request.NetworkRequest;
 import Network.Request.RequestHandler;
 import Network.Request.data.RegisterRequest;
 import Network.SocketConnection;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -77,12 +74,10 @@ public class SignupBase extends StackPane {
 
                 if (validateEntries(username_tf, email_tf, password_tf, passwordrevealed_tf)) {
                     try {
-                NetworkRequest<RegisterRequest> networkRequest = new NetworkRequest<>();
-                networkRequest.setRequestType(NetworkRequest.RequestType.REGISTER);
-                networkRequest.setRequestData(new RegisterRequest(username_tf.getText(), email_tf.getText(), password_tf.getText()));
-                String requestJson = RequestHandler.getJsonRequest(networkRequest);
-                System.out.println(requestJson);
-                SocketConnection.getInstance().getSender().println(requestJson);
+                        RegisterRequest networkRequest = new RegisterRequest(username_tf.getText(), email_tf.getText(), password_tf.getText());
+                        String requestJson = RequestHandler.getJsonRequest(networkRequest);
+                        System.out.println(requestJson);
+                        SocketConnection.getInstance().getSender().println(requestJson);
                         new SceneController().switchToAvailablePlayersScreen(event);
                     } catch (IOException ex) {
                         ex.printStackTrace();
