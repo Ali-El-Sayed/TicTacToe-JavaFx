@@ -22,14 +22,9 @@ public class NetworkRequest<T> {
     }
 
     public enum RequestType {
-        LOGIN("LOGIN_REQUEST"),
-        REGISTER("REGISTER_REQUEST"),
-        AVAILABLE_PLAYERS("AVAILABLE_PLAYERS_REQUEST");
-        private String type;
-
-        RequestType(String type) {
-            this.type = type;
-        }
+        LOGIN,
+        LOGOUT,
+        REGISTER,
+        AVAILABLE_PLAYERS;
     }
-
 }
