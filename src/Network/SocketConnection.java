@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
+import javafx.scene.control.Alert;
 
 public class SocketConnection extends Thread {
 
@@ -39,14 +40,16 @@ public class SocketConnection extends Thread {
             System.out.println("Connection Stablished : " + socket.isConnected());
 
         } catch (IOException ex) {
-            System.err.println("Connection Failed");
+            Alert al = new Alert(Alert.AlertType.ERROR, "there is no connection \n please play offline");
+            al.show();
         }
         if (socket.isConnected()) {
             try {
                 receiver = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 sender = new PrintStream(socket.getOutputStream());
             } catch (IOException ex) {
-                System.err.println("Failed IO");
+                Alert al = new Alert(Alert.AlertType.ERROR, "there is no connection \n please play offline");
+                al.show();
             }
         }
         this.start();

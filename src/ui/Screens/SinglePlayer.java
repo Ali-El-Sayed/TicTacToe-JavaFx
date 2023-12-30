@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import ui.SceneController;
 
 public class SinglePlayer extends GameBoardScreen implements CommonBehaviorInModes {
 
@@ -18,6 +19,10 @@ public class SinglePlayer extends GameBoardScreen implements CommonBehaviorInMod
         initializeBtnHandler();
 
         this.pc = pc;
+        newGameBtn.setOnAction((event) -> {
+            SceneController.switchToSinglePlayerBoard(event, gridPane,this.pc);
+         
+        });
 
     }
 

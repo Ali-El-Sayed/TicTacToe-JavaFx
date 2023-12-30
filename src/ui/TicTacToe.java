@@ -22,6 +22,7 @@ public class TicTacToe extends Application {
 //        SocketConnection.getInstance();
 
     }
+    
 
     public static void main(String[] args) throws IOException {
         launch(args);

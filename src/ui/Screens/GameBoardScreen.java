@@ -43,7 +43,7 @@ public class GameBoardScreen extends StackPane {
     protected final Button boardButton8 = new Button();
     protected final Button boardButton9 = new Button();
     protected final Button back_btn = new GameButton("Exit game", GameButton.Mode.BACK);
-    protected final Button reset_btn = new GameButton("New Game", GameButton.Mode.BACK);
+    protected final Button newGameBtn = new GameButton("New Game", GameButton.Mode.BACK);
     protected final HBox hBoxPlayer1 = new HBox();
     protected final Label Player1Symbol = new Label();
     protected final Label Player1NameAndScore = new Label();
@@ -55,7 +55,9 @@ public class GameBoardScreen extends StackPane {
     protected String str;
     protected String str1;
     protected Button btn;
+    protected Button recordBtn;
     RecordingGame recordingGame;
+    boolean saveRecord;
     Button []arButton;
     int counter;
 
@@ -74,7 +76,7 @@ public class GameBoardScreen extends StackPane {
             }
             SceneController.switchToSplashScreen(event, gridPane);
         });
-        reset_btn.setOnAction((event) -> {
+        newGameBtn.setOnAction((event) -> {
             for (int i = 0; i < checkedBtns.size(); i++) {
                 checkedBtns.remove(i);
             }
@@ -85,6 +87,7 @@ public class GameBoardScreen extends StackPane {
     }
 
     private void initialoizeLayout() {
+        saveRecord =false;
         setMaxHeight(858.0);
         setMaxWidth(1343.0);
         setMinHeight(USE_PREF_SIZE);
@@ -247,11 +250,18 @@ public class GameBoardScreen extends StackPane {
         boardButton7.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
         boardButton7.setFont(new Font("Arial Rounded MT Bold", 110.0));
 
-        reset_btn.setLayoutY(300);
+        newGameBtn.setLayoutY(300);
         GridPane.setRowIndex(hBoxPlayer1, 1);
         hBoxPlayer1.setPrefHeight(100.0);
         hBoxPlayer1.setPrefWidth(542.0);
         hBoxPlayer1.setSpacing(5.0);
+        
+        recordBtn = new GameButton("Record", GameButton.Mode.NORMAL, () -> {
+            saveRecord=true;
+            recordBtn.setDisable(true);
+        });
+        GridPane.setRowIndex(recordBtn, 1);
+        GridPane.setColumnIndex(recordBtn, 1);
 
         Player1Symbol.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
         Player1Symbol.setPrefHeight(92.0);
@@ -317,10 +327,11 @@ public class GameBoardScreen extends StackPane {
         hBoxPlayer2.getChildren().add(Player2Symbol);
         hBoxPlayer2.getChildren().add(player2NameAndScore);
         gridPane.getChildren().add(hBoxPlayer2);
+        gridPane.getChildren().add(recordBtn);
         getChildren().add(gridPane);
         gridPane.getChildren().add(back_btn);
-        gridPane.getChildren().add(reset_btn);
-        gridPane.setMargin(reset_btn, new Insets(500.0, 0.0, -1120.0, 150.0));
+        gridPane.getChildren().add(newGameBtn);
+        gridPane.setMargin(newGameBtn, new Insets(500.0, 0.0, -1120.0, 150.0));
         gridPane.setMargin(back_btn, new Insets(500.0, 0.0, -1120.0, 0.0));
         recordingGame = new RecordingGame();
         counter=0;
@@ -373,6 +384,9 @@ public class GameBoardScreen extends StackPane {
 
     protected void handleGameOver(ActionEvent e) {
         recordingGame.startReplay(arButton);
+        if (saveRecord) {
+           recordingGame.saveRecord();
+        }
         System.out.println("Winner");
         openVideoPopUp();
     }

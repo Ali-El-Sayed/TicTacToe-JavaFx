@@ -68,7 +68,7 @@ public class SceneController {
     Animation.animated(currentPane, new AvailablePlayersScreen(), event);
   }
   
-  public static void switchToSingle(ActionEvent event, Pane currentPane) {
-    Animation.animated(currentPane, new SinglePlayer(new Pc(Pc.Level.EASY)), event);
+  public static void switchToSinglePlayerBoard(ActionEvent event, Pane currentPane, Pc pc) {
+    Animation.animated(currentPane, new SinglePlayer(pc), event);
   }
 }
