@@ -2,11 +2,19 @@ package Network.Response;
 
 import com.google.gson.annotations.SerializedName;
 
-public class NetworkResponse<T> {
+public class NetworkResponse {
 
+    private String ip;
     private ResponseMode mode;
     private ResponseStatus status;
-    private T data;
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
 
     public ResponseStatus getStatus() {
         return status;
@@ -14,14 +22,6 @@ public class NetworkResponse<T> {
 
     public void setStatus(ResponseStatus status) {
         this.status = status;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
     }
 
     public ResponseMode getMode() {

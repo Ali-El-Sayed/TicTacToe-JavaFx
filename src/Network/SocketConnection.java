@@ -12,6 +12,11 @@ public class SocketConnection extends Thread {
     private Socket socket;
     private BufferedReader receiver;
     private PrintStream sender;
+    private String localIp;
+
+    public String getLocalIp() {
+        return localIp;
+    }
 
     public BufferedReader getReceiver() {
         return receiver;
@@ -37,7 +42,7 @@ public class SocketConnection extends Thread {
         try {
             socket = new Socket(Endpoint.SERVER_IP, Endpoint.PORT_NUMBER);
             System.out.println("Connection Stablished : " + socket.isConnected());
-
+            localIp = socket.getInetAddress().getHostAddress();
         } catch (IOException ex) {
             System.err.println("Connection Failed");
         }
@@ -61,6 +66,7 @@ public class SocketConnection extends Thread {
                     System.out.println(receivedMessage);
                 }
             } catch (IOException ex) {
+                System.out.println("Error in Reciever");
 
             }
 
@@ -89,6 +95,6 @@ public class SocketConnection extends Thread {
 
         public static final int PORT_NUMBER = 5000;
         public static final String SERVER_IP = "127.0.0.1";
-
+//        public static final String SERVER_IP = "10.145.14.209";
     }
 }

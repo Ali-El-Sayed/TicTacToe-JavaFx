@@ -1,6 +1,6 @@
 package ui.Screens;
 
-import Network.Request.NetworkRequest;
+import Network.Request.data.NetworkRequest;
 import Network.Request.RequestHandler;
 import Network.Request.data.LoginRequest;
 import Network.SocketConnection;
