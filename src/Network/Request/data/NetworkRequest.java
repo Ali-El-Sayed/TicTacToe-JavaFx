@@ -2,6 +2,7 @@ package Network.Request.data;
 
 public class NetworkRequest<T> {
 
+    protected String ip;
     RequestType requestType;
     T requestData;
 
@@ -19,6 +20,14 @@ public class NetworkRequest<T> {
 
     public void setRequestData(T requestData) {
         this.requestData = requestData;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     public enum RequestType {

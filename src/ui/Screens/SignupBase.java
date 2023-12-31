@@ -75,6 +75,7 @@ public class SignupBase extends StackPane {
                 if (validateEntries(username_tf, email_tf, password_tf, passwordrevealed_tf)) {
                     try {
                         RegisterRequest networkRequest = new RegisterRequest(username_tf.getText(), email_tf.getText(), password_tf.getText());
+                        networkRequest.setIp(SocketConnection.getInstance().getLocalIp());
                         String requestJson = RequestHandler.getJsonRequest(networkRequest);
                         System.out.println(requestJson);
                         SocketConnection.getInstance().getSender().println(requestJson);

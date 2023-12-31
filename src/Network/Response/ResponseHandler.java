@@ -1,5 +1,6 @@
 package Network.Response;
 
+import Network.Response.data.RegisterResposne;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -17,5 +18,15 @@ public class ResponseHandler {
 
         }
         return new NetworkResponse();
+    }
+    
+    public static String getRegisterResponseJson(RegisterResposne registerResposne) {
+
+        return new Gson().toJson(registerResposne);
+    }
+
+    public static RegisterResposne getRegisterResponseObj(String json) {
+
+        return new Gson().fromJson(json, RegisterResposne.class);
     }
 }
