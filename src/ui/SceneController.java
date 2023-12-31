@@ -3,6 +3,7 @@ package ui;
 import animation.Animation;
 import data.Pc;
 import javafx.event.ActionEvent;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -71,4 +72,20 @@ public class SceneController {
   public static void switchToSingle(ActionEvent event, Pane currentPane) {
     Animation.animated(currentPane, new SinglePlayer(new Pc(Pc.Level.EASY)), event);
   }
+   public void switchToOfflineMode(Node node){
+        stage=(Stage)node.getScene().getWindow();
+        root = new OfflineModeScreen();
+        scene = new Scene(root, 1343, 858);
+        stage.setResizable(false);
+        stage.setScene(scene);
+        stage.show();    
+    }
+    public void switchToGameBoard(Node node){
+        stage=(Stage)node.getScene().getWindow();
+        root = new GameBoardScreen();
+        scene = new Scene(root, 1343, 858);
+        stage.setResizable(false);
+        stage.setScene(scene);
+        stage.show();    
+    }
 }

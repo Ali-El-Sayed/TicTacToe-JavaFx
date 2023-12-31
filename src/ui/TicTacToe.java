@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ui.Screens.SignupBase;
 import ui.Screens.SinglePlayer;
+import ui.Screens.SplashScreenBase;
 
 public class TicTacToe extends Application {
 

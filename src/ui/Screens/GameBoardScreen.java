@@ -3,11 +3,17 @@ package ui.Screens;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.Optional;
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,6 +24,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 import ui.SceneController;
 import ui.components.GameButton;
 
@@ -56,11 +63,13 @@ public class GameBoardScreen extends StackPane {
     protected String str1;
     protected Button btn;
     RecordingGame recordingGame;
-    Button []arButton;
+    Button[] arButton;
     int counter;
-
     HashMap<Integer, String> checkedBtns = new HashMap();
     Socket socket;
+    protected int stepsCount = 0;
+    protected static final Duration ANIMATION_DURATION = Duration.seconds(1.2);
+    protected static final double ANIMATION_DISTANCE = 26;
 
     public GameBoardScreen() {
 
@@ -78,7 +87,7 @@ public class GameBoardScreen extends StackPane {
             for (int i = 0; i < checkedBtns.size(); i++) {
                 checkedBtns.remove(i);
             }
-            
+
             SceneController sc = new SceneController();
             SceneController.switchToGameBoard(event, gridPane);
         });
@@ -323,8 +332,8 @@ public class GameBoardScreen extends StackPane {
         gridPane.setMargin(reset_btn, new Insets(500.0, 0.0, -1120.0, 150.0));
         gridPane.setMargin(back_btn, new Insets(500.0, 0.0, -1120.0, 0.0));
         recordingGame = new RecordingGame();
-        counter=0;
-        arButton = new Button[]{boardButton1,boardButton2,boardButton3,boardButton4,boardButton5,boardButton6,boardButton7,boardButton8,boardButton9};
+        counter = 0;
+        arButton = new Button[]{boardButton1, boardButton2, boardButton3, boardButton4, boardButton5, boardButton6, boardButton7, boardButton8, boardButton9};
         for (Node node : gridPane.getChildren()) {
             if (node.getClass() == Button.class) {
                 btn = (Button) node;
@@ -336,20 +345,30 @@ public class GameBoardScreen extends StackPane {
                         str1 = "O";
                     }
                     checkedBtns.put(btn1 + 1, str1);
-                        handleTurn(event);
+                    handleTurn(event);
                     btn1 = gridPane.getChildren().indexOf(node);
                     recordingGame.record(btn1 + 1, counter);
                     counter++;
                     checkedBtns.put(btn1 + 1, isX ? "O" : "X");
+                    stepsCount++;
                     if (isWinner()) {
                         handleGameOver(event);
+                    } else {
+                        if (stepsCount == 9) // 9 not 1
+                        {
+                            try {
+                                handleDraw();
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
                     }
                 });
             }
         }
     }
 
-    private void handleTurn(ActionEvent event)  {
+    private void handleTurn(ActionEvent event) {
         btn = (Button) event.getTarget();
 
         btn.setText(str1);
@@ -386,6 +405,70 @@ public class GameBoardScreen extends StackPane {
 
     private void openVideoPopUp() {
         videoPopUp.openVideoPopUp();
+    }
+
+    private void handleDraw() throws IOException {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Draw");
+        ButtonType play = new ButtonType("Play again");
+        ButtonType back = new ButtonType("Back to main menu");
+        dialog.getDialogPane().getButtonTypes().addAll(play, back);
+        DialogPane dialogPane = dialog.getDialogPane();
+
+        dialogPane.setStyle("-fx-background-color: #D2FEEE;");
+        Label contentLabel = new Label("Draw");
+        contentLabel.setPrefWidth(500);
+        contentLabel.setPrefHeight(90);
+        contentLabel.setTextFill(javafx.scene.paint.Color.valueOf("#187135"));
+        contentLabel.setFont(new Font("Berlin Sans FB Bold", 50.0));
+        contentLabel.setAlignment(Pos.BOTTOM_CENTER);
+        animateLabel(contentLabel);
+        dialog.getDialogPane().setHeader(contentLabel);
+        Button playAgainBtn = (Button) dialogPane.lookupButton(play);
+        Button backToMenuBtn = (Button) dialogPane.lookupButton(back);
+        playAgainBtn.setStyle("-fx-background-radius: 13; -fx-background-color: #59E7B5;");
+        backToMenuBtn.setStyle("-fx-background-radius: 13; -fx-background-color: #59E7B5;");
+        backToMenuBtn.setFont(new Font("Berlin Sans FB", 17.0));
+        playAgainBtn.setFont(new Font("Berlin Sans FB", 17.0));
+        backToMenuBtn.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
+        playAgainBtn.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
+        playAgainBtn.setOnMouseEntered((e) -> {
+            playAgainBtn.setTextFill(javafx.scene.paint.Color.valueOf("#59E7B5"));
+            playAgainBtn.setStyle("-fx-background-radius: 13; -fx-background-color: #234d20;");  //81CCB1
+        });
+        playAgainBtn.setOnMouseExited(e -> {
+            playAgainBtn.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
+            playAgainBtn.setStyle("-fx-background-radius: 13; -fx-background-color: #59E7B5;");
+        });
+        backToMenuBtn.setOnMouseEntered((e) -> {
+            backToMenuBtn.setTextFill(javafx.scene.paint.Color.valueOf("#59E7B5"));
+            backToMenuBtn.setStyle("-fx-background-radius: 13; -fx-background-color: #234d20;");  //81CCB1
+        });
+        backToMenuBtn.setOnMouseExited(e -> {
+            backToMenuBtn.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
+            backToMenuBtn.setStyle("-fx-background-radius: 13; -fx-background-color: #59E7B5;");
+        });
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.get() == play) {
+            new SceneController().switchToGameBoard(gridPane);
+        } else if (result.get() == back) {
+            new SceneController().switchToOfflineMode(gridPane);
+        }
+    }
+
+    private void animateLabel(Label label) {
+        TranslateTransition upTransition = new TranslateTransition(ANIMATION_DURATION, label);
+        upTransition.setByY(-ANIMATION_DISTANCE);
+        upTransition.setAutoReverse(true);
+
+        TranslateTransition downTransition = new TranslateTransition(ANIMATION_DURATION, label);
+        downTransition.setByY(ANIMATION_DISTANCE);
+        downTransition.setAutoReverse(true);
+
+        upTransition.setOnFinished(event -> downTransition.play());
+        downTransition.setOnFinished(event -> upTransition.play());
+
+        upTransition.play();
     }
 
 }
