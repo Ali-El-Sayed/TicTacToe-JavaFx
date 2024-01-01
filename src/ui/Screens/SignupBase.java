@@ -81,8 +81,11 @@ public class SignupBase extends StackPane {
                 networkRequest.setRequestType(NetworkRequest.RequestType.REGISTER);
                 networkRequest.setRequestData(new RegisterRequest(username_tf.getText(), email_tf.getText(), password_tf.getText()));
                 String requestJson = RequestHandler.getJsonRequest(networkRequest);
-                System.out.println(requestJson);
-                SocketConnection.getInstance().getSender().println(requestJson);
+               // System.out.println("in client");
+                //System.out.println(requestJson);
+                //SocketConnection.getInstance().getSender().println(requestJson);  
+                       AvailablePlayersScreen availablePlayersClass = new AvailablePlayersScreen(username_tf.getText());
+                      
                         new SceneController().switchToAvailablePlayersScreen(event);
                     } catch (IOException ex) {
                         ex.printStackTrace();

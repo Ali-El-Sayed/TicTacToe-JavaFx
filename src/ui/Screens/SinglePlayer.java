@@ -36,7 +36,10 @@ public class SinglePlayer extends GameBoardScreen implements CommonBehaviorInMod
                             handleGameOver(event);
 
                         } else {
+                            System.out.println("Contents of checkedBtns: " + checkedBtns);
                             int index = pc.play(checkedBtns.keySet());
+                            System.out.println("index"+index);
+                            
                             checkedBtns.put(index, "O");
                             Button computerButton = (Button) gridPane.getChildren().get(index - 1);
                             computerButton.setText("O");

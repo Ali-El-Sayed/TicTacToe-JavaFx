@@ -1,6 +1,8 @@
 
 package data;
 
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Random;
 import java.util.Set;
 
@@ -21,8 +23,8 @@ public class Pc implements Playable {
         switch (level) {
             case EASY:
                 return easyLevel(keySet);
-//            case HARD:
-//                return hardLevel(keySet);
+            case HARD:
+               return hardLevel(keySet);
 
         }
         return -1;
@@ -42,25 +44,24 @@ public class Pc implements Playable {
 
         }
     }
-    public enum Level {
-        EASY, MEDIUM, HARD
-    };
-}
-
-
-  /*  public int hardLevel(Set<Integer> keySet) {
+    
+    
+    
+    public int hardLevel(Set<Integer> keySet) {
         System.out.println("in hardlevel");
             return findBestMove(keySet);
     }
      
-int findBestMove(Set<Integer> keySet) {
-    int bestMove = -1;
+static int findBestMove(Set<Integer> occupiedPositions) {
+    int bestMove = 1;
     int bestScore = Integer.MIN_VALUE;
+    Set<Integer> clonedSet = new HashSet<>(occupiedPositions);
 
     for (int i = 1; i <= 9; i++) {
-        if (!keySet.contains(i)) {
-            int score = minimax(keySet, 0, false);
-            keySet.remove(i);
+        if (!clonedSet.contains(i)) {
+            clonedSet.add(i);
+            int score = minimax(clonedSet, 0, false);
+            clonedSet.remove(i);
 
             if (score > bestScore) {
                 bestScore = score;
@@ -71,25 +72,33 @@ int findBestMove(Set<Integer> keySet) {
 
     return bestMove;
 }
-int minimax(Set<Integer> checkedBtns, int depth, boolean isMaximizing) {
+
+
+
+
+static int minimax(Set<Integer> occupiedPositions, int depth, boolean isMaximizing) {
+    if (depth >= 9) {
+        // Assuming 9 is the maximum depth for a 3x3 tic-tac-toe board
+        return 0; // Evaluate the current state
+    }
 
     if (isMaximizing) {
         int bestScore = Integer.MIN_VALUE;
         for (int i = 1; i <= 9; i++) {
-            if (!checkedBtns.contains(i)) {
-                checkedBtns.add(i);
-                bestScore = Math.max(bestScore, minimax(checkedBtns, depth + 1, false));
-                checkedBtns.remove(i);
+            if (!occupiedPositions.contains(i)) {
+                Set<Integer> newPosition = new LinkedHashSet<>(occupiedPositions);
+                newPosition.add(i);
+                bestScore = Math.max(bestScore, minimax(newPosition, depth + 1, false));
             }
         }
         return bestScore;
     } else {
         int bestScore = Integer.MAX_VALUE;
         for (int i = 1; i <= 9; i++) {
-            if (!checkedBtns.contains(i)) {
-                checkedBtns.add(i);
-                bestScore = Math.min(bestScore, minimax(checkedBtns, depth + 1, true));
-                checkedBtns.remove(i);
+            if (!occupiedPositions.contains(i)) {
+                Set<Integer> newPosition = new LinkedHashSet<>(occupiedPositions);
+                newPosition.add(i);
+                bestScore = Math.min(bestScore, minimax(newPosition, depth + 1, true));
             }
         }
         return bestScore;
@@ -98,8 +107,15 @@ int minimax(Set<Integer> checkedBtns, int depth, boolean isMaximizing) {
 
 
 
+
+
+    public enum Level {
+        EASY, MEDIUM, HARD
+    };
 }
-*/
+
+
+ 
 
  
 

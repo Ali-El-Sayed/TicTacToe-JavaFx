@@ -1,13 +1,22 @@
 package Network.Response;
 
+import Network.Request.NetworkRequest.RequestType;
 import com.google.gson.annotations.SerializedName;
 
 public class NetworkResponse<T> {
 
-    private ResponseMode mode;
-    private ResponseStatus status;
-    private T data;
+    ResponseStatus status;
+    @SerializedName("response")
+    T responseInfo;
+    RequestType responseType;
 
+    public T getResponseInfo() {
+        return responseInfo;
+    }
+
+    public void setResponseInfo(T responseInfo) {
+        this.responseInfo = responseInfo;
+    }
     public ResponseStatus getStatus() {
         return status;
     }
@@ -16,46 +25,25 @@ public class NetworkResponse<T> {
         this.status = status;
     }
 
-    public T getData() {
-        return data;
+    public RequestType getRespnseType() {
+        return responseType;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public void setRespnseType(RequestType respnseType) {
+        this.responseType = respnseType;
     }
-
-    public ResponseMode getMode() {
-        return mode;
-    }
-
-    public void setMode(ResponseMode mode) {
-        this.mode = mode;
-    }
-
+    
+    
     public enum ResponseStatus {
-        SUCCESS("success"),
-        FAILURE("failure");
-        @SerializedName("status")
-        private final String status;
-
-        ResponseStatus(String status) {
-            this.status = status;
-        }
+    SUCCESS("success"), 
+    FAILURE("failure"),
+    SERVER_ERROR("server_error");
+    
+    @SerializedName("status")
+    private final String status;
+    ResponseStatus(String status){
+      this.status=status;
     }
-
-    public enum ResponseMode {
-        LOGIN("ssss"),
-        REGISTER("REGISTER"),
-        AVAILABLE_PLAYERS("AVAILABLE_PLAYERS");
-        @SerializedName("MODE")
-        private final String mode;
-
-        ResponseMode(String mode) {
-            this.mode = mode;
-        }
-
-        public String getMode() {
-            return this.mode;
-        }
-    }
+    
+}
 }

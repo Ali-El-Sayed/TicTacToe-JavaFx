@@ -1,111 +1,152 @@
 package ui.Screens;
 
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import Network.Request.NetworkRequest;
+import Network.Request.RequestHandler;
+import Network.Request.data.AvailablePlayersRequest;
+import Network.Response.ResponseHandler;
+import Network.SocketConnection;
+import Network.Response.data.AvailablePlayersResponse;
+import Network.Response.data.AvailablePlayerData;
+import data.LoggedInUser;
+import java.io.IOException;
+import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import ui.components.GameButton;
 import ui.components.GameButton.Mode;
+import ui.Screens.ListRow;
+
+
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AvailablePlayersScreen extends VBox {
 
-    protected final Label topLabel;
-    protected final ListView availablePlayers;
-
-    public class Player {
-
-        public String username;
-        public String avatarPath;
-        public boolean online;
-
-        public Player(String username, String avatarPath, boolean online) {
-            this.username = username;
-            this.avatarPath = avatarPath;
-            this.online = online;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public String getAvatarPath() {
-            return avatarPath;
-        }
-
-        public boolean isOnline() {
-            return online;
-        }
-    }
+    protected Label topLabel;
+    protected ListView<AvailablePlayerData> availablePlayers;
+    private String currentUsername;
+    AvailablePlayersResponse onlinePlayersList;
+    //SocketConnection s;
 
     public AvailablePlayersScreen() {
+         
+           // s=new SocketConnection();
+            handleAvailablePlayerRequest();
+          
+      
+    }
 
-        topLabel = new Label();
-        availablePlayers = new ListView();
+    public AvailablePlayersScreen(String username) {
+        this.currentUsername = username;
+    }
 
-        setMaxHeight(USE_PREF_SIZE);
-        setMaxWidth(USE_PREF_SIZE);
-        setMinHeight(USE_PREF_SIZE);
-        setMinWidth(USE_PREF_SIZE);
-        setPrefHeight(858.0);
-        setPrefWidth(1343.0);
-        setStyle("-fx-background-image: url('/assets/background.png'); -fx-background-size: cover;");
+    public  AvailablePlayersScreen (AvailablePlayersResponse onlinePlayersList) {
 
-        topLabel.setText("Find Opponents");
-        topLabel.setFont(new Font("Berlin Sans FB Bold", 75.0));
-
-        availablePlayers.setPrefHeight(345.0);
-        availablePlayers.setPrefWidth(600.0);
-        availablePlayers.setStyle("-fx-background-color: transparent; -fx-control-inner-background: transparent;");
-        availablePlayers.setCellFactory(param -> new PlayerListCell());
-
-        Player player1 = new Player("John Doe", "/assets/cricket-player.png", true);
-        Player player2 = new Player("salmamaher", "/assets/cricket-player.png", false);
-        Player player3 = new Player("AhmedSamy", "/assets/cricket-player.png", true);
-        Player player4 = new Player("Mohammed55", "/assets/cricket-player.png", false);
-        Player player5 = new Player("Mohammed55", "/assets/cricket-player.png", false);
-        Player player6 = new Player("rana44", "/assets/cricket-player.png", true);
-
-        availablePlayers.getItems().addAll(player1, player2, player3, player4, player5, player6);
-        setAlignment(javafx.geometry.Pos.CENTER);
-
-        getChildren().add(topLabel);
-        getChildren().add(availablePlayers);
+        this.onlinePlayersList = onlinePlayersList;
+        System.out.println("Number of players: " + onlinePlayersList.playerData.size());
+      
 
     }
 
-    class PlayerListCell extends ListCell<Player> {
+private void setAvailablePlayersScreen() {
+    
+    topLabel = new Label();
+    availablePlayers = new ListView<>();
+    setStyle("-fx-background-image: url('/assets/background.png'); -fx-background-size: cover;");
 
-        @Override
-        protected void updateItem(Player player, boolean empty) {
-            super.updateItem(player, empty);
-            this.setAlignment(Pos.CENTER);
+    topLabel.setText("Find Opponents");
+    topLabel.setStyle("-fx-font-family: 'Berlin Sans FB Bold'; -fx-font-size: 75.0;");
 
-            if (empty || player == null) {
-                setText(null);
-                setGraphic(null);
-            } else {
-                ListRow playerGrid = createPlayerBox(player);
-                setGraphic(playerGrid);
+    availablePlayers.setPrefHeight(345.0);
+    availablePlayers.setPrefWidth(600.0);
+    availablePlayers.setStyle("-fx-background-color: transparent; -fx-control-inner-background: transparent;");
+    availablePlayers.setCellFactory(param -> new PlayerListCell());
+
+    // Check if onlinePlayersList is not null
+    if (onlinePlayersList != null) {
+        List<AvailablePlayerData> playerDataList = onlinePlayersList.playerData;
+
+        // Check if playerDataList is not null
+        if (playerDataList != null) {
+            for (int i = 0; i < playerDataList.size(); i++) {
+                AvailablePlayerData player = playerDataList.get(i);
+
+                // Check if player is not null before adding to the list
+                if (player != null) {
+                    availablePlayers.getItems().add(player);
+                } else {
+                    // Handle the case where player is null, such as logging a message or skipping the null entry
+                    System.out.println("Encountered null player at index " + i);
+                }
             }
+        } else {
+            System.out.println("playerDataList is null");
         }
+    } else {
+        System.out.println("onlinePlayersList is null");
+    }
 
-        private ListRow createPlayerBox(Player player) {
-            ImageView avatarImageView = new ImageView(new Image(getClass().getResourceAsStream(player.getAvatarPath())));
+    getChildren().addAll(topLabel, availablePlayers);
+}
+
+
+    private void handleAvailablePlayerRequest() {
+        AvailablePlayersRequest networkRequest = new AvailablePlayersRequest();
+        networkRequest.setRequestType(NetworkRequest.RequestType.AVAILABLE_PLAYERS);
+        networkRequest.setRequestData(new AvailablePlayersRequest(LoggedInUser.getId()));
+
+        String requestJson = RequestHandler.getJsonRequest(networkRequest);
+        SocketConnection.getInstance().getSender().println(requestJson);
+        setAvailablePlayersScreen();
+       
+        
+
+        // Assume that you have a method to handle the response asynchronously
+     //handleResponse();
+    }
+//    private void handleResponse(){
+//        try {
+//            String response= s.getInstance().getReceiver().readLine();
+//            
+//            AvailablePlayersResponse onlinePlayersList = ResponseHandler.getResponseObj(response);
+//            setAvailablePlayersScreen();
+//        } catch (IOException ex) {
+//            Logger.getLogger(AvailablePlayersScreen.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
+
+
+
+    class PlayerListCell extends ListCell<AvailablePlayerData> {
+        @Override
+
+    protected void updateItem(AvailablePlayerData player, boolean empty) {
+        System.out.println("in updateItem");
+        super.updateItem(player, empty);
+        if (empty || player == null) {
+             System.out.println("empty");
+            setText(null);
+            setGraphic(null);
+        } else {
+            setText(player.getUsername());  // Display the username for testing
+        }
+    }
+
+        private ListRow createPlayerBox(AvailablePlayerData player) {
+            ImageView avatarImageView = new ImageView(new Image(getClass().getResourceAsStream("/assets/cricket-player.png")));
             avatarImageView.setFitWidth(50);
             avatarImageView.setFitHeight(50);
 
-            Circle statusCircle = new Circle(8, player.isOnline() ? Color.GREEN : Color.RED);
+            Circle statusCircle = new Circle(8, player.getplayerStatus() == 0 ? Color.GREEN : Color.RED);
             statusCircle.setStroke(Color.BLACK);
 
             Label usernameLabel = new Label(player.getUsername());
@@ -116,9 +157,9 @@ public class AvailablePlayersScreen extends VBox {
             inviteButton.setOnAction(event -> {
                 System.out.println("Inviting " + player.getUsername());
             });
-            ListRow playerBox = new ListRow(avatarImageView, statusCircle, usernameLabel);
 
-            return playerBox;
+            return new ListRow(avatarImageView, statusCircle, usernameLabel);
         }
     }
 }
+    

@@ -1,10 +1,20 @@
 package Network;
-
+import Network.Response.NetworkResponse;
+import  Network.Response.ResponseHandler;
+import Network.Response.data.AvailablePlayerData;
+import Network.Response.data.AvailablePlayersResponse;
+import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.List;
+import javafx.application.Platform;
+
+
+import ui.Screens.AvailablePlayersScreen;
+
 
 public class SocketConnection extends Thread {
 
@@ -12,6 +22,7 @@ public class SocketConnection extends Thread {
     private Socket socket;
     private BufferedReader receiver;
     private PrintStream sender;
+    private String msg;
 
     public BufferedReader getReceiver() {
         return receiver;
@@ -21,7 +32,7 @@ public class SocketConnection extends Thread {
         return sender;
     }
 
-    private SocketConnection() {
+    public SocketConnection() {
         initializeSocket();
     }
 
@@ -32,6 +43,15 @@ public class SocketConnection extends Thread {
         }
         return socketHandler;
     }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+    
 
     private void initializeSocket() {
         try {
@@ -56,10 +76,25 @@ public class SocketConnection extends Thread {
 
         while (socket.isConnected()) {
             try {
-                String receivedMessage = receiver.readLine();
+
+                String receivedMessage = receiver.readLine(); //listen to server 
                 if (!receivedMessage.isEmpty()) {
-                    System.out.println(receivedMessage);
+                    System.out.println("receive from server" + receivedMessage);
+
+                    this.setMsg(receivedMessage);
+
+                    AvailablePlayersResponse onlinePlayersList = ResponseHandler.getResponseObj(receivedMessage);
+                    Platform.runLater(() -> {
+                        new AvailablePlayersScreen(onlinePlayersList);
+
+                    });
+
+//                    for (int i = 0; i < onlinePlayersList.playerData.size(); i++) {
+//                        System.out.println("Printing" + onlinePlayersList.playerData);
+//                    }
+
                 }
+
             } catch (IOException ex) {
 
             }
@@ -91,4 +126,5 @@ public class SocketConnection extends Thread {
         public static final String SERVER_IP = "127.0.0.1";
 
     }
+
 }
