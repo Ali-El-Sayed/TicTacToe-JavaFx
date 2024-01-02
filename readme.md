@@ -27,21 +27,29 @@ This is a simple and customizable Tic Tac Toe desktop game developed in JavaFX. 
 - Java 8 or later
 - JavaFX
 
-## Installation
+Certainly! To include images in your README, you can use markdown syntax for images. Ensure that you have the image files available in your repository, and update the paths accordingly. Here's the modified README with image placeholders:
 
-1. Clone the repository:
+## Installation in NetBeans
 
-   ```bash
-   git clone https://github.com/yourusername/tic-tac-toe.git
-   cd tic-tac-toe
-   ```
+1. **Clone the repository:**
+    - Open NetBeans and go to "Team" > "Git" > "Clone..."
+    - Enter the repository URL: `https://github.com/yourusername/tic-tac-toe.git`
+    - Follow the on-screen instructions to clone the repository.
 
-2. Compile and run the game:
+   ![Clone Repository](/images/clone.png)
 
-   ```bash
-   javac Main.java
-   java Main
-   ```
+2. **Open the Project:**
+    - In NetBeans, go to "File" > "Open Project..."
+    - Navigate to the cloned repository folder and select it.
+
+   ![Open Project](/images/open_project.png)
+
+3. **Compile and Run the Game:**
+    - Right-click on the project in the Projects pane.
+    - Choose "Build" to compile the project.
+    - Right-click on the project again and choose "Run" to launch the game.
+
+   ![Build and Run](/images/build_run.png)
 
 ## Offline Mode
 
@@ -49,9 +57,10 @@ This is a simple and customizable Tic Tac Toe desktop game developed in JavaFX. 
 
 In single-player mode, you can play against the computer. The computer has three difficulty levels: easy, medium, and hard.
 
+
 ```java
-// Example: Launching the game with easy difficulty
-GameLauncher.launchSinglePlayer(GameDifficulty.EASY);
+// Example: Launching the game for two players
+SinglePlayer(new PC(Pc.Type.EASY));
 ```
 
 ### Two Players
@@ -60,126 +69,30 @@ In two-player mode, two players can play on the same machine. Simply launch the 
 
 ```java
 // Example: Launching the game for two players
-GameLauncher.launchTwoPlayer();
+MultiPlayers();
 ```
 
 ## Online Mode
 
 ### Server
 
-1. Run the server application:
-
-   ```bash
-   java ServerMain
-   ```
-
-2. Share the server IP address with other players.
-
-### Client
-
-1. Run the client application:
-
-   ```bash
-   java ClientMain
-   ```
-
-2. Enter the server IP address when prompted.
-
-## Customization
-
-You can customize the game settings, such as board size, winning conditions, and more, by modifying the configuration file (`config.properties`).
-
-## Contributing
-
-Feel free to contribute to the project by opening issues or submitting pull requests.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
-
-## Acknowledgments
-
-- Inspired by the classic Tic Tac Toe game.
-
-Enjoy playing the Tic Tac Toe game! If you encounter any issues or have suggestions, please let us know by opening an issue.
+1. **Run the server application:**
+   - Open the `ServerMain` class.
+   - Right-click on the class file in the editor.
+   - Choose "Run File" to start the server.
 
 
-## Overview
-
-This is a simple and customizable Tic Tac Toe desktop game developed in JavaFX. The game supports both offline and online modes, allowing users to play against an AI opponent or compete with others over a network.
-
-## Features
-
-- **Offline Mode:**
-  - Single-player mode against a computer opponent with three difficulty levels.
-  - Two-player mode for local games.
-
-- **Online Mode:**
-  - Multiplayer mode that requires a server application.
-  - Users can connect to the server to play against each other.
-
-## Requirements
-
-- Java 8 or later
-- JavaFX
-
-## Installation
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/yourusername/tic-tac-toe.git
-   cd tic-tac-toe
-   ```
-
-2. Compile and run the game:
-
-   ```bash
-   javac Main.java
-   java Main
-   ```
-
-## Offline Mode
-
-### Single Player
-
-In single-player mode, you can play against the computer. The computer has three difficulty levels: easy, medium, and hard.
-
-```java
-// Example: Launching the game with easy difficulty
-GameLauncher.launchSinglePlayer(GameDifficulty.EASY);
-```
-
-### Two Players
-
-In two-player mode, two players can play on the same machine. Simply launch the game without specifying difficulty.
-
-```java
-// Example: Launching the game for two players
-GameLauncher.launchTwoPlayer();
-```
-
-## Online Mode
-
-### Server
-
-1. Run the server application:
-
-   ```bash
-   java ServerMain
-   ```
-
-2. Share the server IP address with other players.
+2. **Share the server IP address with other players.**
 
 ### Client
 
-1. Run the client application:
+1. **Run the client application:**
+   - Open the `ClientMain` class.
+   - Right-click on the class file in the editor.
+   - Choose "Run File" to start the client.
 
-   ```bash
-   java ClientMain
-   ```
 
-2. Enter the server IP address when prompted.
+2. **Enter the server IP address when prompted.**
 
 ## Customization
 
