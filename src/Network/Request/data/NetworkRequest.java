@@ -31,9 +31,26 @@ public class NetworkRequest<T> {
     }
 
     public enum RequestType {
-        LOGIN,
-        LOGOUT,
-        REGISTER,
-        AVAILABLE_PLAYERS;
+        LOGIN("LOGIN"),
+        REGISTER("REGISTER"),
+        AVAILABLE_PLAYERS("AVAILABLE_PLAYERS"),
+        NONE("NONE");
+
+        String type = "";
+
+        private RequestType(String s) {
+            this.type = s;
+        }
+
+        public static RequestType fromString(String typeString) {
+            for (RequestType type : RequestType.values()) {
+                if (type.equals(typeString.replace("\"", ""))) {
+                    System.out.println("Type  = " + type + "\nvalue = " + typeString);
+                    return type;
+                }
+            }
+            return NONE;
+        }
+
     }
 }
