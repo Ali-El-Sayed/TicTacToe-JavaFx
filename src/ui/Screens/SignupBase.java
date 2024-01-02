@@ -1,5 +1,6 @@
 package ui.Screens;
 
+import Network.Request.RequestHandler;
 import Network.Request.data.RegisterRequest;
 import Network.Response.NetworkResponse;
 import Network.Response.data.LogInResponse;
@@ -29,83 +30,81 @@ import ui.components.GameButton;
 
 public class SignupBase extends StackPane {
 
-  protected final ImageView imageView = new ImageView();
-  protected final BorderPane borderPane = new BorderPane();
-  protected final Label label = new Label();
-  protected final FlowPane flowPane = new FlowPane();
-  protected final Label label0 = new Label();
-  protected final Label usernameLabel = new Label();
-  protected final Label emailLabel = new Label();
-  protected final Label passwordLabel = new Label();
+    protected final ImageView imageView = new ImageView();
+    protected final BorderPane borderPane = new BorderPane();
+    protected final Label label = new Label();
+    protected final FlowPane flowPane = new FlowPane();
+    protected final Label label0 = new Label();
+    protected final Label usernameLabel = new Label();
+    protected final Label emailLabel = new Label();
+    protected final Label passwordLabel = new Label();
 
-  protected final TextField fname_tf = new TextField();
-  protected final Label label1 = new Label();
-  protected final TextField lname_tf = new TextField();
-  protected final TextField username_tf = new TextField();
-  protected final Label label2 = new Label();
-  protected final TextField email_tf = new TextField();
-  protected final Label label3 = new Label();
-  protected final PasswordField password_tf = new PasswordField();
-  protected final TextField passwordrevealed_tf = new TextField();
-  protected final FlowPane flowPane0 = new FlowPane();
-  protected final Button back_btn = new GameButton(
-      "",
-      GameButton.Mode.BACK,
-      () -> {
-      });
-  protected final FlowPane flowPane1 = new FlowPane();
-  protected final Button signup_btn = new GameButton(
-      "Sign up",
-      GameButton.Mode.NORMAL,
-      () -> {
-      });
-  protected final Button passreveal_btn = new Button();
-  protected final ImageView imageView0 = new ImageView();
-  protected boolean togglePass = false;
-  protected boolean togglePassField = false;
+    protected final TextField fname_tf = new TextField();
+    protected final Label label1 = new Label();
+    protected final TextField lname_tf = new TextField();
+    protected final TextField username_tf = new TextField();
+    protected final Label label2 = new Label();
+    protected final TextField email_tf = new TextField();
+    protected final Label label3 = new Label();
+    protected final PasswordField password_tf = new PasswordField();
+    protected final TextField passwordrevealed_tf = new TextField();
+    protected final FlowPane flowPane0 = new FlowPane();
+    protected final Button back_btn = new GameButton(
+            "",
+            GameButton.Mode.BACK,
+            () -> {
+            });
+    protected final FlowPane flowPane1 = new FlowPane();
+    protected final Button signup_btn = new GameButton(
+            "Sign up",
+            GameButton.Mode.NORMAL,
+            () -> {
+            });
+    protected final Button passreveal_btn = new Button();
+    protected final ImageView imageView0 = new ImageView();
+    protected boolean togglePass = false;
+    protected boolean togglePassField = false;
 
-  public SignupBase() {
-    setupLayout();
+    public SignupBase() {
+        setupLayout();
 
-    back_btn.setOnAction(
-      new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent event) {
-          SceneController.switchToLogInSignUp(event, borderPane);
-        }
-      }
-    );
-
-    signup_btn.setOnAction(
-      new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent event) {
-          if (
-            validateEntries(
-              username_tf,
-              email_tf,
-              password_tf,
-              passwordrevealed_tf
-            )
-          ) {
-              RegisterRequest networkRequest = new RegisterRequest(
-                      username_tf.getText(),
-                      email_tf.getText(),
-                      password_tf.getText()
-              );
-              networkRequest.setIp(SocketConnection.getInstance().getLocalIp());
-              String requestJson = RequestHandler.getJsonRequest(
-                      networkRequest
-              );
-              System.out.println(requestJson);
-              SocketConnection.getInstance().getSender().println(requestJson);
-              SceneController.switchToAvailablePlayersScreen(event, borderPane);
-          }
+        back_btn.setOnAction(
+                new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                SceneController.switchToLogInSignUp(event, borderPane);
+            }
         }
         );
 
         signup_btn.setOnAction(
                 new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (validateEntries(
+                        username_tf,
+                        email_tf,
+                        password_tf,
+                        passwordrevealed_tf
+                )) {
+                    RegisterRequest networkRequest = new RegisterRequest(
+                            username_tf.getText(),
+                            email_tf.getText(),
+                            password_tf.getText()
+                    );
+                    networkRequest.setIp(SocketConnection.getInstance().getLocalIp());
+                    String requestJson = RequestHandler.getJsonRequest(
+                            networkRequest
+                    );
+                    System.out.println(requestJson);
+                    SocketConnection.getInstance().getSender().println(requestJson);
+                    SceneController.switchToAvailablePlayersScreen(event, borderPane);
+                }
+            }
+        }
+        );
+
+        signup_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 if (validateEntries(
@@ -141,24 +140,22 @@ public class SignupBase extends StackPane {
                     System.err.println(event);
                     if (logInResponseObj.getResponseStatus() == NetworkResponse.ResponseStatus.SUCCESS) {
                         SceneController.switchToAvailablePlayersScreen(event, borderPane);
-                            
+
                     } else {
                         System.out.println("Wrong Data");
                     }
+
                 }
             }
-        }
-        );
-        passreveal_btn.setOnAction(
-                new EventHandler<ActionEvent>() {
+        });
+        passreveal_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 revealPassword(password_tf, passwordrevealed_tf);
             }
-        }
-        );
+        });
+       
     }
-
     private void setupLayout() {
         flowPane1.setAlignment(Pos.BOTTOM_CENTER);
         flowPane1.setAlignment(Pos.BOTTOM_CENTER);

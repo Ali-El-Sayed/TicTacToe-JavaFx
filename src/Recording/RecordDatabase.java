@@ -19,8 +19,9 @@ public class RecordDatabase {
 
     private Connection conn;
     private Statement stmt;
+    private static RecordDatabase recordDatabase;
 
-    public RecordDatabase() {
+    private RecordDatabase() {
         try {
             DriverManager.registerDriver(new ClientDriver());
             conn = DriverManager.getConnection("jdbc:derby://localhost:1527/MyDb", "root", "root");
@@ -28,6 +29,15 @@ public class RecordDatabase {
             System.out.println("ERROR IN DATABASE CONNECTION");
         }
     }
+    
+    public static RecordDatabase getInstance(){
+        if(recordDatabase == null){
+            recordDatabase = new RecordDatabase();
+        }
+        return recordDatabase;
+    }
+    
+    
 
     public ResultSet getData() {
         try {
