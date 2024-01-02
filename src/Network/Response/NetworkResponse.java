@@ -1,27 +1,28 @@
 package Network.Response;
 
+import Network.Response.NetworkResponse.ResponseMode;
 import com.google.gson.annotations.SerializedName;
 
-public class NetworkResponse<T> {
+public class NetworkResponse {
 
+    protected String ip;
     private ResponseMode mode;
-    private ResponseStatus status;
-    private T data;
+    private ResponseStatus responseStatus;
 
-    public ResponseStatus getStatus() {
-        return status;
+    public ResponseStatus getResponseStatus() {
+        return responseStatus;
     }
 
-    public void setStatus(ResponseStatus status) {
-        this.status = status;
+    public String getIp() {
+        return ip;
     }
 
-    public T getData() {
-        return data;
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public void setResponseStatus(ResponseStatus status) {
+        this.responseStatus = status;
     }
 
     public ResponseMode getMode() {
@@ -34,28 +35,55 @@ public class NetworkResponse<T> {
 
     public enum ResponseStatus {
         SUCCESS("success"),
-        FAILURE("failure");
+        FAILURE("failure"),
+        NOTFOUND("notfound");
+
         @SerializedName("status")
         private final String status;
 
         ResponseStatus(String status) {
             this.status = status;
         }
+
+        public static ResponseStatus fromString(String modeString) {
+            for (ResponseStatus rStatus : ResponseStatus.values()) {
+                if (rStatus.status.equalsIgnoreCase(modeString)) {
+                    return rStatus;
+                }
+            }
+            return SUCCESS;
+        }
     }
 
     public enum ResponseMode {
-        LOGIN("ssss"),
+        LOGIN("LOGIN"),
         REGISTER("REGISTER"),
-        AVAILABLE_PLAYERS("AVAILABLE_PLAYERS");
-        @SerializedName("MODE")
+        AVAILABLE_PLAYERS("AVAILABLE_PLAYERS"),
+        NONE("NONE");
+
         private final String mode;
 
         ResponseMode(String mode) {
             this.mode = mode;
         }
 
-        public String getMode() {
-            return this.mode;
+        public static ResponseMode fromString(String modeString) {
+            for (ResponseMode mode : ResponseMode.values()) {
+                if (mode.equals(modeString.replace("\"", ""))) {
+                    System.out.println("Type  = " + mode + "\nvalue = " + modeString);
+                    return mode;
+                }
+            }
+            return NONE;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "NetworkResponse{"
+                + "ip='" + ip + '\''
+                + ", mode = " + mode
+                + ", responseStatus=" + responseStatus
+                + '}';
     }
 }

@@ -1,8 +1,7 @@
 package ui.Screens;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import data.Pc;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -38,7 +37,7 @@ public class SelectLevelScreen extends VBox {
         btnEasy = new GameButton("Easy", GameButton.Mode.NORMAL, () -> {
         });
         btnEasy.setOnAction((e) -> {
-            SceneController.switchToSingle(e, this);
+            SceneController.switchToSinglePlayerBoard(e, this,new Pc(Pc.Level.EASY));
         });
         btnIntermediate = new GameButton("Intermediate", GameButton.Mode.NORMAL, () -> {
         });

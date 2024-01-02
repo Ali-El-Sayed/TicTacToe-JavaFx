@@ -1,6 +1,8 @@
 package Network.Response.data;
 
-public class RegisterResposne {
+import Network.Response.NetworkResponse;
+
+public class RegisterResposne extends NetworkResponse {
 
     private int id;
     private String userName;

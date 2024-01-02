@@ -1,9 +1,11 @@
 package ui.Screens;
 
-import Network.Request.NetworkRequest;
 import Network.Request.RequestHandler;
 import Network.Request.data.RegisterRequest;
+import Network.Response.NetworkResponse;
+import Network.Response.data.LogInResponse;
 import Network.SocketConnection;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,11 +49,17 @@ public class SignupBase extends StackPane {
     protected final PasswordField password_tf = new PasswordField();
     protected final TextField passwordrevealed_tf = new TextField();
     protected final FlowPane flowPane0 = new FlowPane();
-    protected final Button back_btn = new GameButton("", GameButton.Mode.BACK, () -> {
-    });
+    protected final Button back_btn = new GameButton(
+            "",
+            GameButton.Mode.BACK,
+            () -> {
+            });
     protected final FlowPane flowPane1 = new FlowPane();
-    protected final Button signup_btn = new GameButton("Sign up", GameButton.Mode.NORMAL, () -> {
-    });
+    protected final Button signup_btn = new GameButton(
+            "Sign up",
+            GameButton.Mode.NORMAL,
+            () -> {
+            });
     protected final Button passreveal_btn = new Button();
     protected final ImageView imageView0 = new ImageView();
     protected boolean togglePass = false;
@@ -60,28 +68,84 @@ public class SignupBase extends StackPane {
     public SignupBase() {
         setupLayout();
 
-        back_btn.setOnAction(new EventHandler<ActionEvent>() {
+        back_btn.setOnAction(
+                new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                 SceneController.switchToLogInSignUp(event, borderPane);
+                SceneController.switchToLogInSignUp(event, borderPane);
             }
-        });
+        }
+        );
+
+        signup_btn.setOnAction(
+                new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (validateEntries(
+                        username_tf,
+                        email_tf,
+                        password_tf,
+                        passwordrevealed_tf
+                )) {
+                    RegisterRequest networkRequest = new RegisterRequest(
+                            username_tf.getText(),
+                            email_tf.getText(),
+                            password_tf.getText()
+                    );
+                    networkRequest.setIp(SocketConnection.getInstance().getLocalIp());
+                    String requestJson = RequestHandler.getJsonRequest(
+                            networkRequest
+                    );
+                    System.out.println(requestJson);
+                    SocketConnection.getInstance().getSender().println(requestJson);
+                    SceneController.switchToAvailablePlayersScreen(event, borderPane);
+                }
+            }
+        }
+        );
 
         signup_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                if (validateEntries(
+                        username_tf,
+                        email_tf,
+                        password_tf,
+                        passwordrevealed_tf
+                )) {
+                    RegisterRequest networkRequest = new RegisterRequest(
+                            username_tf.getText(),
+                            email_tf.getText(),
+                            password_tf.getText()
+                    );
+                    networkRequest.setIp(SocketConnection.getInstance().getLocalIp());
+                    String requestJson = new Gson().toJson(networkRequest.toArray());
+                    System.out.println(requestJson);
+                    SocketConnection.getInstance().getSender().println(requestJson);
+//                    try {
+//                        Thread.sleep(2000);
+//                    } catch (InterruptedException ex) {
+//                        ex.printStackTrace();
+//                    }
+                    String s = "";
+                    try {
+                        s = SocketConnection.getInstance().getReceiver().readLine();
+                    } catch (IOException ex) {
+                        Logger.getLogger(SignupBase.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    System.out.println("response in signup" + s.replace("\\\"", ""));
+//                    s = s.replace("\\\"", "");
+                    LogInResponse logInResponseObj = new LogInResponse("", s);
 
-                if (validateEntries(username_tf, email_tf, password_tf, passwordrevealed_tf)) {
-                   
-                NetworkRequest<RegisterRequest> networkRequest = new NetworkRequest<>();
-                networkRequest.setRequestType(NetworkRequest.RequestType.REGISTER);
-                networkRequest.setRequestData(new RegisterRequest(username_tf.getText(), email_tf.getText(), password_tf.getText()));
-                String requestJson = RequestHandler.getJsonRequest(networkRequest);
-                System.out.println(requestJson);
-                SocketConnection.getInstance().getSender().println(requestJson);
-                        SceneController.switchToLogIn(event, borderPane);
+                    System.err.println(event);
+                    if (logInResponseObj.getResponseStatus() == NetworkResponse.ResponseStatus.SUCCESS) {
+                        SceneController.switchToAvailablePlayersScreen(event, borderPane);
+
+                    } else {
+                        System.out.println("Wrong Data");
+                    }
+
                 }
-                  
             }
         });
         passreveal_btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -90,8 +154,8 @@ public class SignupBase extends StackPane {
                 revealPassword(password_tf, passwordrevealed_tf);
             }
         });
+       
     }
-
     private void setupLayout() {
         flowPane1.setAlignment(Pos.BOTTOM_CENTER);
         flowPane1.setAlignment(Pos.BOTTOM_CENTER);
@@ -106,7 +170,11 @@ public class SignupBase extends StackPane {
         imageView.setFitHeight(858.0);
         imageView.setFitWidth(1343.0);
         imageView.setPickOnBounds(true);
-        imageView.setImage(new Image(getClass().getResource("/assets/background.png").toExternalForm()));
+        imageView.setImage(
+                new Image(
+                        getClass().getResource("/assets/background.png").toExternalForm()
+                )
+        );
 
         borderPane.setMaxHeight(Double.MAX_VALUE);
         borderPane.setMaxWidth(Double.MAX_VALUE);
@@ -225,19 +293,26 @@ public class SignupBase extends StackPane {
         borderPane.setRight(flowPane1);
 
         passreveal_btn.setAlignment(javafx.geometry.Pos.CENTER);
-        passreveal_btn.setContentDisplay(javafx.scene.control.ContentDisplay.CENTER);
+        passreveal_btn.setContentDisplay(
+                javafx.scene.control.ContentDisplay.CENTER
+        );
         passreveal_btn.setMinHeight(1.0);
         passreveal_btn.setMinWidth(1.0);
         passreveal_btn.setMnemonicParsing(false);
         passreveal_btn.setPrefHeight(1.0);
         passreveal_btn.setPrefWidth(1.0);
         passreveal_btn.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-        StackPane.setMargin(passreveal_btn, new Insets(-155.0, -350.0, -550.0, 0.0));
+        StackPane.setMargin(
+                passreveal_btn,
+                new Insets(-155.0, -350.0, -550.0, 0.0)
+        );
 
         imageView0.setFitHeight(35.0);
         imageView0.setFitWidth(50.0);
         imageView0.setPickOnBounds(true);
-        imageView0.setImage(new Image(getClass().getResource("/assets/closed.png").toExternalForm()));
+        imageView0.setImage(
+                new Image(getClass().getResource("/assets/closed.png").toExternalForm())
+        );
         passreveal_btn.setGraphic(imageView0);
         passreveal_btn.setCursor(Cursor.HAND);
 
@@ -265,7 +340,6 @@ public class SignupBase extends StackPane {
         getChildren().add(emailLabel);
         getChildren().add(passwordLabel);
         getChildren().add(usernameLabel);
-
     }
 
     void revealPassword(TextField password, TextField passRevealed) {
@@ -273,14 +347,17 @@ public class SignupBase extends StackPane {
             passRevealed.setText(password.getText());
             passRevealed.setVisible(true);
             password.setVisible(false);
-            imageView0.setImage(new Image(getClass().getResource("/assets/open.png").toExternalForm()));
+            imageView0.setImage(
+                    new Image(getClass().getResource("/assets/open.png").toExternalForm())
+            );
             togglePass = !togglePass;
         } else {
-
             password.setText(passRevealed.getText());
             passRevealed.setVisible(false);
             password.setVisible(true);
-            imageView0.setImage(new Image(getClass().getResource("/assets/closed.png").toExternalForm()));
+            imageView0.setImage(
+                    new Image(getClass().getResource("/assets/closed.png").toExternalForm())
+            );
             togglePass = !togglePass;
         }
     }
@@ -293,7 +370,8 @@ public class SignupBase extends StackPane {
         } else if ((username.getText().length() < 4) && (!username.getText().isEmpty())) {
             usernameLabel.setText("Username must be at least 4 characters");
             return false;
-        } else if ((!username.getText().matches(USERNAME_REGEX)) && (!username.getText().isEmpty())) {
+        } else if ((!username.getText().matches(USERNAME_REGEX))
+                && (!username.getText().isEmpty())) {
             usernameLabel.setText("Username must be have no spaces");
             return false;
         } else {
@@ -303,7 +381,8 @@ public class SignupBase extends StackPane {
     }
 
     boolean validateEmail(TextField email) {
-        final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        final String EMAIL_REGEX
+                = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         if (email.getText().isEmpty()) {
             emailLabel.setText("Please enter your email address");
             return false;
@@ -349,7 +428,14 @@ public class SignupBase extends StackPane {
         }
     }
 
-    boolean validateEntries(TextField username_tf, TextField email_tf, TextField password_tf, TextField passwordRevealed_tf) {
-        return ((validateUsername(username_tf)) && (validateEmail(email_tf)) && (validatePassword(password_tf, passwordRevealed_tf)));
+    boolean validateEntries(
+            TextField username_tf,
+            TextField email_tf,
+            TextField password_tf,
+            TextField passwordRevealed_tf
+    ) {
+        return ((validateUsername(username_tf))
+                && (validateEmail(email_tf))
+                && (validatePassword(password_tf, passwordRevealed_tf)));
     }
 }
