@@ -5,14 +5,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.Vector;
 
 public class SocketConnection extends Thread {
 
-    private static SocketConnection socketHandler = null;
+    private static SocketConnection socketConnection = null;
     private Socket socket;
     private BufferedReader receiver;
     private PrintStream sender;
     private String localIp;
+    private static Vector<String> list = new Vector<>();
 
     public String getLocalIp() {
         return localIp;
@@ -31,11 +33,14 @@ public class SocketConnection extends Thread {
     }
 
     public static SocketConnection getInstance() {
-
-        if (socketHandler == null) {
-            return new SocketConnection();
+        if (socketConnection == null) {
+            synchronized (SocketConnection.class) {
+                if (socketConnection == null) {
+                    socketConnection = new SocketConnection();
+                }
+            }
         }
-        return socketHandler;
+        return socketConnection;
     }
 
     private void initializeSocket() {
@@ -58,19 +63,17 @@ public class SocketConnection extends Thread {
     }
 
     private void setupIOSteams() {
-
-        while (socket.isConnected()) {
-            try {
-                String receivedMessage = receiver.readLine();
-                if (!receivedMessage.isEmpty()) {
-                    System.out.println(receivedMessage);
-                }
-            } catch (IOException ex) {
-                System.out.println("Error in Reciever");
-
-            }
-
-        }
+//        while (socket.isConnected()) {
+//            try {
+//                String receivedMessage = receiver.readLine();
+//                if (!receivedMessage.isEmpty()) {
+//                    System.out.println("Recieved Response : " + receivedMessage);
+//                    list.add(localIp);
+//                }
+//            } catch (IOException ex) {
+//                System.out.println("Error in Reciever");
+//            }
+//        }
 
     }
 
@@ -91,10 +94,15 @@ public class SocketConnection extends Thread {
         }
     }
 
+    public static String getLastResponse() {
+        return list.isEmpty() ? "" : list.get(0);
+    }
+
     private class Endpoint {
 
         public static final int PORT_NUMBER = 5000;
         public static final String SERVER_IP = "127.0.0.1";
 //        public static final String SERVER_IP = "10.145.14.209";
     }
+
 }
