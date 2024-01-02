@@ -29,9 +29,9 @@ public class VideoScreenBase extends AnchorPane {
     protected final Button back_btn;
     protected final File file;
     protected final Media media;
-     protected final MediaPlayer mediaPlayer;
+    protected final MediaPlayer mediaPlayer;
     public VideoScreenBase() {
-
+        AnchorPane anchorPane =this;
         imageView = new ImageView();
         congratsVideo = new MediaView();
         WinnerLabel = new Label();
@@ -41,13 +41,7 @@ public class VideoScreenBase extends AnchorPane {
          back_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                SceneController sceneController = new SceneController();
-                try {
-                    mediaPlayer.stop();
-                    sceneController.switchToGameBoard(event);
-                } catch (IOException ex) {
-                    Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                 SceneController.switchToGameBoard(event,anchorPane);
             }
         });
         setId("AnchorPane");

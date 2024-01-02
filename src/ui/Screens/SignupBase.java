@@ -1,5 +1,11 @@
 package ui.Screens;
 
+import Network.Request.RequestHandler;
+import Network.Request.data.RegisterRequest;
+import Network.Response.NetworkResponse;
+import Network.Response.data.LogInResponse;
+import Network.SocketConnection;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +22,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import static javafx.scene.layout.Region.USE_PREF_SIZE;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import ui.SceneController;
@@ -23,70 +30,133 @@ import ui.components.GameButton;
 
 public class SignupBase extends StackPane {
 
-    protected final ImageView imageView;
-    protected final BorderPane borderPane;
-    protected final Label label;
-    protected final FlowPane flowPane;
-    protected final Label label0;
-    protected final TextField fname_tf;
-    protected final Label label1;
-    protected final TextField lname_tf;
-    protected final Label label2;
-    protected final TextField email_tf;
-    protected final Label label3;
-    protected final PasswordField password_tf;
-    protected final TextField passwordrevealed_tf;
-    protected final FlowPane flowPane0;
-    protected final Button back_btn;
-    protected final FlowPane flowPane1;
-    protected final Button signup_btn;
-    protected final Button passreveal_btn;
-    protected final ImageView imageView0;
-    protected boolean togglePass;
-    public SignupBase() {
+    protected final ImageView imageView = new ImageView();
+    protected final BorderPane borderPane = new BorderPane();
+    protected final Label label = new Label();
+    protected final FlowPane flowPane = new FlowPane();
+    protected final Label label0 = new Label();
+    protected final Label usernameLabel = new Label();
+    protected final Label emailLabel = new Label();
+    protected final Label passwordLabel = new Label();
 
-        togglePass=false;
-        imageView = new ImageView();
-        borderPane = new BorderPane();
-        label = new Label();
-        flowPane = new FlowPane();
-        label0 = new Label();
-        fname_tf = new TextField();
-        label1 = new Label();
-        lname_tf = new TextField();
-        label2 = new Label();
-        email_tf = new TextField();
-        label3 = new Label();
-        password_tf = new PasswordField();
-        passwordrevealed_tf = new TextField();
-        flowPane0 = new FlowPane();
-        back_btn = new GameButton("", GameButton.Mode.BACK, () -> {});
-        back_btn.setOnAction(new EventHandler<ActionEvent>() {
+    protected final TextField fname_tf = new TextField();
+    protected final Label label1 = new Label();
+    protected final TextField lname_tf = new TextField();
+    protected final TextField username_tf = new TextField();
+    protected final Label label2 = new Label();
+    protected final TextField email_tf = new TextField();
+    protected final Label label3 = new Label();
+    protected final PasswordField password_tf = new PasswordField();
+    protected final TextField passwordrevealed_tf = new TextField();
+    protected final FlowPane flowPane0 = new FlowPane();
+    protected final Button back_btn = new GameButton(
+            "",
+            GameButton.Mode.BACK,
+            () -> {
+            });
+    protected final FlowPane flowPane1 = new FlowPane();
+    protected final Button signup_btn = new GameButton(
+            "Sign up",
+            GameButton.Mode.NORMAL,
+            () -> {
+            });
+    protected final Button passreveal_btn = new Button();
+    protected final ImageView imageView0 = new ImageView();
+    protected boolean togglePass = false;
+    protected boolean togglePassField = false;
+
+    public SignupBase() {
+        setupLayout();
+
+        back_btn.setOnAction(
+                new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                try {
-                    new SceneController().switchToLogInSignUp(event);
-                } catch (IOException ex) {
-                    Logger.getLogger(SignupBase.class.getName()).log(Level.SEVERE, null, ex);
+                SceneController.switchToLogInSignUp(event, borderPane);
+            }
+        }
+        );
+
+        signup_btn.setOnAction(
+                new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (validateEntries(
+                        username_tf,
+                        email_tf,
+                        password_tf,
+                        passwordrevealed_tf
+                )) {
+                    RegisterRequest networkRequest = new RegisterRequest(
+                            username_tf.getText(),
+                            email_tf.getText(),
+                            password_tf.getText()
+                    );
+                    networkRequest.setIp(SocketConnection.getInstance().getLocalIp());
+                    String requestJson = RequestHandler.getJsonRequest(
+                            networkRequest
+                    );
+                    System.out.println(requestJson);
+                    SocketConnection.getInstance().getSender().println(requestJson);
+                    SceneController.switchToAvailablePlayersScreen(event, borderPane);
                 }
             }
-        });
-        flowPane1 = new FlowPane();
-        signup_btn = new GameButton("Sign up", GameButton.Mode.NORMAL, () -> {
-        });
+        }
+        );
+
         signup_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                try {
-                    new SceneController().switchToLogIn(event);
-                } catch (IOException ex) {
-                    Logger.getLogger(SignupBase.class.getName()).log(Level.SEVERE, null, ex);
+                if (validateEntries(
+                        username_tf,
+                        email_tf,
+                        password_tf,
+                        passwordrevealed_tf
+                )) {
+                    RegisterRequest networkRequest = new RegisterRequest(
+                            username_tf.getText(),
+                            email_tf.getText(),
+                            password_tf.getText()
+                    );
+                    networkRequest.setIp(SocketConnection.getInstance().getLocalIp());
+                    String requestJson = new Gson().toJson(networkRequest.toArray());
+                    System.out.println(requestJson);
+                    SocketConnection.getInstance().getSender().println(requestJson);
+//                    try {
+//                        Thread.sleep(2000);
+//                    } catch (InterruptedException ex) {
+//                        ex.printStackTrace();
+//                    }
+                    String s = "";
+                    try {
+                        s = SocketConnection.getInstance().getReceiver().readLine();
+                    } catch (IOException ex) {
+                        Logger.getLogger(SignupBase.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    System.out.println("response in signup" + s.replace("\\\"", ""));
+//                    s = s.replace("\\\"", "");
+                    LogInResponse logInResponseObj = new LogInResponse("", s);
+
+                    System.err.println(event);
+                    if (logInResponseObj.getResponseStatus() == NetworkResponse.ResponseStatus.SUCCESS) {
+                        SceneController.switchToAvailablePlayersScreen(event, borderPane);
+
+                    } else {
+                        System.out.println("Wrong Data");
+                    }
+
                 }
             }
         });
-        passreveal_btn = new Button();
-        imageView0 = new ImageView();
-
+        passreveal_btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                revealPassword(password_tf, passwordrevealed_tf);
+            }
+        });
+       
+    }
+    private void setupLayout() {
         flowPane1.setAlignment(Pos.BOTTOM_CENTER);
         flowPane1.setAlignment(Pos.BOTTOM_CENTER);
         setMaxHeight(USE_PREF_SIZE);
@@ -100,7 +170,11 @@ public class SignupBase extends StackPane {
         imageView.setFitHeight(858.0);
         imageView.setFitWidth(1343.0);
         imageView.setPickOnBounds(true);
-        imageView.setImage(new Image(getClass().getResource("/assets/background.png").toExternalForm()));
+        imageView.setImage(
+                new Image(
+                        getClass().getResource("/assets/background.png").toExternalForm()
+                )
+        );
 
         borderPane.setMaxHeight(Double.MAX_VALUE);
         borderPane.setMaxWidth(Double.MAX_VALUE);
@@ -125,37 +199,22 @@ public class SignupBase extends StackPane {
         flowPane.setOrientation(javafx.geometry.Orientation.VERTICAL);
         flowPane.setPrefHeight(200.0);
         flowPane.setPrefWidth(200.0);
-        flowPane.setVgap(30.0);
+        flowPane.setVgap(50.0);
 
         label0.setAlignment(javafx.geometry.Pos.TOP_LEFT);
         label0.setPrefHeight(50.0);
         label0.setPrefWidth(350.0);
-        label0.setText("First Name");
+        label0.setText("Username");
         label0.setTextFill(javafx.scene.paint.Color.WHITE);
         label0.setFont(new Font("Berlin Sans FB Bold", 45.0));
 
-        fname_tf.setMaxWidth(650.0);
-        fname_tf.setMinHeight(60.0);
-        fname_tf.setMinWidth(0.0);
-        fname_tf.setPrefHeight(30.0);
-        fname_tf.setPrefWidth(0.0);
-        fname_tf.setFont(new Font("Berlin Sans FB Bold", 24.0));
-        FlowPane.setMargin(fname_tf, new Insets(-30.0, 0.0, 0.0, 0.0));
-
-        label1.setAlignment(javafx.geometry.Pos.TOP_LEFT);
-        label1.setPrefHeight(50.0);
-        label1.setPrefWidth(350.0);
-        label1.setText("Last Name");
-        label1.setTextFill(javafx.scene.paint.Color.WHITE);
-        label1.setFont(new Font("Berlin Sans FB Bold", 45.0));
-
-        lname_tf.setMaxWidth(650.0);
-        lname_tf.setMinHeight(60.0);
-        lname_tf.setMinWidth(0.0);
-        lname_tf.setPrefHeight(30.0);
-        lname_tf.setPrefWidth(0.0);
-        lname_tf.setFont(new Font("Berlin Sans FB Bold", 24.0));
-        FlowPane.setMargin(lname_tf, new Insets(-30.0, 0.0, 0.0, 0.0));
+        username_tf.setMaxWidth(650.0);
+        username_tf.setMinHeight(60.0);
+        username_tf.setMinWidth(0.0);
+        username_tf.setPrefHeight(30.0);
+        username_tf.setPrefWidth(0.0);
+        username_tf.setFont(new Font("Berlin Sans FB Bold", 24.0));
+        FlowPane.setMargin(username_tf, new Insets(-30.0, 0.0, 0.0, 0.0));
 
         label2.setAlignment(javafx.geometry.Pos.TOP_LEFT);
         label2.setPrefHeight(50.0);
@@ -184,7 +243,7 @@ public class SignupBase extends StackPane {
         password_tf.setMinWidth(0.0);
         password_tf.setPrefHeight(30.0);
         password_tf.setPrefWidth(509.0);
-        FlowPane.setMargin(password_tf, new Insets(-30.0, 0.0, 0.0, 0.0));
+        FlowPane.setMargin(password_tf, new Insets(-110.0, 0.0, 0.0, 0.0));
         password_tf.setFont(new Font("Berlin Sans FB Bold", 24.0));
         passwordrevealed_tf.setMaxWidth(650.0);
         passwordrevealed_tf.setMinHeight(60.0);
@@ -192,7 +251,7 @@ public class SignupBase extends StackPane {
         passwordrevealed_tf.setPrefHeight(30.0);
         passwordrevealed_tf.setPrefWidth(509.0);
         passwordrevealed_tf.setVisible(false);
-        FlowPane.setMargin(passwordrevealed_tf, new Insets(0.0, 0.0, -60.0, 0.0));
+        FlowPane.setMargin(passwordrevealed_tf, new Insets(-30.0, 0.0, 0.0, 0.0));
         passwordrevealed_tf.toBack();
         password_tf.toFront();
         passwordrevealed_tf.setFont(new Font("Berlin Sans FB Bold", 24.0));
@@ -234,27 +293,32 @@ public class SignupBase extends StackPane {
         borderPane.setRight(flowPane1);
 
         passreveal_btn.setAlignment(javafx.geometry.Pos.CENTER);
-        passreveal_btn.setContentDisplay(javafx.scene.control.ContentDisplay.CENTER);
+        passreveal_btn.setContentDisplay(
+                javafx.scene.control.ContentDisplay.CENTER
+        );
         passreveal_btn.setMinHeight(1.0);
         passreveal_btn.setMinWidth(1.0);
         passreveal_btn.setMnemonicParsing(false);
         passreveal_btn.setPrefHeight(1.0);
         passreveal_btn.setPrefWidth(1.0);
         passreveal_btn.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-        StackPane.setMargin(passreveal_btn, new Insets(0.0, -350.0, -550.0, 0.0));
+        StackPane.setMargin(
+                passreveal_btn,
+                new Insets(-155.0, -350.0, -550.0, 0.0)
+        );
 
         imageView0.setFitHeight(35.0);
         imageView0.setFitWidth(50.0);
         imageView0.setPickOnBounds(true);
-        imageView0.setImage(new Image(getClass().getResource("/assets/closed.png").toExternalForm()));
+        imageView0.setImage(
+                new Image(getClass().getResource("/assets/closed.png").toExternalForm())
+        );
         passreveal_btn.setGraphic(imageView0);
         passreveal_btn.setCursor(Cursor.HAND);
 
         getChildren().add(imageView);
         flowPane.getChildren().add(label0);
-        flowPane.getChildren().add(fname_tf);
-        flowPane.getChildren().add(label1);
-        flowPane.getChildren().add(lname_tf);
+        flowPane.getChildren().add(username_tf);
         flowPane.getChildren().add(label2);
         flowPane.getChildren().add(email_tf);
         flowPane.getChildren().add(label3);
@@ -264,27 +328,114 @@ public class SignupBase extends StackPane {
         flowPane1.getChildren().add(signup_btn);
         getChildren().add(borderPane);
         getChildren().add(passreveal_btn);
+        usernameLabel.setTextFill(javafx.scene.paint.Color.RED);
+        usernameLabel.setPrefWidth(260);
+        emailLabel.setTextFill(javafx.scene.paint.Color.RED);
+        passwordLabel.setTextFill(javafx.scene.paint.Color.RED);
+        emailLabel.setPrefWidth(260);
+        passwordLabel.setPrefWidth(260);
+        StackPane.setMargin(emailLabel, new Insets(100.0, 290.0, 0.0, 0.0));
+        StackPane.setMargin(passwordLabel, new Insets(480.0, 290.0, 0.0, 0.0));
+        StackPane.setMargin(usernameLabel, new Insets(-280.0, 290.0, 0.0, 0.0));
+        getChildren().add(emailLabel);
+        getChildren().add(passwordLabel);
+        getChildren().add(usernameLabel);
+    }
 
-        passreveal_btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(!togglePass){
-                    passwordrevealed_tf.setText(password_tf.getText());
-                    togglePass=true;
-                    passwordrevealed_tf.setVisible(true);
-                    password_tf.setVisible(false);
-                    imageView0.setImage(new Image(getClass().getResource("/assets/open.png").toExternalForm()));
-                    
-                }
-                else{
-                    togglePass=false;
-                    password_tf.setText(passwordrevealed_tf.getText());
-                    passwordrevealed_tf.setVisible(false);
-                    password_tf.setVisible(true);
-                    imageView0.setImage(new Image(getClass().getResource("/assets/closed.png").toExternalForm()));
-                     
-                }
+    void revealPassword(TextField password, TextField passRevealed) {
+        if (!togglePass) {
+            passRevealed.setText(password.getText());
+            passRevealed.setVisible(true);
+            password.setVisible(false);
+            imageView0.setImage(
+                    new Image(getClass().getResource("/assets/open.png").toExternalForm())
+            );
+            togglePass = !togglePass;
+        } else {
+            password.setText(passRevealed.getText());
+            passRevealed.setVisible(false);
+            password.setVisible(true);
+            imageView0.setImage(
+                    new Image(getClass().getResource("/assets/closed.png").toExternalForm())
+            );
+            togglePass = !togglePass;
+        }
+    }
+
+    boolean validateUsername(TextField username) {
+        final String USERNAME_REGEX = "^\\S+$";
+        if (username.getText().isEmpty()) {
+            usernameLabel.setText("Please enter your username");
+            return false;
+        } else if ((username.getText().length() < 4) && (!username.getText().isEmpty())) {
+            usernameLabel.setText("Username must be at least 4 characters");
+            return false;
+        } else if ((!username.getText().matches(USERNAME_REGEX))
+                && (!username.getText().isEmpty())) {
+            usernameLabel.setText("Username must be have no spaces");
+            return false;
+        } else {
+            usernameLabel.setText("");
+            return true;
+        }
+    }
+
+    boolean validateEmail(TextField email) {
+        final String EMAIL_REGEX
+                = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        if (email.getText().isEmpty()) {
+            emailLabel.setText("Please enter your email address");
+            return false;
+        } else if ((!email.getText().matches(EMAIL_REGEX)) && (!email.getText().isEmpty())) {
+            emailLabel.setText("Please enter a valid email address");
+            return false;
+        } else {
+            emailLabel.setText("");
+            return true;
+        }
+    }
+
+    boolean validatePassword(TextField password, TextField passRev) {
+        final String PASSWORD_REGEX = "^\\S+$";
+        if (!togglePass) {
+            if (password.getText().isEmpty()) {
+                passwordLabel.setText("Please enter your password");
+                return false;
+            } else if ((!password.getText().matches(PASSWORD_REGEX))) {
+                passwordLabel.setText("Password must be have no spaces");
+                return false;
+            } else if ((password.getText().length() < 8)) {
+                passwordLabel.setText("Password must be at least 8 characters");
+                return false;
+            } else {
+                passwordLabel.setText("");
+                return true;
             }
-        });
+        } else {
+            if (password.getText().isEmpty()) {
+                passRev.setText("Please enter your password");
+                return false;
+            } else if ((!passRev.getText().matches(PASSWORD_REGEX))) {
+                passwordLabel.setText("Password must be have no spaces");
+                return false;
+            } else if ((passRev.getText().length() < 8)) {
+                passwordLabel.setText("Password must be at least 8 characters");
+                return false;
+            } else {
+                passwordLabel.setText("");
+                return true;
+            }
+        }
+    }
+
+    boolean validateEntries(
+            TextField username_tf,
+            TextField email_tf,
+            TextField password_tf,
+            TextField passwordRevealed_tf
+    ) {
+        return ((validateUsername(username_tf))
+                && (validateEmail(email_tf))
+                && (validatePassword(password_tf, passwordRevealed_tf)));
     }
 }

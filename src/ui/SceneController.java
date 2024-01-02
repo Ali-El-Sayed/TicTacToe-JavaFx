@@ -1,132 +1,84 @@
 package ui;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.animation.PauseTransition;
-import javafx.application.Platform;
+import animation.Animation;
+import data.Pc;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import ui.Screens.AboutUsBase;
 import ui.Screens.AvailablePlayersScreen;
 import ui.Screens.GameBoardScreen;
+import ui.Screens.HistoryBase;
 import ui.Screens.LoginBase;
 import ui.Screens.LoginsignupBase;
 import ui.Screens.OfflineModeScreen;
+import ui.Screens.ReplayScreen;
 import ui.Screens.SelectLevelScreen;
 import ui.Screens.SelectModeBase;
 import ui.Screens.SignupBase;
+import ui.Screens.SinglePlayer;
+
 import ui.Screens.SplashScreenBase;
-import ui.Screens.VideoScreenBase;
 
 public class SceneController {
 
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
-    
-    
-    
-    public void switchToSelectMode(ActionEvent event) throws IOException {
-        root = new SelectModeBase();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
+  private Stage stage;
+  private Scene scene;
+  private Parent root;
 
-    public void switchToOfflineMode(ActionEvent event) throws IOException {
-        root = new OfflineModeScreen();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
+  public static void switchToSelectMode(ActionEvent event, Pane currentPane) {
+    Animation.animated(currentPane, new SelectModeBase(), event);
+  }
 
-    public void switchToSplashScreen(ActionEvent event) throws IOException {
-        root = new SplashScreenBase();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
+  public static void switchToOfflineMode(ActionEvent event, Pane currentPane) {
 
-    public void switchToSelectLevelScreen(ActionEvent event) throws IOException {
-        root = new SelectLevelScreen();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
+    Animation.animated(currentPane, new OfflineModeScreen(), event);
+  }
 
-    public void switchToLogInSignUp(ActionEvent event) throws IOException {
-        root = new LoginsignupBase();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
+  public static void switchToSplashScreen(ActionEvent event, Pane currentPane) {
+    Animation.animated(currentPane, new SplashScreenBase(), event);
+  }
 
-    public void switchToSignUp(ActionEvent event) throws IOException {
-        root = new SignupBase();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
+  public static void switchToSelectLevelScreen(ActionEvent event, Pane currentPane) {
 
-    public void switchToLogIn(ActionEvent event) throws IOException {
-        root = new LoginBase();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
+    Animation.animated(currentPane, new SelectLevelScreen(), event);
+  }
 
-    public void switchToGameBoard(ActionEvent event) throws IOException {
-        root = new GameBoardScreen();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
+  public static void switchToLogInSignUp(ActionEvent event, Pane currentPane) {
+    Animation.animated(currentPane, new LoginsignupBase(), event);
+  }
 
-    public void switchToAboutMode(ActionEvent event) throws IOException {
-        root = new AboutUsBase();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
+  public static void switchToSignUp(ActionEvent event, Pane currentPane) {
+    Animation.animated(currentPane, new SignupBase(), event);
+  }
 
-    public void switchToAvailablePlayersScreen(ActionEvent event) throws IOException {
-        root = new AvailablePlayersScreen();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
+  public static void switchToLogIn(ActionEvent event, Pane currentPane) {
+    Animation.animated(currentPane, new LoginBase(), event);
+  }
 
-    public void switchToVideoScreen(ActionEvent event) throws IOException {
-        root = new VideoScreenBase();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        Platform.runLater(() -> {
-            try {
-                Thread.sleep(1000);
-                stage.setScene(scene);
-                stage.show();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(SceneController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });      
-    }
-    
+  public static void switchToGameBoard(ActionEvent event, Pane currentPane) {
+    Animation.animated(currentPane, new GameBoardScreen(), event);
+  }
+
+  public static void switchToAboutUs(ActionEvent event, Pane currentPane) {
+    Animation.animated(currentPane, new AboutUsBase(), event);
+  }
+
+  public static void switchToAvailablePlayersScreen(ActionEvent event, Pane currentPane) {
+    Animation.animated(currentPane, new AvailablePlayersScreen(), event);
+  }
+  
+  public static void switchToSinglePlayerBoard(ActionEvent event, Pane currentPane, Pc pc) {
+    Animation.animated(currentPane, new SinglePlayer(pc), event);
+  }
+  
+  public static void switchToReplay(ActionEvent event, Pane currentPane,String moves){
+     Animation.animated(currentPane, new ReplayScreen(moves), event);
+  }
+  
+  public static void switchToHistory(ActionEvent event, Pane currentPane){
+      Animation.animated(currentPane, new HistoryBase(), event);
+  }
 }

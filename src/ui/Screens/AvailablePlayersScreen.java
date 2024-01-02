@@ -18,14 +18,13 @@ import javafx.stage.Stage;
 import ui.components.GameButton;
 import ui.components.GameButton.Mode;
 
-public  class AvailablePlayersScreen extends VBox {
+public class AvailablePlayersScreen extends VBox {
 
     protected final Label topLabel;
     protected final ListView availablePlayers;
 
-
-    
     public class Player {
+
         public String username;
         public String avatarPath;
         public boolean online;
@@ -69,7 +68,7 @@ public  class AvailablePlayersScreen extends VBox {
         availablePlayers.setPrefWidth(600.0);
         availablePlayers.setStyle("-fx-background-color: transparent; -fx-control-inner-background: transparent;");
         availablePlayers.setCellFactory(param -> new PlayerListCell());
-        
+
         Player player1 = new Player("John Doe", "/assets/cricket-player.png", true);
         Player player2 = new Player("salmamaher", "/assets/cricket-player.png", false);
         Player player3 = new Player("AhmedSamy", "/assets/cricket-player.png", true);
@@ -77,16 +76,16 @@ public  class AvailablePlayersScreen extends VBox {
         Player player5 = new Player("Mohammed55", "/assets/cricket-player.png", false);
         Player player6 = new Player("rana44", "/assets/cricket-player.png", true);
 
-
-        availablePlayers.getItems().addAll(player1, player2, player3,player4,player5,player6);
+        availablePlayers.getItems().addAll(player1, player2, player3, player4, player5, player6);
         setAlignment(javafx.geometry.Pos.CENTER);
-     
+
         getChildren().add(topLabel);
         getChildren().add(availablePlayers);
 
     }
-     class PlayerListCell extends ListCell<Player> {
-         
+
+    class PlayerListCell extends ListCell<Player> {
+
         @Override
         protected void updateItem(Player player, boolean empty) {
             super.updateItem(player, empty);
@@ -101,7 +100,7 @@ public  class AvailablePlayersScreen extends VBox {
             }
         }
 
-       private ListRow createPlayerBox(Player player) {
+        private ListRow createPlayerBox(Player player) {
             ImageView avatarImageView = new ImageView(new Image(getClass().getResourceAsStream(player.getAvatarPath())));
             avatarImageView.setFitWidth(50);
             avatarImageView.setFitHeight(50);
@@ -111,22 +110,15 @@ public  class AvailablePlayersScreen extends VBox {
 
             Label usernameLabel = new Label(player.getUsername());
 
-            Button inviteButton = new GameButton("INVITE",Mode.NORMAL,()->{});
+            Button inviteButton = new GameButton("INVITE", Mode.NORMAL, () -> {
+            });
             inviteButton.setMaxSize(150, 60);
             inviteButton.setOnAction(event -> {
                 System.out.println("Inviting " + player.getUsername());
             });
             ListRow playerBox = new ListRow(avatarImageView, statusCircle, usernameLabel);
 
-            
-
             return playerBox;
         }
     }
 }
-
-
-
-
-
-

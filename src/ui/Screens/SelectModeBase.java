@@ -1,6 +1,5 @@
 package ui.Screens;
 
-
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,45 +36,36 @@ public class SelectModeBase extends StackPane {
         imageView = new ImageView();
         borderPane = new BorderPane();
         hBox = new HBox();
-        btnOfflineMode = new GameButton("Offline", GameButton.Mode.NORMAL, () -> {});
+        btnOfflineMode = new GameButton("Offline", GameButton.Mode.NORMAL, () -> {
+        });
         btnOfflineMode.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                    
-                try {
-                    new SceneController().switchToOfflineMode(event);
-                } catch (IOException ex) {
-                    Logger.getLogger(SplashScreenBase.class.getName()).log(Level.SEVERE, null, ex);
-                }
 
+                SceneController.switchToOfflineMode(event, borderPane);
             }
+
         });
-        
-        btnOnlineMode = new GameButton("Online", GameButton.Mode.NORMAL, () -> {});
+
+        btnOnlineMode = new GameButton("Online", GameButton.Mode.NORMAL, () -> {
+        });
         btnOnlineMode.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                    
-                try {
-                    new SceneController().switchToLogInSignUp(event);
-                } catch (IOException ex) {
-                    Logger.getLogger(SplashScreenBase.class.getName()).log(Level.SEVERE, null, ex);
-                }
+
+                SceneController.switchToLogInSignUp(event, borderPane);
 
             }
         });
         text = new Text();
         hBox0 = new HBox();
-        btnBack = new GameButton(GameButton.Mode.BACK, () -> {});
+        btnBack = new GameButton(GameButton.Mode.BACK, () -> {
+        });
         btnBack.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                    
-                try {
-                    new SceneController().switchToSplashScreen(event);
-                } catch (IOException ex) {
-                    Logger.getLogger(SplashScreenBase.class.getName()).log(Level.SEVERE, null, ex);
-                }
+
+                SceneController.switchToSplashScreen(event, borderPane);
 
             }
         });
@@ -140,9 +130,7 @@ public class SelectModeBase extends StackPane {
         btnBack.setPadding(new Insets(0.0, 150.0, 0.0, 0.0));
         HBox.setMargin(btnBack, new Insets(0.0, 0.0, 0.0, 200.0));
         borderPane.setBottom(hBox0);
-        
-        
-        
+
         getChildren().add(imageView);
         hBox.getChildren().add(btnOfflineMode);
         hBox.getChildren().add(btnOnlineMode);

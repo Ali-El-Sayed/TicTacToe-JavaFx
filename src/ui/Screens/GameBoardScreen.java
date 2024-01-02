@@ -1,7 +1,10 @@
 package ui.Screens;
 
+import java.io.IOException;
+import java.net.Socket;
 import java.util.HashMap;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -15,81 +18,82 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import ui.SceneController;
+import ui.components.GameButton;
 
 public class GameBoardScreen extends StackPane {
 
-    protected final ImageView backGroundImage;
-    public final GridPane gridPane;
-    protected final ColumnConstraints columnConstraints;
-    protected final ColumnConstraints columnConstraints0;
-    protected final ColumnConstraints columnConstraints1;
-    protected final RowConstraints rowConstraints;
-    protected final RowConstraints rowConstraints0;
-    protected final RowConstraints rowConstraints1;
-    protected final RowConstraints rowConstraints2;
-    protected final RowConstraints rowConstraints3;
-    protected final Button boardButton8;
-    protected final Button boardButton9;
-    protected final Button boardButton5;
-    protected final Button boardButton6;
-    protected final Button boardButton4;
-    protected final Button boardButton1;
-    protected final Button boardButton3;
-    protected final Button boardButton2;
-    protected final Button boardButton7;
-    protected final HBox hBoxPlayer1;
-    protected final Label Player1Symbol;
-    protected final Label Player1NameAndScore;
-    protected final HBox hBoxPlayer2;
-    protected final Label Player2Symbol;
-    protected final Label player2NameAndScore;
+    protected final ImageView backGroundImage = new ImageView();
+    public final GridPane gridPane = new GridPane();
+    protected final ColumnConstraints columnConstraints = new ColumnConstraints();
+    protected final ColumnConstraints columnConstraints0 = new ColumnConstraints();
+    protected final ColumnConstraints columnConstraints1 = new ColumnConstraints();
+    protected final RowConstraints rowConstraints = new RowConstraints();
+    protected final RowConstraints rowConstraints0 = new RowConstraints();
+    protected final RowConstraints rowConstraints1 = new RowConstraints();
+    protected final RowConstraints rowConstraints2 = new RowConstraints();
+    protected final RowConstraints rowConstraints3 = new RowConstraints();
+    protected final Button boardButton1 = new Button();
+    protected final Button boardButton2 = new Button();
+    protected final Button boardButton3 = new Button();
+    protected final Button boardButton4 = new Button();
+    protected final Button boardButton5 = new Button();
+    protected final Button boardButton6 = new Button();
+    protected final Button boardButton7 = new Button();
+    protected final Button boardButton8 = new Button();
+    protected final Button boardButton9 = new Button();
+    protected final Button back_btn = new GameButton("Exit game", GameButton.Mode.BACK);
+    protected final Button newGameBtn = new GameButton("New Game", GameButton.Mode.BACK);
+    protected final HBox hBoxPlayer1 = new HBox();
+    protected final Label Player1Symbol = new Label();
+    protected final Label Player1NameAndScore = new Label();
+    protected final HBox hBoxPlayer2 = new HBox();
+    protected final Label Player2Symbol = new Label();
+    protected final Label player2NameAndScore = new Label();
     protected int[][] winProbabilities;
-    boolean isX = true;
-    HashMap<Integer, String> checkedBtns = new HashMap();
-    int positions[];
-    int counter;
+    protected boolean isX = true;
+    protected String str;
+    protected String str1;
+    protected Button btn;
+    protected Button recordBtn;
     RecordingGame recordingGame;
+    boolean saveRecord;
+    Button []arButton;
+    int counter;
+
+    HashMap<Integer, String> checkedBtns = new HashMap();
+    Socket socket;
 
     public GameBoardScreen() {
-        recordingGame = new RecordingGame();
-        positions = new int[9];
-        counter = 0;
-        backGroundImage = new ImageView();
-        gridPane = new GridPane();
-        columnConstraints = new ColumnConstraints();
-        columnConstraints0 = new ColumnConstraints();
-        columnConstraints1 = new ColumnConstraints();
-        rowConstraints = new RowConstraints();
-        rowConstraints0 = new RowConstraints();
-        rowConstraints1 = new RowConstraints();
-        rowConstraints2 = new RowConstraints();
-        rowConstraints3 = new RowConstraints();
-        boardButton8 = new Button();
-        boardButton9 = new Button();
-        boardButton5 = new Button();
-        boardButton6 = new Button();
-        boardButton4 = new Button();
-        boardButton1 = new Button();
-        boardButton3 = new Button();
-        boardButton2 = new Button();
-        boardButton7 = new Button();
-        hBoxPlayer1 = new HBox();
-        Player1Symbol = new Label();
-        Player1NameAndScore = new Label();
-        hBoxPlayer2 = new HBox();
-        Player2Symbol = new Label();
-        player2NameAndScore = new Label();
 
-        Button[] arButton = {boardButton1, boardButton2, boardButton3, boardButton4, boardButton5, boardButton6, boardButton7, boardButton8, boardButton9};
-        winProbabilities = new int[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {1, 4, 7}, {2, 5, 8}, {3, 6, 9}, {1, 5, 9}, {3, 5, 7}};
+        winProbabilities = new int[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {1, 4, 7}, {2, 5, 8}, {3, 6, 9},
+        {1, 5, 9}, {3, 5, 7}};
 
+        initialoizeLayout();
+        back_btn.setOnAction((event) -> {
+            for (int i = 0; i < checkedBtns.size(); i++) {
+                checkedBtns.remove(i);
+            }
+            SceneController.switchToSelectMode(event, gridPane);
+        });
+        newGameBtn.setOnAction((event) -> {
+            for (int i = 0; i < checkedBtns.size(); i++) {
+                checkedBtns.remove(i);
+            }
+            
+           
+            SceneController.switchToGameBoard(event, gridPane);
+        });
+    }
+
+    private void initialoizeLayout() {
+        saveRecord =false;
         setMaxHeight(858.0);
         setMaxWidth(1343.0);
         setMinHeight(USE_PREF_SIZE);
         setMinWidth(USE_PREF_SIZE);
         setPrefHeight(858.0);
         setPrefWidth(1343.0);
-
         backGroundImage.setFitHeight(858.0);
         backGroundImage.setFitWidth(1343.0);
         backGroundImage.setPickOnBounds(true);
@@ -246,10 +250,18 @@ public class GameBoardScreen extends StackPane {
         boardButton7.setTextFill(javafx.scene.paint.Color.valueOf("#234d20"));
         boardButton7.setFont(new Font("Arial Rounded MT Bold", 110.0));
 
+        newGameBtn.setLayoutY(300);
         GridPane.setRowIndex(hBoxPlayer1, 1);
         hBoxPlayer1.setPrefHeight(100.0);
         hBoxPlayer1.setPrefWidth(542.0);
         hBoxPlayer1.setSpacing(5.0);
+        
+        recordBtn = new GameButton("Record", GameButton.Mode.NORMAL, () -> {
+            saveRecord=true;
+            recordBtn.setDisable(true);
+        });
+        GridPane.setRowIndex(recordBtn, 1);
+        GridPane.setColumnIndex(recordBtn, 1);
 
         Player1Symbol.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
         Player1Symbol.setPrefHeight(92.0);
@@ -315,43 +327,54 @@ public class GameBoardScreen extends StackPane {
         hBoxPlayer2.getChildren().add(Player2Symbol);
         hBoxPlayer2.getChildren().add(player2NameAndScore);
         gridPane.getChildren().add(hBoxPlayer2);
+        gridPane.getChildren().add(recordBtn);
         getChildren().add(gridPane);
-
+        gridPane.getChildren().add(back_btn);
+        gridPane.getChildren().add(newGameBtn);
+        gridPane.setMargin(newGameBtn, new Insets(500.0, 0.0, -1120.0, 150.0));
+        gridPane.setMargin(back_btn, new Insets(500.0, 0.0, -1120.0, 0.0));
+        recordingGame = new RecordingGame();
+        counter=0;
+        arButton = new Button[]{boardButton1,boardButton2,boardButton3,boardButton4,boardButton5,boardButton6,boardButton7,boardButton8,boardButton9};
         for (Node node : gridPane.getChildren()) {
             if (node.getClass() == Button.class) {
-                Button btn = (Button) node;
+                btn = (Button) node;
                 btn.setOnAction((ActionEvent event) -> {
-
-                    handleTurn(event);
                     Integer btn1 = gridPane.getChildren().indexOf(node);
+                    if (isX) {
+                        str1 = "X";
+                    } else {
+                        str1 = "O";
+                    }
+                    checkedBtns.put(btn1 + 1, str1);
+                        handleTurn(event);
+                    btn1 = gridPane.getChildren().indexOf(node);
                     recordingGame.record(btn1 + 1, counter);
                     counter++;
                     checkedBtns.put(btn1 + 1, isX ? "O" : "X");
                     if (isWinner()) {
-                        handleGameOver(event, arButton);
+                        handleGameOver(event);
                     }
                 });
             }
-
         }
-
     }
 
-    private void handleTurn(ActionEvent event) {
-        Button btn = (Button) event.getTarget();
+    private void handleTurn(ActionEvent event)  {
+        btn = (Button) event.getTarget();
 
-        btn.setText(isX ? "X" : "O");
+        btn.setText(str1);
+
         isX = !isX;
         btn.setOnAction((e) -> {
-
         });
-
     }
 
-    private boolean isWinner() {
+    protected boolean isWinner() {
         for (int[] winCase : winProbabilities) {
             if (checkedBtns.getOrDefault(winCase[0], "A").equals(checkedBtns.getOrDefault(winCase[1], "B"))
                     && checkedBtns.getOrDefault(winCase[0], "D").equals(checkedBtns.getOrDefault(winCase[2], "D"))) {
+
                 handleWinner(winCase);
                 return true;
             }
@@ -359,13 +382,21 @@ public class GameBoardScreen extends StackPane {
         return false;
     }
 
-    private void handleGameOver(ActionEvent e, Button[] arButtons) {
-        recordingGame.startReplay(arButtons);
-
+    protected void handleGameOver(ActionEvent e) {
+        recordingGame.startReplay(arButton);
+        if (saveRecord) {
+           recordingGame.saveRecord();
+        }
+        for (Button arButton1 : arButton) {
+            arButton1.setOnAction((ActionEvent event) -> {
+            });
+        }
+        
+        System.out.println("Winner");
         openVideoPopUp();
     }
 
-    private void handleWinner(int[] winCase) {
+    protected void handleWinner(int[] winCase) {
         for (int i : winCase) {
             Button btn = (Button) gridPane.getChildren().get(i - 1);
             btn.setTextFill(Color.WHITE);

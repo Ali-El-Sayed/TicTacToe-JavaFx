@@ -1,11 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ui.Screens;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -23,6 +22,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import ui.SceneController;
 import ui.components.GameButton;
 
 public class videoPopUp {
@@ -31,40 +31,18 @@ public class videoPopUp {
         Stage videoStage = new Stage();
         videoStage.initModality(Modality.APPLICATION_MODAL);
         videoStage.setTitle("Winning Celebrations");
-
-        Media media = new Media(new File("C:/Users/LEGION/Desktop/winnerVideo.mp4").toURI().toString());
+        Media media = new Media(new File("src/assets/winnerVideo.mp4").toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         MediaView mediaView = new MediaView(mediaPlayer);
-        Button playAgain = new GameButton("Play Again", GameButton.Mode.NORMAL, () -> {
-            System.out.println("Play");
-        });
-        playAgain.setPrefSize(250, 100);
-        Button Back = new GameButton(GameButton.Mode.BACK, () -> {
-            System.out.println("Back");
-        });
-        Back.setPrefSize(250, 100);
-
-        HBox hBox = new HBox();
-        HBox.setMargin(playAgain, new Insets(25.0, 40.0, 20.0, 20.0));
-        HBox.setMargin(Back, new Insets(25.0, 0.0, 0.0, 0.0));
-        hBox.getChildren().add(playAgain);
-        hBox.getChildren().add(Back);
-
         BorderPane root = new BorderPane();
         root.setCenter(mediaView);
         BorderPane.setAlignment(mediaView, Pos.TOP_CENTER);
-
-        root.setBottom(hBox);
-        BorderPane.setAlignment(hBox, Pos.TOP_LEFT);
-
         root.setBackground(new Background(new BackgroundImage(new Image("/assets/background.png"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT)));
-
-        Scene scene = new Scene(root, 1200, 858);
-
+        Scene scene = new Scene(root, 1200, 700);
         videoStage.setScene(scene);
         videoStage.setResizable(false);
         videoStage.setOnCloseRequest(event -> {

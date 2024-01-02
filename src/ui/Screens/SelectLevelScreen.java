@@ -1,8 +1,7 @@
 package ui.Screens;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import data.Pc;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -35,18 +34,20 @@ public class SelectLevelScreen extends VBox {
         hBox = new HBox();
         headerL = new Label();
         hBox0 = new HBox();
-        btnEasy = new GameButton("Easy", GameButton.Mode.NORMAL, () -> { });
-        btnIntermediate = new GameButton("Intermediate", GameButton.Mode.NORMAL, () -> {});
-        btnHard = new GameButton("Hard", GameButton.Mode.NORMAL, () -> {});
+        btnEasy = new GameButton("Easy", GameButton.Mode.NORMAL, () -> {
+        });
+        btnEasy.setOnAction((e) -> {
+            SceneController.switchToSinglePlayerBoard(e, this,new Pc(Pc.Level.EASY));
+        });
+        btnIntermediate = new GameButton("Intermediate", GameButton.Mode.NORMAL, () -> {
+        });
+        btnHard = new GameButton("Hard", GameButton.Mode.NORMAL, () -> {
+        });
         hBox1 = new HBox();
-        btnBack = new GameButton(GameButton.Mode.BACK, () -> {});
+        btnBack = new GameButton(GameButton.Mode.BACK, () -> {
+        });
         btnBack.setOnAction((ActionEvent event) -> {
-            SceneController sceneController = new SceneController();
-            try {
-                sceneController.switchToOfflineMode(event);
-            } catch (IOException ex) {
-                Logger.getLogger(SelectModeBase.class.getName()).log(Level.SEVERE, null, ex);
-            }
+             SceneController.switchToOfflineMode(event, this);
         });
 
         Image img = new Image(getClass().getResourceAsStream("/assets/background.png"));
