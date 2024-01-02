@@ -74,14 +74,14 @@ public class GameBoardScreen extends StackPane {
             for (int i = 0; i < checkedBtns.size(); i++) {
                 checkedBtns.remove(i);
             }
-            SceneController.switchToSplashScreen(event, gridPane);
+            SceneController.switchToSelectMode(event, gridPane);
         });
         newGameBtn.setOnAction((event) -> {
             for (int i = 0; i < checkedBtns.size(); i++) {
                 checkedBtns.remove(i);
             }
             
-            SceneController sc = new SceneController();
+           
             SceneController.switchToGameBoard(event, gridPane);
         });
     }
@@ -387,6 +387,13 @@ public class GameBoardScreen extends StackPane {
         if (saveRecord) {
            recordingGame.saveRecord();
         }
+        for (Button arButton1 : arButton) {
+            
+            arButton1.setOnAction((ActionEvent event) -> {
+
+            });
+        }
+        
         System.out.println("Winner");
         openVideoPopUp();
     }

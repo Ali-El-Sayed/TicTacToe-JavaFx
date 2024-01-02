@@ -66,7 +66,7 @@ public class LoginBase extends StackPane {
                 String requestJson = RequestHandler.getJsonRequest(networkRequest);
                 System.out.println(requestJson);
                 SocketConnection.getInstance().getSender().println(requestJson);
-
+                SceneController.switchToAvailablePlayersScreen(event, borderPane);
                 // navigation 
                 //  SceneController.switchToAboutUs(event, borderPane);
                 

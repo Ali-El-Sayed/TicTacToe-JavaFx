@@ -21,30 +21,37 @@ public class SinglePlayer extends GameBoardScreen implements CommonBehaviorInMod
         this.pc = pc;
         newGameBtn.setOnAction((event) -> {
             SceneController.switchToSinglePlayerBoard(event, gridPane,this.pc);
-         
         });
 
     }
 
     @Override
     public void initializeBtnHandler() {
+        recordingGame = new RecordingGame();
         for (Node node : gridPane.getChildren()) {
             if (node.getClass() == Button.class) {
                 Button btn = (Button) node;
                 btn.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
+                      
                         handlePressedButton(event);
                         Integer btn1 = gridPane.getChildren().indexOf(node);
+                        recordingGame.record(btn1+1, counter);
+                        counter++;
                         checkedBtns.put(btn1 + 1, "X");
+                        
                         if (isWinner()) {
+                            System.out.println("test handle game over vs pc ");
                             handleGameOver(event);
-
+                                
                         } else {
                             int index = pc.play(checkedBtns.keySet());
                             checkedBtns.put(index, "O");
                             Button computerButton = (Button) gridPane.getChildren().get(index - 1);
                             computerButton.setText("O");
+                            recordingGame.record(index, counter);
+                            counter++;
 //                            mouth.println(computerButton.getText());
                             if (isWinner()) {
                                 handleGameOver(event);

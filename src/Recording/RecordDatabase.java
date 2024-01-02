@@ -5,7 +5,6 @@
  */
 package Recording;
 
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,6 +16,7 @@ import java.util.logging.Logger;
 import org.apache.derby.jdbc.ClientDriver;
 
 public class RecordDatabase {
+
     private Connection conn;
     private Statement stmt;
 
@@ -28,20 +28,36 @@ public class RecordDatabase {
             System.out.println("ERROR IN DATABASE CONNECTION");
         }
     }
-    public ResultSet getData(int id) {
+
+    public ResultSet getData() {
         try {
 
-            String queryString = "select * from RECORDING where id = ?";
-            PreparedStatement pst = conn.prepareStatement(queryString);
-            pst.setInt(1, id);
-            ResultSet rs = pst.executeQuery();
+            String queryString = "select * from RECORDING";
+            Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+
+            ResultSet rs = stmt.executeQuery(queryString);
+
             return rs;
         } catch (SQLException ex) {
-            System.out.println("error in get data from Database");   
+            System.out.println(ex);
             return null;
         }
-        
+
     }
+
+    public ResultSet getDataForReplay(int id) {
+        try {
+            String queryString = "select * from RECORDING WHERE Id = "+id;
+            Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = stmt.executeQuery(queryString);
+            
+            return rs;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
     public void setData(String moves) {
         try {
             String queryString = "insert into RECORDING (moves) Values(?) ";
@@ -52,5 +68,5 @@ public class RecordDatabase {
             System.out.println(ex);
         }
     }
-    
+
 }

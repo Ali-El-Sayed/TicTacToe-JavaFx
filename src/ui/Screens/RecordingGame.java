@@ -29,17 +29,12 @@ public class RecordingGame {
             positions[counter] = possion;
             counter++;
             moves += String.valueOf(possion);
-            
             System.out.println(Arrays.toString(positions));
             System.out.println("moves is = "+moves);
         
     }
-     public  void startReplay(Button []arButton) {
-        try {
-            
-            ResultSet rs =  rbd.getData(1);
-            rs.next();
-            String move = rs.getString(2);            
+    public  void startReplay(Button []arButton) {
+            String move = moves;
             new Thread(() -> {
                 try {
                     boolean isX =true;
@@ -61,14 +56,18 @@ public class RecordingGame {
                 }
                 
             }).start();
-        } catch (SQLException ex) {
-            Logger.getLogger(RecordingGame.class.getName()).log(Level.SEVERE, null, ex);
-        }
        
     }
      
      public void saveRecord(){
-         rbd.setData(moves);
+        try {
+            rbd.setData(moves);
+            ResultSet rs= rbd.getData();
+            rs.last();
+            System.out.println(rs.getString(2));
+        } catch (SQLException ex) {
+            Logger.getLogger(RecordingGame.class.getName()).log(Level.SEVERE, null, ex);
+        }
          
      }
 }

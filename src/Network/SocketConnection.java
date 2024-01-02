@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 import javafx.scene.control.Alert;
+import ui.SceneController;
 
 public class SocketConnection extends Thread {
 
@@ -20,6 +21,10 @@ public class SocketConnection extends Thread {
 
     public PrintStream getSender() {
         return sender;
+    }
+
+    public SocketConnection(int x) {
+
     }
 
     private SocketConnection() {
@@ -43,16 +48,18 @@ public class SocketConnection extends Thread {
             Alert al = new Alert(Alert.AlertType.ERROR, "there is no connection \n please play offline");
             al.show();
         }
-        if (socket.isConnected()) {
+        if (socket != null && socket.isConnected()) {
             try {
                 receiver = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 sender = new PrintStream(socket.getOutputStream());
             } catch (IOException ex) {
                 Alert al = new Alert(Alert.AlertType.ERROR, "there is no connection \n please play offline");
-                al.show();
+                al.showAndWait();
+
             }
+            this.start();
         }
-        this.start();
+
     }
 
     private void setupIOSteams() {
@@ -79,9 +86,12 @@ public class SocketConnection extends Thread {
     public void closeConnection() {
 
         try {
-            sender.close();
-            receiver.close();
-            socket.close();
+            if (socket != null && socket.isConnected()) {
+                sender.close();
+                receiver.close();
+                socket.close();
+            }
+
         } catch (IOException ex) {
             System.err.println("Socket Disconnected");
 
@@ -90,7 +100,7 @@ public class SocketConnection extends Thread {
 
     private class Endpoint {
 
-        public static final int PORT_NUMBER = 5000;
+        public static final int PORT_NUMBER = 5050;
         public static final String SERVER_IP = "127.0.0.1";
 
     }
