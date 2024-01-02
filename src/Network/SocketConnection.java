@@ -113,9 +113,9 @@ public class SocketConnection extends Thread {
 
     private class Endpoint {
 
-        public static final int PORT_NUMBER = 5050;
-        public static final String SERVER_IP = "127.0.0.1";
-//        public static final String SERVER_IP = "10.145.14.209";
+        public static final int PORT_NUMBER = 5000;
+//        public static final String SERVER_IP = "127.0.0.1";
+        public static final String SERVER_IP = "10.145.14.104";
     }
 
 }
