@@ -10,9 +10,11 @@ import javafx.stage.Stage;
 import ui.Screens.AboutUsBase;
 import ui.Screens.AvailablePlayersScreen;
 import ui.Screens.GameBoardScreen;
+import ui.Screens.HistoryBase;
 import ui.Screens.LoginBase;
 import ui.Screens.LoginsignupBase;
 import ui.Screens.OfflineModeScreen;
+import ui.Screens.ReplayScreen;
 import ui.Screens.SelectLevelScreen;
 import ui.Screens.SelectModeBase;
 import ui.Screens.SignupBase;
@@ -68,7 +70,15 @@ public class SceneController {
     Animation.animated(currentPane, new AvailablePlayersScreen(), event);
   }
   
-  public static void switchToSingle(ActionEvent event, Pane currentPane) {
-    Animation.animated(currentPane, new SinglePlayer(new Pc(Pc.Level.EASY)), event);
+  public static void switchToSinglePlayerBoard(ActionEvent event, Pane currentPane, Pc pc) {
+    Animation.animated(currentPane, new SinglePlayer(pc), event);
+  }
+  
+  public static void switchToReplay(ActionEvent event, Pane currentPane,String moves){
+     Animation.animated(currentPane, new ReplayScreen(moves), event);
+  }
+  
+  public static void switchToHistory(ActionEvent event, Pane currentPane){
+      Animation.animated(currentPane, new HistoryBase(), event);
   }
 }
