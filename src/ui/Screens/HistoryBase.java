@@ -1,7 +1,7 @@
 package ui.Screens;
 
 import Recording.RecordDatabase;
-import com.sun.org.apache.regexp.internal.recompile;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -58,12 +59,14 @@ public class HistoryBase extends VBox {
         }
 
     }
-    RecordDatabase db ;
+    RecordDatabase db;
+
     public HistoryBase() {
 
-        db = new RecordDatabase();
+        db = RecordDatabase.getInstance();
         rs = db.getData();
-        Button exitBnt = new GameButton("Exit",GameButton.Mode.BACK);
+      
+        Button exitBnt = new GameButton("Exit", GameButton.Mode.BACK);
         label = new Label();
         recordList = new ListView();
 
@@ -90,19 +93,19 @@ public class HistoryBase extends VBox {
         recordList.setPrefHeight(858.0);
         recordList.setPrefWidth(1343.0);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        new Thread(() -> {
+            try {
+                while (rs.next()) {
+                    System.out.println(rs.getString(1));
 
-        try {
-            while (rs.next()) {
-                Date d = new Date();
-
-                recordList.getItems().add(new Record(rs.getInt(1), String.valueOf(rs.getDate(3))));
-
+                            recordList.getItems().add(new Record(rs.getInt(1), String.valueOf(rs.getDate(3))));                  
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                // Handle the exception appropriately, log it, or show an error message
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(HistoryBase.class.getName()).log(Level.SEVERE, null, ex);
-        }   
-        
-        
+        }).start();
+
         exitBnt.setOnAction((ActionEvent event) -> {
             SceneController.switchToSplashScreen(event, this);
         });
@@ -119,7 +122,6 @@ public class HistoryBase extends VBox {
         protected void updateItem(Record item, boolean empty) {
             super.updateItem(item, empty);
             this.setAlignment(Pos.CENTER);
-
             if (empty || item == null) {
                 setText(null);
                 setGraphic(null);
@@ -135,7 +137,7 @@ public class HistoryBase extends VBox {
                     } catch (SQLException ex) {
                         Logger.getLogger(HistoryBase.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    
+
                 });
             }
         }
@@ -145,10 +147,9 @@ public class HistoryBase extends VBox {
             Text id = new Text(String.valueOf(record.getId()));
             Text date = new Text(String.valueOf(record.getDate()));
             Button play = new GameButton("Play", GameButton.Mode.NORMAL, () -> {
-                
+
             });
             play.setMaxSize(150, 60);
-            
 
             RecordRowBase recordRowBase = new RecordRowBase(id, date);
             return recordRowBase;

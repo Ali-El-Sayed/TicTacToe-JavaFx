@@ -388,9 +388,7 @@ public class GameBoardScreen extends StackPane {
            recordingGame.saveRecord();
         }
         for (Button arButton1 : arButton) {
-            
             arButton1.setOnAction((ActionEvent event) -> {
-
             });
         }
         

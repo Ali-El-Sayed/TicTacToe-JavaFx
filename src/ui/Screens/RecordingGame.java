@@ -20,7 +20,7 @@ public class RecordingGame {
     private String moves;
     private RecordDatabase rbd;
     public RecordingGame() {
-        rbd = new RecordDatabase();
+        rbd = RecordDatabase.getInstance();
         positions = new int[9];
         moves = new String();
     }
@@ -60,14 +60,6 @@ public class RecordingGame {
     }
      
      public void saveRecord(){
-        try {
             rbd.setData(moves);
-            ResultSet rs= rbd.getData();
-            rs.last();
-            System.out.println(rs.getString(2));
-        } catch (SQLException ex) {
-            Logger.getLogger(RecordingGame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         
      }
 }
