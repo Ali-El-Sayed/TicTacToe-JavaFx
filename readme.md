@@ -7,6 +7,7 @@ This is a simple and customizable Tic Tac Toe desktop game developed in JavaFX. 
 ## Features
 
 - **Offline Mode:**
+
   - Single-player mode against a computer opponent with three difficulty levels.
   - Two-player mode for local games.
 
@@ -28,32 +29,19 @@ This is a simple and customizable Tic Tac Toe desktop game developed in JavaFX. 
    cd tic-tac-toe
    ```
 
-2. Compile and run the game:
+2. Go to Server Network/SocketConnection & change Server IP.
 
-   ```bash
-   javac Main.java
-   java Main
-   ```
+3. Compile and run the game from netbeans.
 
 ## Offline Mode
 
 ### Single Player
 
-In single-player mode, you can play against the computer. The computer has three difficulty levels: easy, medium, and hard.
-
-```java
-// Example: Launching the game with easy difficulty
-GameLauncher.launchSinglePlayer(GameDifficulty.EASY);
-```
+In single-player mode, you can play against the computer. The computer has one difficulty level : Easy
 
 ### Two Players
 
 In two-player mode, two players can play on the same machine. Simply launch the game without specifying difficulty.
-
-```java
-// Example: Launching the game for two players
-GameLauncher.launchTwoPlayer();
-```
 
 ## Online Mode
 
@@ -61,29 +49,16 @@ GameLauncher.launchTwoPlayer();
 
 1. Run the server application:
 
-   ```bash
-   java ServerMain
-   ```
-
-2. Share the server IP address with other players.
-
 ### Client
 
 1. Run the client application:
 
-   ```bash
-   java ClientMain
-   ```
+## Contributers
 
-2. Enter the server IP address when prompted.
-
-## Customization
-
-You can customize the game settings, such as board size, winning conditions, and more, by modifying the configuration file (`config.properties`).
-
-## Contributing
-
-Feel free to contribute to the project by opening issues or submitting pull requests.
+- Mohamed Hussien ([@Mohamed Hussien](https://github.com/moahamdhussein))
+- Mina Thabet ([@MinaThabet](https://github.com/minathabet96))
+- Esraa Assem ([@Esraa Assem](https://github.com/IsraaAssem))
+- Salma Maher ([@Salma Maher](https://github.com/salmamaher14))
 
 ## License
 
